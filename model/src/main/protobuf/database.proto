@@ -2,6 +2,12 @@ syntax = "proto3";
 
 package model;
 
-message Database {
+import "chara.proto";
+import "class.proto";
+import "race.proto";
 
+message Database {
+  repeated Chara charas = 1;
+  repeated Race races = 2;
+  repeated Class classes = 3;
 }

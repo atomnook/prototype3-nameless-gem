@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package model;
+
+message RaceId {
+  string id = 1;
+}
+
+message Race {
+  RaceId id = 1;
+  string name = 2;
+}
