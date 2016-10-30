@@ -67,7 +67,7 @@ class DatabaseService {
 
   def write(): String = synchronized(Base64.getEncoder.encodeToString(Database.toByteArray(database)))
 
-  def race(): CRUD[Race] = CRUD[Race](_.races, _.races, _.getId == _.getId)
+  def races(): CRUD[Race] = CRUD[Race](_.races, _.races, _.getId == _.getId)
 
   def classes(): CRUD[model.Class] = CRUD[model.Class](_.classes, _.classes, _.getId == _.getId)
 

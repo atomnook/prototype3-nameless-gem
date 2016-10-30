@@ -31,7 +31,7 @@ class DatabaseServiceSpec extends FlatSpec {
     val updated = first.update(_.name.modify(_ + "-updated"))
     val created = Race().update(_.id.id := "idB", _.name := "nameB")
 
-    testCRUD(crud = DatabaseService().race(), first = first, updated = updated, created = created)
+    testCRUD(crud = DatabaseService().races(), first = first, updated = updated, created = created)
   }
 
   "DatabaseService" should "have Class CRUD" in {
@@ -56,20 +56,20 @@ class DatabaseServiceSpec extends FlatSpec {
     val cls = model.Class().update(_.id.id := "class-id")
     val chara = Chara().update(_.id.id := "chara-id")
 
-    service.race().create(race)
+    service.races().create(race)
     service.classes().create(cls)
     service.characters().create(chara)
 
     val database = service.write()
     val restored = DatabaseService()
 
-    assert(restored.race().read() === Set())
+    assert(restored.races().read() === Set())
     assert(restored.classes().read() === Set())
     assert(restored.characters().read() === Set())
 
     restored.read(database)
 
-    assert(restored.race().read() === Set(race))
+    assert(restored.races().read() === Set(race))
     assert(restored.classes().read() === Set(cls))
     assert(restored.characters().read() === Set(chara))
   }

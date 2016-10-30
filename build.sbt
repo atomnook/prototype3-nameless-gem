@@ -10,3 +10,5 @@ lazy val model = (project in file("model")).
 lazy val domain = (project in file("domain")).
   settings(defaultSettings, libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test").
   dependsOn(model)
+
+lazy val tool = (project in file("tool")).enablePlugins(PlayScala).settings(defaultSettings).dependsOn(domain)
