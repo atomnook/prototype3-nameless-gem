@@ -6,3 +6,7 @@ lazy val model = (project in file("model")).
     PB.targets in Compile := Seq(scalapb.gen(flatPackage = true, singleLineToString = true, grpc = false) ->
       (sourceManaged in Compile).value),
     libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.42" % "protobuf")
+
+lazy val domain = (project in file("domain")).
+  settings(defaultSettings, libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test").
+  dependsOn(model)
