@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package model;
+
+message ClassId {
+  string id = 1;
+}
+
+message Class {
+  ClassId id = 1;
+  string name = 2;
+}
