@@ -27,16 +27,6 @@ class ClassController @Inject() (service: DatabaseService) extends Controller wi
     }
   }
 
-  val update = json[ClassFormat] { request =>
-    val cls = request.body.asModel
-    val res = service.classes().update(cls)
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      NotFound(Json.obj("mes" -> s"id:${cls.getId.id} not found"))
-    }
-  }
-
   def delete(id: String) = Action { request =>
     val res = service.classes().delete(model.Class().update(_.id.id := id))
     if (res) {

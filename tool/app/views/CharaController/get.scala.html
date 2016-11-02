@@ -1,19 +1,19 @@
-@(id: String, race: Option[model.Race])
-@main(title = "/races/" + id) {
-@if(race.isEmpty) {
+@(id: String, chara: Option[model.Chara], races: Map[model.RaceId, model.Race], classes: Map[model.ClassId, model.Class])
+@main(title = "/characters/" + id) {
+@if(chara.isEmpty) {
 <div class="row">
     <div class="col-xs-12">
         <div class="page-header">
-            <h1>/races/@id not found</h1>
+            <h1>/characters/@id not found</h1>
         </div>
     </div>
 </div>
 }
-@for(r <- race) {
+@for(c <- chara) {
 <div class="row">
     <div class="col-xs-12">
         <div class="page-header">
-            <h1>/races/@id</h1>
+            <h1>/characters/@id</h1>
         </div>
     </div>
 </div>
@@ -26,19 +26,31 @@
     <div class="col-xs-6">
         <dl class="dl-horizontal">
             <dt>Id</dt><dd>@id</dd>
-            <dt>Name</dt><dd>@r.name</dd>
+            <dt>Name</dt><dd>@c.name</dd>
+
+            @for(r <- races.get(c.getRace)) {
+            <dt>Race</dt><dd>@r.name L@c.getRaceLevel.level (@c.getRaceLevel.xp xp / @c.getRaceLevel.cp cp)</dd>
+            }
+
+            @for(r <- c.classes.zipWithIndex) {
+            @for(cls <- classes.get(r._1.getId)) {
+            <dt>Class[@r._2]</dt><dd>@cls.name L@r._1.getLevel.level (@r._1.getLevel.xp xp / @r._1.getLevel.cp cp)</dd>
+            }
+            }
         </dl>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-6">
-        <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        <form>
+            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        </form>
     </div>
 </div>
 }
 <script>
     $('#delete').click(function() {
-        var url = window.location.origin + '@routes.RaceController.delete(id)';
+        var url = window.location.origin + '@routes.CharaController.delete(id)';
 
         fetch(url, {
             method: 'DELETE'
