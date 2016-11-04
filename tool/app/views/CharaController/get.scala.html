@@ -1,4 +1,7 @@
 @(id: String, chara: Option[model.Chara], races: Map[model.RaceId, model.Race], classes: Map[model.ClassId, model.Class])
+
+@tnl(level: model.CharaLevel) = { @(domain.formula.TilNextLevel(level.level + 1).xp - level.xp) }
+
 @main(title = "/characters/" + id) {
 @if(chara.isEmpty) {
 <div class="row">
@@ -29,15 +32,36 @@
             <dt>Name</dt><dd>@c.name</dd>
 
             @for(r <- races.get(c.getRace)) {
-            <dt>Race</dt><dd>@r.name L@c.getRaceLevel.level (@c.getRaceLevel.xp xp / @c.getRaceLevel.cp cp)</dd>
+            <dt>Race</dt>
+            <dd>
+                @r.name L@c.getRaceLevel.level<br/>
+                @c.getRaceLevel.xp xp, @tnl(c.getRaceLevel) til next level, @c.getRaceLevel.cp cp
+            </dd>
             }
 
             @for(r <- c.classes.zipWithIndex) {
             @for(cls <- classes.get(r._1.getId)) {
-            <dt>Class[@r._2]</dt><dd>@cls.name L@r._1.getLevel.level (@r._1.getLevel.xp xp / @r._1.getLevel.cp cp)</dd>
+            <dt>Class[@r._2]</dt>
+            <dd>
+                @cls.name L@r._1.getLevel.level<br/>
+                @r._1.getLevel.xp xp, @tnl(r._1.getLevel) til next level, @r._1.getLevel.cp cp
+            </dd>
             }
             }
         </dl>
+    </div>
+    <div class="col-xs-6">
+        <form class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="xp" placeholder="0">
+                    <div class="input-group-addon">xp</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button id="gain-xp" type="button" class="btn btn-default">Gain Xp</button>
+            </div>
+        </form>
     </div>
 </div>
 <div class="row">
@@ -49,6 +73,25 @@
 </div>
 }
 <script>
+    $('#gain-xp').click(function() {
+        var url = window.location.origin + '@routes.CharaController.gainXp(id)';
+        var xp = parseInt($('#xp').val());
+
+        fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/json'},
+            body: JSON.stringify({'xp': xp})
+        }).then(function(res) {
+            if (res.status == 200) {
+                window.location.reload(true);
+            } else {
+                res.json().then(function(json) {
+                    $('#update-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
+                });
+            }
+        })
+    });
+
     $('#delete').click(function() {
         var url = window.location.origin + '@routes.CharaController.delete(id)';
 

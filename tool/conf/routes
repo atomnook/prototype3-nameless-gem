@@ -16,6 +16,7 @@ DELETE  /classes/:id.json   controllers.ClassController.delete(id: String)
 GET     /characters             controllers.CharaController.list
 GET     /characters/:id         controllers.CharaController.get(id: String)
 POST    /characters.json        controllers.CharaController.create
+POST    /characters/:id/xp.json controllers.CharaController.gainXp(id: String)
 DELETE  /characters/:id.json    controllers.CharaController.delete(id: String)
 
 GET   /favicon.ico    controllers.Assets.at(path="/public", file="images/favicon.ico")

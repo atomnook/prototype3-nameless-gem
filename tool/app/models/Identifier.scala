@@ -8,7 +8,7 @@ case class Identifier(id: String)
 object Identifier {
   private[this] val regex = "([a-zA-Z0-9\\-]+)".r
 
-  implicit val format: Format[Identifier] = new Format[Identifier] {
+  implicit val format = new Format[Identifier] {
     override def writes(o: Identifier): JsValue = JsString(o.id)
 
     override def reads(json: JsValue): JsResult[Identifier] = {
