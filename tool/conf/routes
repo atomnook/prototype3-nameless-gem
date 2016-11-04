@@ -6,13 +6,16 @@ GET   /databases/file controllers.DatabaseController.file
 GET     /races            controllers.RaceController.list
 GET     /races/:id        controllers.RaceController.get(id: String)
 POST    /races.json       controllers.RaceController.create
-PUT     /races.json       controllers.RaceController.update
 DELETE  /races/:id.json   controllers.RaceController.delete(id: String)
 
 GET     /classes            controllers.ClassController.list
 GET     /classes/:id        controllers.ClassController.get(id: String)
 POST    /classes.json       controllers.ClassController.create
-PUT     /classes.json       controllers.ClassController.update
 DELETE  /classes/:id.json   controllers.ClassController.delete(id: String)
+
+GET     /characters             controllers.CharaController.list
+GET     /characters/:id         controllers.CharaController.get(id: String)
+POST    /characters.json        controllers.CharaController.create
+DELETE  /characters/:id.json    controllers.CharaController.delete(id: String)
 
 GET   /favicon.ico    controllers.Assets.at(path="/public", file="images/favicon.ico")

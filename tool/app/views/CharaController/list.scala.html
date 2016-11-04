@@ -1,0 +1,89 @@
+@(characters: List[model.Chara], races: Map[model.RaceId, model.Race], classes: Map[model.ClassId, model.Class])
+
+@raceLevel(chara: model.Chara) = {
+  @if(races.get(chara.getRace).isEmpty) {
+    <td class="danger">id:@chara.getRace.id undefined</td>
+  } else {
+    <td>@(races(chara.getRace).name) L@chara.getRaceLevel.level</td>
+  }
+}
+
+@main(title = "/characters") {
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>/characters</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-8">
+        <div class="row">
+            <table class="table table-striped">
+                <tr><th>Id</th><th>Name</th><th>RaceL</th><th>ClassL</th></tr>
+                @for(chara <- characters) {
+                <tr>
+                    <td><a href="@routes.CharaController.get(chara.getId.id)">@chara.getId.id</a></td>
+                    <td>@chara.name</td>
+                    <td>@for(r <- races.get(chara.getRace)) { @r.name L@chara.getRaceLevel.level }</td>
+                    <td>@for(cc <- chara.classes) { @for(c <- classes.get(cc.getId)) { @c.name L@cc.getLevel.level } }</td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div id="create-result"></div>
+        <form>
+            <div class="form-group">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" id="id" placeholder="Character Id">
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Character Name">
+            </div>
+            <div class="form-group">
+                <label for="race">Race</label>
+                <select id="race" class="form-control">
+                @for(r <- races) {
+                <option value="@r._1.id">@r._2.name</option>
+                }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="classes">Classes</label>
+                <select id="classes" class="form-control" multiple>
+                @for(c <- classes) {
+                <option value="@c._1.id">@c._2.name</option>
+                }
+                </select>
+            </div>
+            <button id="create" type="button" class="btn btn-default">Create</button>
+        </form>
+    </div>
+</div>
+<script>
+    $('#create').click(function() {
+        var url = window.location.origin + '@routes.CharaController.create';
+        var id = $('#id').val();
+        var name = $('#name').val();
+        var raceId = $('#race').val();
+        var classIds = $('#classes').val();
+
+        fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/json'},
+            body: JSON.stringify({'id': id, 'name': name, 'race': raceId, 'classes': classIds})
+        }).then(function(res) {
+            if (res.status == 200) {
+                window.location.reload(true);
+            } else {
+                res.json().then(function(json) {
+                    $('#create-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
+                });
+            }
+        })
+    });
+</script>
+}

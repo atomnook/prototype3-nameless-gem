@@ -28,16 +28,6 @@ class RaceController @Inject() (service: DatabaseService) extends Controller wit
     }
   }
 
-  val update = json[RaceFormat] { request =>
-    val race = request.body.asModel
-    val res = service.races().update(race)
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      NotFound(Json.obj("mes" -> s"id:${race.getId.id} not found"))
-    }
-  }
-
   def delete(id: String) = Action { request =>
     val res = service.races().delete(Race().update(_.id.id := id))
     if (res) {
