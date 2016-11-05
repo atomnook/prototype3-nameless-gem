@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package model.skill;
+
+enum SkillType {
+  SWORD = 0;
+  RAPIER = 1;
+  GAUNTLET = 2;
+  BOW = 3;
+  KATANA = 4;
+  ELEMENT = 5;
+}
+
+message SkillId {
+  string id = 1;
+}
+
+message Skill {
+  SkillId id = 1;
+  string name = 2;
+  repeated SkillId prerequisites = 3;
+}
