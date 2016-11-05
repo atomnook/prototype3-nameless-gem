@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import domain.service.DatabaseService
 import model.Chara
-import models.CharaFormat
+import models.{CharaFormat, GainExpFormat}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
@@ -30,6 +30,21 @@ class CharaController @Inject() (service: DatabaseService) extends Controller wi
       Ok(Json.obj())
     } else {
       Conflict(Json.obj("msg" -> s"id:${chara.getId.id} already exists"))
+    }
+  }
+
+  def gainXp(id: String) = json[GainExpFormat] { request =>
+    service.characters().read().find(_.getId.id == id) match {
+      case Some(chara) =>
+        import domain.formula.GainXp._
+        val res = service.characters().update(chara.gainXp(request.body.xp.xp))
+        if (res) {
+          Ok(Json.obj())
+        } else {
+          NotFound(Json.obj("msg" -> s"id:$id not found"))
+        }
+
+      case None => NotFound(Json.obj("msg" -> s"id:$id not found"))
     }
   }
 
