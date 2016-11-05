@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package model;
+
+enum Element {
+  UNASPECTED = 0;
+  FIRE = 1;
+  ICE = 2;
+  VOLT = 3;
+  CUT = 4;
+  STAB = 5;
+  BASH = 6;
+}

@@ -1,10 +1,11 @@
 package domain.service
 
+import domain.service.DatabaseService.CRUD
 import model.{Chara, Race}
 import org.scalatest.FlatSpec
 
 class DatabaseServiceSpec extends FlatSpec {
-  def testCRUD[A](crud: DatabaseService#CRUD[A], first: A, updated: A, created: A) = {
+  def testCRUD[A](crud: CRUD[A], first: A, updated: A, created: A) = {
     assert(crud.read() === Set())
 
     assert(crud.create(first))

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package model;
+
+enum Target {
+  SELF = 0;
+  FRIEND = 1;
+  ENEMY = 2;
+  FRIEND_LINE = 3;
+  ENEMY_LINE = 4;
+  FRIEND_ALL = 5;
+  ENEMY_ALL = 6;
+  ALL = 7;
+}

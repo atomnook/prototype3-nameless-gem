@@ -5,9 +5,13 @@ package model;
 import "chara.proto";
 import "class.proto";
 import "race.proto";
+import "skill/skill-attack.proto";
 
 message Database {
   repeated Chara charas = 1;
   repeated Race races = 2;
   repeated Class classes = 3;
+
+  repeated skill.ChainAttackSkill chain_attack_skills = 4;
+  repeated skill.MultipleAttackSkill multiple_attack_skills = 5;
 }
