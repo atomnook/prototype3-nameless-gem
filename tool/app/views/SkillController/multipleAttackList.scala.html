@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-8">
+    <div class="col-xs-12">
         <div class="row">
             <table class="table table-striped">
                 <tr>
@@ -40,121 +40,133 @@
                     <td>@s.target.name</td>
                 </tr>
                 }
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="id" placeholder="Skill Id">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" placeholder="Skill Name">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="prerequisites" class="form-control" multiple>
+                                @for(s <- prerequisites) {
+                                <option value="@s.getId.id">@s.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="types" class="form-control" multiple>
+                                @for(t <- model.skill.SkillType.values) {
+                                <option value="@t.value">@t.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="elements" class="form-control" multiple>
+                                @for(e <- model.Element.values) {
+                                <option value="@e.value">@e.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="base-power" placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">L+</span>
+                                <input type="number" class="form-control" id="incr-power" placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="base-tp" placeholder="0">
+                                <span class="input-group-addon">TP</span>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">L+</span>
+                                <input type="number" class="form-control" id="incr-tp" placeholder="0">
+                                <span class="input-group-addon">TP</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="base-times" placeholder="0">
+                                <span class="input-group-addon">times</span>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">L+</span>
+                                <input type="number" class="form-control" id="incr-times" placeholder="0">
+                                <span class="input-group-addon">times</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="range" class="form-control">
+                                @for(r <- model.Range.values) {
+                                <option value="@r.value">@r.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="target" class="form-control">
+                                @for(t <- model.Target.values) {
+                                <option value="@t.value">@t.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                </tr>
             </table>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div id="create-result"></div>
-        <form>
-            <div class="form-group">
-                <label for="id">Id</label>
-                <input type="text" class="form-control" id="id" placeholder="Skill Id">
-            </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Skill Name">
-            </div>
-            <div class="form-group">
-                <label for="prerequisites">Prerequisites</label>
-                <select id="prerequisites" class="form-control" multiple>
-                    @for(s <- prerequisites) {
-                    <option value="@s.getId.id">@s.name</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="types">Types</label>
-                <select id="types" class="form-control" multiple>
-                    @for(t <- model.skill.SkillType.values) {
-                    <option value="@t.value">@t.name</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="elements">Elements</label>
-                <select id="elements" class="form-control" multiple>
-                    @for(e <- model.Element.values) {
-                    <option value="@e.value">@e.name</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="base-power">Power</label>
-                <div class="input-group">
-                    <input type="number" class="form-control" id="base-power" placeholder="0">
-                    <span class="input-group-addon">%</span>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">L+</span>
-                    <input type="number" class="form-control" id="incr-power" placeholder="0">
-                    <span class="input-group-addon">%</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="base-tp">TP</label>
-                <div class="input-group">
-                    <input type="number" class="form-control" id="base-tp" placeholder="0">
-                    <span class="input-group-addon">TP</span>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">L+</span>
-                    <input type="number" class="form-control" id="incr-tp" placeholder="0">
-                    <span class="input-group-addon">TP</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="base-times">Times</label>
-                <div class="input-group">
-                    <input type="number" class="form-control" id="base-times" placeholder="0">
-                    <span class="input-group-addon">times</span>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">L+</span>
-                    <input type="number" class="form-control" id="incr-times" placeholder="0">
-                    <span class="input-group-addon">times</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="range">Range</label>
-                <select id="range" class="form-control">
-                    @for(r <- model.Range.values) {
-                    <option value="@r.value">@r.name</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="target">Target</label>
-                <select id="target" class="form-control">
-                    @for(t <- model.Target.values) {
-                    <option value="@t.value">@t.name</option>
-                    }
-                </select>
-            </div>
+            <div id="create-result"></div>
             <button id="create" type="button" class="btn btn-default">Create</button>
-        </form>
+        </div>
     </div>
 </div>
 <script>
     $('#create').click(function() {
-        if ($('#types').val() == null) {
-            $('#create-result').html('<div class="alert alert-danger" role="alert">types empty</div>');
-        }
-
-        if ($('#elements').val() == null) {
-            $('#create-result').html('<div class="alert alert-danger" role="alert">elements empty</div>');
-        }
-
         var url = window.location.origin + '@routes.SkillController.createMultipleAttack';
         var id = $('#id').val();
         var name = $('#name').val();
-        var prerequisites = $('#prerequisites').val();
 
+        var prerequisites = $('#prerequisites').val();
         if (prerequisites == null) {
             prerequisites = [];
         }
 
-        var types = $('#types').val().map(parseInt);
-        var elements = $('#elements').val().map(parseInt);
+        var types;
+        if ($('#types').val() == null) {
+            types = null;
+        } else {
+            types = $('#types').val().map(parseInt)
+        }
+
+        var elements;
+        if ($('#elements').val() == null) {
+            elements = null;
+        } else {
+            elements = $('#elements').val().map(parseInt)
+        }
+
         var basePower = parseInt($('#base-power').val());
         var incrPower = parseInt($('#incr-power').val());
         var baseTp = parseInt($('#base-tp').val());

@@ -1,7 +1,5 @@
 @(characters: List[model.Chara], races: List[model.Race], classes: List[model.Class])(implicit helper: models.ModelHelper)
 
-@import helper._
-
 @main(title = "/characters") {
 <div class="row">
     <div class="col-xs-12">
@@ -11,50 +9,47 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-8">
+    <div class="col-xs-12">
         <div class="row">
             <table class="table table-striped">
-                <tr><th>Id</th><th>Name</th><th>RaceL</th><th>ClassL</th></tr>
+                <tr><th>Id</th><th>Name</th><th>Race</th><th>Class</th></tr>
                 @for(chara <- characters) {
+                @charaRow(chara)
+                }
                 <tr>
-                    <td><a href="@routes.CharaController.get(chara.getId.id)">@chara.getId.id</a></td>
-                    <td>@chara.name</td>
-                    <td>@chara.getRace.name L@chara.getRaceLevel.level</td>
-                    <td>@for(cc <- chara.classes) { @cc.getId.name L@cc.getLevel.level }</td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="id" placeholder="Character Id">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" placeholder="Character Name">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="race" class="form-control">
+                                @for(r <- races) {
+                                <option value="@r.getId.id">@r.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="classes" class="form-control" multiple>
+                                @for(c <- classes) {
+                                <option value="@c.getId.id">@c.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
                 </tr>
-                }
             </table>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div id="create-result"></div>
-        <form>
-            <div class="form-group">
-                <label for="id">Id</label>
-                <input type="text" class="form-control" id="id" placeholder="Character Id">
-            </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Character Name">
-            </div>
-            <div class="form-group">
-                <label for="race">Race</label>
-                <select id="race" class="form-control">
-                @for(r <- races) {
-                <option value="@r.getId.id">@r.name</option>
-                }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="classes">Classes</label>
-                <select id="classes" class="form-control" multiple>
-                @for(c <- classes) {
-                <option value="@c.getId.id">@c.name</option>
-                }
-                </select>
-            </div>
+            <div id="create-result"></div>
             <button id="create" type="button" class="btn btn-default">Create</button>
-        </form>
+        </div>
     </div>
 </div>
 <script>

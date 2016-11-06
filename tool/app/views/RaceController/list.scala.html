@@ -8,29 +8,27 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-8">
+    <div class="col-xs-12">
         <div class="row">
             <table class="table table-striped">
                 <tr><th>Id</th><th>Name</th></tr>
                 @for(race <- races) {
-                <tr><td><a href="@routes.RaceController.get(race.getId.id)">@race.getId.id</a></td><td>@race.name</td></tr>
+                    @raceRow(race)
                 }
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="id" placeholder="Race Id">
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="name" placeholder="Race Name">
+                    </td>
+                </tr>
             </table>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div id="create-result"></div>
-        <form>
-            <div class="form-group">
-                <label for="id">Id</label>
-                <input type="text" class="form-control" id="id" placeholder="Race Id">
-            </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Race Name">
-            </div>
+            <div id="create-result"></div>
             <button id="create" type="button" class="btn btn-default">Create</button>
-        </form>
+        </div>
     </div>
 </div>
 <script>
