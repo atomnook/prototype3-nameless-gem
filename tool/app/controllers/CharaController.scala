@@ -3,30 +3,28 @@ package controllers
 import javax.inject.Inject
 
 import domain.service.DatabaseService
+import domain.service.DatabaseService.Crud
 import model.Chara
 import models.{CharaFormat, GainExpFormat, Identifier, ModelHelper}
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.Result
 
-class CharaController @Inject() (service: DatabaseService) extends Controller with JsonApiController {
+class CharaController @Inject() (service: DatabaseService) extends CrudController[Chara, CharaFormat] {
   implicit val helper = new ModelHelper(service)
 
-  val list = Action { request =>
-    val characters = service.characters().read().toList
+  override protected[this] val crud: Crud[Chara] = service.characters()
+
+  override protected[this] def identity(a: Chara): Identifier = Identifier(a.getId.id)
+
+  override protected[this] def identity(id: Identifier): Chara = Chara().update(_.id.id := id.id)
+
+  override protected[this] def listPage(a: List[Chara]): Result = {
     val races = service.races().read().toList
     val classes = service.classes().read().toList
-    Ok(views.html.CharaController.list(characters, races, classes))
+    Ok(views.html.CharaController.list(a, races, classes))
   }
 
-  def get(id: String) = Action { request =>
-    val chara = service.characters().read().find(_.getId.id == id)
-    Ok(views.html.CharaController.get(id, chara))
-  }
-
-  val create = json[CharaFormat] { request =>
-    val chara = request.body.asModel
-    val res = service.characters().create(chara)
-
-    if (res) created() else alreadyExists(request.body.id)
+  override protected[this] def getPage(id: String, a: Option[Chara]): Result = {
+    Ok(views.html.CharaController.get(id, a))
   }
 
   def gainXp(id: String) = json[GainExpFormat] { request =>
@@ -39,11 +37,5 @@ class CharaController @Inject() (service: DatabaseService) extends Controller wi
 
       case None => notFound(Identifier(id))
     }
-  }
-
-  def delete(id: String) = Action { request =>
-    val res = service.characters().delete(Chara().update(_.id.id := id))
-
-    if (res) ok() else notFound(Identifier(id))
   }
 }

@@ -3,29 +3,18 @@ package controllers
 import javax.inject.Inject
 
 import domain.service.DatabaseService
+import domain.service.DatabaseService.Crud
 import models.{ClassFormat, Identifier}
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.Result
 
-class ClassController @Inject() (service: DatabaseService) extends Controller with JsonApiController {
-  val list = Action {
-    Ok(views.html.ClassController.list(service.classes().read().toList))
-  }
+class ClassController @Inject() (service: DatabaseService) extends CrudController[model.Class, ClassFormat] {
+  override protected[this] val crud: Crud[model.Class] = service.classes()
 
-  def get(id: String) = Action {
-    val found = service.classes().read().find(_.getId.id == id)
-    Ok(views.html.ClassController.get(id, found))
-  }
+  override protected[this] def identity(a: model.Class): Identifier = Identifier(a.getId.id)
 
-  val create = json[ClassFormat] { request =>
-    val cls = request.body.asModel
-    val res = service.classes().create(cls)
+  override protected[this] def identity(id: Identifier): model.Class = model.Class().update(_.id.id := id.id)
 
-    if (res) created() else alreadyExists(request.body.id)
-  }
+  override protected[this] def listPage(a: List[model.Class]): Result = Ok(views.html.ClassController.list(a))
 
-  def delete(id: String) = Action { request =>
-    val res = service.classes().delete(model.Class().update(_.id.id := id))
-
-    if (res) ok() else notFound(Identifier(id))
-  }
+  override protected[this] def getPage(id: String, a: Option[model.Class]): Result = Ok(views.html.ClassController.get(id, a))
 }

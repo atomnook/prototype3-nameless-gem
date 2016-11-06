@@ -1,4 +1,4 @@
-@(skills: Set[model.skill.MultipleAttackSkill], prerequisites: Set[model.skill.Skill])(implicit helper: models.ModelHelper)
+@(skills: List[model.skill.MultipleAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
 @main(title = "/skills/multiple-attack") {
 <div class="row">
@@ -128,7 +128,7 @@
 </div>
 <script>
     $('#create').click(function() {
-        var url = window.location.origin + '@routes.SkillController.createMultipleAttack';
+        var url = window.location.origin + '@routes.MultipleAttackController.create';
         var id = $('#id').val();
         var name = $('#name').val();
 
