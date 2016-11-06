@@ -10,6 +10,37 @@
     <title>@title</title>
 </head>
 <body>
+<script>
+    jsonApi = function(url, method, body, alert) {
+        fetch(url, {
+            method: method,
+            headers: {'Content-Type': 'text/json'},
+            body: JSON.stringify(body)
+        }).then(function(res) {
+            if (200 <= res.status && res.status < 300) {
+                window.location.reload(true);
+            } else {
+                res.json().then(function(json) {
+                    $(alert).html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
+                });
+            }
+        });
+    };
+
+    noContentApi = function(url, method, alert) {
+        fetch(url, {
+            method: method
+        }).then(function(res) {
+            if (200 <= res.status && res.status < 300) {
+                window.location.reload(true);
+            } else {
+                res.json().then(function(json) {
+                    $(alert).html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
+                });
+            }
+        });
+    };
+</script>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">

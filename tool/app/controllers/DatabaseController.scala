@@ -1,15 +1,11 @@
 package controllers
 
-import java.io.{ByteArrayInputStream, File}
+import java.io.ByteArrayInputStream
 import javax.inject.Inject
 
 import akka.stream.scaladsl.StreamConverters
-import com.google.inject.AbstractModule
 import domain.service.DatabaseService
-import play.api.{Configuration, Environment, Logger}
 import play.api.mvc.{Action, Controller}
-
-import scala.io.Source
 
 class DatabaseController @Inject() (service: DatabaseService) extends Controller {
   val raw = Action(Ok(service.write()))

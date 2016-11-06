@@ -39,19 +39,7 @@
         var id = $('#id').val();
         var name = $('#name').val();
 
-        fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'text/json'},
-            body: JSON.stringify({'id': id, 'name': name})
-        }).then(function(res) {
-            if (res.status == 200) {
-                window.location.reload(true);
-            } else {
-                res.json().then(function(json) {
-                    $('#create-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
-                });
-            }
-        })
+        jsonApi(url, 'POST', {'id': id, 'name': name}, '#create-result')
     });
 </script>
 }
