@@ -129,56 +129,18 @@
 <script>
     $('#create').click(function() {
         var url = window.location.origin + '@routes.ChainAttackController.create';
-        var id = $('#id').val();
-        var name = $('#name').val();
-
-        var prerequisites = $('#prerequisites').val();
-        if (prerequisites == null) {
-            prerequisites = [];
-        }
-
-        var types;
-        if ($('#types').val() == null) {
-            types = null;
-        } else {
-            types = $('#types').val().map(parseInt)
-        }
-
-        var elements;
-        if ($('#elements').val() == null) {
-            elements = null;
-        } else {
-            elements = $('#elements').val().map(parseInt)
-        }
-
-        var basePower = parseInt($('#base-power').val());
-        var incrPower = parseInt($('#incr-power').val());
-        var baseTp = parseInt($('#base-tp').val());
-        var incrTp = parseInt($('#incr-tp').val());
-
-        var follow;
-        if ($('#follow').val() == null) {
-            follow = null;
-        } else {
-            follow = $('#follow').val().map(parseInt)
-        }
-
-        var baseChain = parseInt($('#base-chain').val());
-        var incrChain = parseInt($('#incr-chain').val());
-
-        var range = parseInt(parseInt($('#range').val()));
 
         var body = {
-            'id': id,
-            'name': name,
-            'prerequisites': prerequisites,
-            'types': types,
-            'elements': elements,
-            'power': {'base': basePower, 'increasing': incrPower},
-            'tp': {'base': baseTp, 'increasing': incrTp},
-            'follow': follow,
-            'chain': {'base': baseChain, 'increasing': incrChain},
-            'range': range
+            'id': text('#id'),
+            'name': text('#name'),
+            'prerequisites': array('#prerequisites'),
+            'types': arrayNumber('#types'),
+            'elements': arrayNumber('#elements'),
+            'power': level('#base-power', '#incr-power'),
+            'tp': level('#base-tp', '#incr-tp'),
+            'follow': arrayNumber('#follow'),
+            'chain': level('#base-chain', '#incr-chain'),
+            'range': number('#range')
         };
 
         jsonApi(url, 'POST', body, '#create-result');
