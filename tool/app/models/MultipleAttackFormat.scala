@@ -13,7 +13,7 @@ case class MultipleAttackFormat(id: Identifier,
                                 tp: AttackLevelFormat,
                                 hit: AttackLevelFormat,
                                 range: model.Range,
-                                target: model.Target) {
+                                target: model.Target) extends ModelFormat[MultipleAttackSkill] {
   def asModel: MultipleAttackSkill = {
     MultipleAttackSkill().update(
       _.skill.skill.id.id := id.id,

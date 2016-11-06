@@ -3,7 +3,7 @@ package domain.service
 import java.util.Base64
 
 import com.trueaccord.lenses.Lens
-import domain.service.DatabaseService.CRUD
+import domain.service.DatabaseService.Crud
 import model.Database.DatabaseLens
 import model.skill.{ChainAttackSkill, MultipleAttackSkill, Skill}
 import model.{Chara, Database, Race}
@@ -13,7 +13,7 @@ class DatabaseService {
 
   private[this] val databaseLens = new Database.DatabaseLens(Lens.unit[Database])
 
-  private[this] trait DatabaseCRUD[A, B] extends CRUD[A] {
+  private[this] trait DatabaseCrud[A, B] extends Crud[A] {
     protected[this] def get(): Seq[A]
 
     protected[this] def len(): Lens[Database, Seq[A]]
@@ -55,11 +55,11 @@ class DatabaseService {
     }
   }
 
-  private[this] object DatabaseCRUD {
+  private[this] object DatabaseCrud {
     def apply[A](g: Database => Seq[A],
                  l: DatabaseLens[Database] => Lens[Database, Seq[A]],
-                 i: (A, A) => Boolean): DatabaseCRUD[A, A] = {
-      new DatabaseCRUD[A, A] {
+                 i: (A, A) => Boolean): DatabaseCrud[A, A] = {
+      new DatabaseCrud[A, A] {
         override protected[this] def get(): Seq[A] = g(database)
 
         override protected[this] def len(): Lens[Database, Seq[A]] = l(databaseLens)
@@ -76,8 +76,8 @@ class DatabaseService {
                     l: DatabaseLens[Database] => Lens[Database, Seq[A]],
                     i: (A, A) => Boolean,
                     is: Database => Seq[B],
-                    ai: (A, B) => Boolean): DatabaseCRUD[A, B] = {
-      new DatabaseCRUD[A, B] {
+                    ai: (A, B) => Boolean): DatabaseCrud[A, B] = {
+      new DatabaseCrud[A, B] {
         override protected[this] def get(): Seq[A] = g(database)
 
         override protected[this] def len(): Lens[Database, Seq[A]] = l(databaseLens)
@@ -99,14 +99,14 @@ class DatabaseService {
 
   def write(): String = synchronized(Base64.getEncoder.encodeToString(Database.toByteArray(database)))
 
-  def races(): CRUD[Race] = DatabaseCRUD.apply[Race](_.races, _.races, _.getId == _.getId)
+  def races(): Crud[Race] = DatabaseCrud.apply[Race](_.races, _.races, _.getId == _.getId)
 
-  def classes(): CRUD[model.Class] = DatabaseCRUD.apply[model.Class](_.classes, _.classes, _.getId == _.getId)
+  def classes(): Crud[model.Class] = DatabaseCrud.apply[model.Class](_.classes, _.classes, _.getId == _.getId)
 
-  def characters(): CRUD[Chara] = DatabaseCRUD.apply[Chara](_.charas, _.charas, _.getId == _.getId)
+  def characters(): Crud[Chara] = DatabaseCrud.apply[Chara](_.charas, _.charas, _.getId == _.getId)
 
-  def multipleAttackSkills(): CRUD[MultipleAttackSkill] = {
-    DatabaseCRUD.apply[MultipleAttackSkill, Skill](
+  def multipleAttackSkills(): Crud[MultipleAttackSkill] = {
+    DatabaseCrud.apply[MultipleAttackSkill, Skill](
       _.multipleAttackSkills,
       _.multipleAttackSkills,
       _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
@@ -114,8 +114,8 @@ class DatabaseService {
       _.getSkill.getSkill.getId == _.getId)
   }
 
-  def chainAttackSkills(): CRUD[ChainAttackSkill] = {
-    DatabaseCRUD.apply[ChainAttackSkill, Skill](
+  def chainAttackSkills(): Crud[ChainAttackSkill] = {
+    DatabaseCrud.apply[ChainAttackSkill, Skill](
       _.chainAttackSkills,
       _.chainAttackSkills,
       _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
@@ -127,7 +127,7 @@ class DatabaseService {
 object DatabaseService {
   def apply(): DatabaseService = new DatabaseService()
 
-  trait CRUD[A] {
+  trait Crud[A] {
     def read(): Set[A]
     def create(a: A): Boolean
     def update(a: A): Boolean
