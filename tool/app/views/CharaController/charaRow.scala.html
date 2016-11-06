@@ -1,0 +1,26 @@
+@(chara: model.Chara)(implicit helper: models.ModelHelper)
+
+@import helper._
+
+@level(l: model.CharaLevel) = {
+    Level @l.level<br/>
+    <small>@l.xp xp (@(domain.formula.TilNextLevel(l.level + 1).xp - l.xp) xp til next level)</small><br/>
+    <small>@l.cp cp</small>
+}
+
+<tr>
+    <td><a href="@routes.CharaController.get(chara.getId.id)">@chara.getId.id</a></td>
+    <td>@chara.name</td>
+    <td>
+        <div class="panel panel-default">
+            <div class="panel-body">@chara.getRace.name @level(chara.getRaceLevel)</div>
+        </div>
+    </td>
+    <td>
+        @for(c <- chara.classes) {
+        <div class="panel panel-default">
+            <div class="panel-body">@c.getId.name @level(c.getLevel)</div>
+        </div>
+        }
+    </td>
+</tr>

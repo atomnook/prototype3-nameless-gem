@@ -1,0 +1,5 @@
+@(row: model.Race)
+<tr>
+    <td><a href="@routes.RaceController.get(row.getId.id)">@row.getId.id</a></td>
+    <td>@row.name</td>
+</tr>

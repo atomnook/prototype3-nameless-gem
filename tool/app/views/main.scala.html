@@ -21,7 +21,7 @@
                 window.location.reload(true);
             } else {
                 res.json().then(function(json) {
-                    $(alert).html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
+                    $(alert).html('<div class="alert alert-danger" role="alert"><pre><code>' + JSON.stringify(json, null, 4) + '</code></pre></div>');
                 });
             }
         });
@@ -35,7 +35,7 @@
                 window.location.reload(true);
             } else {
                 res.json().then(function(json) {
-                    $(alert).html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
+                    $(alert).html('<div class="alert alert-danger" role="alert"><pre><code>' + JSON.stringify(json, null, 4) + '</code></pre></div>');
                 });
             }
         });
