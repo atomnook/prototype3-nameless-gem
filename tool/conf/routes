@@ -22,9 +22,14 @@ DELETE  /characters/:id.json    controllers.CharaController.delete(id: String)
 GET     /skills                       controllers.SkillController.list
 GET     /skills/i/:id                 controllers.SkillController.redirect(id)
 
-GET     /skills/multiple-attack       controllers.MultipleAttackController.list
-GET     /skills/multiple-attack/:id   controllers.MultipleAttackController.get(id: String)
-POST    /skills/multiple-attack.json  controllers.MultipleAttackController.create
-DELETE  /skills/multiple-attack/:id   controllers.MultipleAttackController.delete(id: String)
+GET     /skills/multiple-attack             controllers.MultipleAttackController.list
+GET     /skills/multiple-attack/:id         controllers.MultipleAttackController.get(id: String)
+POST    /skills/multiple-attack.json        controllers.MultipleAttackController.create
+DELETE  /skills/multiple-attack/:id.json    controllers.MultipleAttackController.delete(id: String)
+
+GET     /skills/chain-attack            controllers.ChainAttackController.list
+GET     /skills/chain-attack/:id        controllers.ChainAttackController.get(id: String)
+POST    /skills/chain-attack.json       controllers.ChainAttackController.create
+DELETE  /skills/chain-attack/:id.json   controllers.ChainAttackController.delete(id: String)
 
 GET   /favicon.ico    controllers.Assets.at(path="/public", file="images/favicon.ico")

@@ -1,0 +1,187 @@
+@(skills: List[model.skill.ChainAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
+@main(title = "/skills/chain-attack") {
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>/skills/chain-attack</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Prerequisites</th>
+                    <th>Types</th>
+                    <th>Elements</th>
+                    <th>Power</th>
+                    <th>TP</th>
+                    <th>Follow</th>
+                    <th>Chain</th>
+                    <th>Range</th>
+                </tr>
+                @for(s <- skills) {
+                @chainAttackRow(s)
+                }
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="id" placeholder="Skill Id">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" placeholder="Skill Name">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="prerequisites" class="form-control" multiple>
+                                @for(s <- prerequisites) {
+                                <option value="@s.getId.id">@s.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="types" class="form-control" multiple>
+                                @for(t <- model.skill.SkillType.values) {
+                                <option value="@t.value">@t.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="elements" class="form-control" multiple>
+                                @for(e <- model.Element.values) {
+                                <option value="@e.value">@e.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="base-power" placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="incr-power" placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="base-tp" placeholder="0">
+                                <span class="input-group-addon">TP</span>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="incr-tp" placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="follow" class="form-control" multiple>
+                                @for(e <- model.Element.values) {
+                                <option value="@e.value">@e.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="base-chain" placeholder="0">
+                                <span class="input-group-addon">Chain</span>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="incr-chain" placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="range" class="form-control">
+                                @for(r <- model.Range.values) {
+                                <option value="@r.value">@r.name</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div id="create-result"></div>
+            <button id="create" type="button" class="btn btn-default">Create</button>
+        </div>
+    </div>
+</div>
+<script>
+    $('#create').click(function() {
+        var url = window.location.origin + '@routes.ChainAttackController.create';
+        var id = $('#id').val();
+        var name = $('#name').val();
+
+        var prerequisites = $('#prerequisites').val();
+        if (prerequisites == null) {
+            prerequisites = [];
+        }
+
+        var types;
+        if ($('#types').val() == null) {
+            types = null;
+        } else {
+            types = $('#types').val().map(parseInt)
+        }
+
+        var elements;
+        if ($('#elements').val() == null) {
+            elements = null;
+        } else {
+            elements = $('#elements').val().map(parseInt)
+        }
+
+        var basePower = parseInt($('#base-power').val());
+        var incrPower = parseInt($('#incr-power').val());
+        var baseTp = parseInt($('#base-tp').val());
+        var incrTp = parseInt($('#incr-tp').val());
+
+        var follow;
+        if ($('#follow').val() == null) {
+            follow = null;
+        } else {
+            follow = $('#follow').val().map(parseInt)
+        }
+
+        var baseChain = parseInt($('#base-chain').val());
+        var incrChain = parseInt($('#incr-chain').val());
+
+        var range = parseInt(parseInt($('#range').val()));
+
+        var body = {
+            'id': id,
+            'name': name,
+            'prerequisites': prerequisites,
+            'types': types,
+            'elements': elements,
+            'power': {'base': basePower, 'increasing': incrPower},
+            'tp': {'base': baseTp, 'increasing': incrTp},
+            'follow': follow,
+            'chain': {'base': baseChain, 'increasing': incrChain},
+            'range': range
+        };
+
+        jsonApi(url, 'POST', body, '#create-result');
+    });
+</script>
+}

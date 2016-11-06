@@ -1,11 +1,11 @@
 package models
 
 import model.Element
-import model.skill.{MultipleAttackSkill, SkillId, SkillType}
+import model.skill.{MultipleAttackSkill, SkillType}
 import play.api.libs.json.Json
 
 case class MultipleAttackFormat(id: Identifier,
-                                name: String,
+                                name: Name,
                                 prerequisites: Set[Identifier],
                                 types: Set[SkillType],
                                 elements: Set[Element],
@@ -13,19 +13,9 @@ case class MultipleAttackFormat(id: Identifier,
                                 tp: AttackLevelFormat,
                                 hit: AttackLevelFormat,
                                 range: model.Range,
-                                target: model.Target) extends ModelFormat[MultipleAttackSkill] {
+                                target: model.Target) extends ModelFormat[MultipleAttackSkill] with AttackSkillFormat {
   def asModel: MultipleAttackSkill = {
-    MultipleAttackSkill().update(
-      _.skill.skill.id.id := id.id,
-      _.skill.skill.name := name,
-      _.skill.skill.prerequisites := prerequisites.map(id => SkillId(id.id)).toList,
-      _.skill.types := types.toSeq,
-      _.skill.elements := elements.toSeq,
-      _.skill.power := power.asModel,
-      _.skill.tpCost := tp.asModel,
-      _.hit := hit.asModel,
-      _.range := range,
-      _.target := target)
+    MultipleAttackSkill().update(_.skill := asAttackSkill, _.hit := hit.asModel, _.range := range, _.target := target)
   }
 }
 
