@@ -1,0 +1,6 @@
+@(row: model.skill.ChainAttackSkill)(implicit helper: models.ModelHelper)
+@attackRow(row.getSkill) {
+    <td>@row.follow.map(_.name).mkString(", ")</td>
+    <td>@attackLevel(row.getChain)</td>
+    <td>@row.range.name</td>
+}

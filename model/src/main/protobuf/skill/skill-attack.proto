@@ -24,6 +24,7 @@ message ChainAttackSkill {
   AttackSkill skill = 1;
   repeated Element follow = 2;
   AttackLevel chain = 3;
+  Range range = 4;
 }
 
 message MultipleAttackSkill {

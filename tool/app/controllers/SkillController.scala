@@ -3,9 +3,12 @@ package controllers
 import javax.inject.Inject
 
 import domain.service.DatabaseService
+import models.ModelHelper
 import play.api.mvc.{Action, Controller}
 
 class SkillController @Inject() (service: DatabaseService) extends Controller with BasicSkillController {
+  implicit val helper = new ModelHelper(service)
+
   val list = Action { request =>
     val skills = allSkills(service)
     Ok(views.html.SkillController.list(skills))
