@@ -1,0 +1,54 @@
+@(id: String, skill: Option[model.skill.MultipleAttackSkill])(implicit helper: models.ModelHelper)
+@main(title = "/skills/multiple-attack/" + id) {
+@if(skill.isEmpty) {
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>/skills/multiple-attack/@id not found</h1>
+        </div>
+    </div>
+</div>
+}
+@for(s <- skill) {
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>/skills/multiple-attack/@id</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Prerequisites</th>
+                    <th>Types</th>
+                    <th>Elements</th>
+                    <th>Power</th>
+                    <th>TP</th>
+                    <th>Hit</th>
+                    <th>Range</th>
+                    <th>Target</th>
+                </tr>
+                @multipleAttackRow(s)
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div id="update-result"></div>
+        <button id="delete" type="button" class="btn btn-danger">Delete</button>
+    </div>
+</div>
+<script>
+    $('#delete').click(function() {
+        var url = window.location.origin + '@routes.SkillController.deleteMultipleAttack(id)';
+        noContentApi(url, 'DELETE', '#update-result');
+    });
+</script>
+}
+}

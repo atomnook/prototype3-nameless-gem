@@ -7,27 +7,28 @@ import "range.proto";
 import "skill/skill.proto";
 import "target.proto";
 
+message AttackLevel {
+  int64 base = 1;
+  int64 increasing_pct = 2;
+}
+
 message AttackSkill {
   Skill skill = 1;
   repeated SkillType types = 2;
   repeated Element elements = 3;
-  int64 base_power = 5;
-  int64 increasing_power = 6;
-  int64 base_tp_cost = 7;
-  int64 increasing_tp_cost = 8;
+  AttackLevel power = 4;
+  AttackLevel tp_cost = 5;
 }
 
 message ChainAttackSkill {
   AttackSkill skill = 1;
   repeated Element follow = 2;
-  int64 base_max_chain = 3;
-  int64 increasing_max_chain = 9;
+  AttackLevel chain = 3;
 }
 
 message MultipleAttackSkill {
   AttackSkill skill = 1;
-  int64 base_times = 2;
-  int64 increasing_times = 3;
-  Range range = 4;
-  Target target = 5;
+  AttackLevel hit = 2;
+  Range range = 3;
+  Target target = 4;
 }
