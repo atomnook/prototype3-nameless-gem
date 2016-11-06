@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import domain.service.DatabaseService
 import models.{ModelHelper, MultipleAttackFormat}
-import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
 class SkillController @Inject() (service: DatabaseService) extends Controller with JsonApiController {
@@ -26,11 +25,8 @@ class SkillController @Inject() (service: DatabaseService) extends Controller wi
   val createMultipleAttack = json[MultipleAttackFormat] { request =>
     val skill = request.body.asModel
     val res = service.multipleAttackSkills().create(skill)
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      Conflict(Json.obj("msg" -> s"${skill.getSkill.getSkill.getId.id} already exists"))
-    }
+
+    if (res) created() else alreadyExists(request.body.id)
   }
 
   val chainAttackList = TODO

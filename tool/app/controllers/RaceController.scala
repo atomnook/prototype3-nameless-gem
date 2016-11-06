@@ -4,8 +4,7 @@ import javax.inject.Inject
 
 import domain.service.DatabaseService
 import model.Race
-import models.RaceFormat
-import play.api.libs.json.Json
+import models.{Identifier, RaceFormat}
 import play.api.mvc.{Action, Controller}
 
 class RaceController @Inject() (service: DatabaseService) extends Controller with JsonApiController {
@@ -21,19 +20,13 @@ class RaceController @Inject() (service: DatabaseService) extends Controller wit
   val create = json[RaceFormat] { request =>
     val race = request.body.asModel
     val res = service.races().create(race)
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      Conflict(Json.obj("msg" -> s"id:${race.getId.id} already exists"))
-    }
+
+    if (res) created() else alreadyExists(request.body.id)
   }
 
   def delete(id: String) = Action { request =>
     val res = service.races().delete(Race().update(_.id.id := id))
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      NotFound(Json.obj("mes" -> s"id:$id not found"))
-    }
+
+    if (res) ok() else notFound(Identifier(id))
   }
 }

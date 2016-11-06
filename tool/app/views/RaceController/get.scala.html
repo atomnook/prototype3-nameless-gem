@@ -39,18 +39,7 @@
 <script>
     $('#delete').click(function() {
         var url = window.location.origin + '@routes.RaceController.delete(id)';
-
-        fetch(url, {
-            method: 'DELETE'
-        }).then(function(res) {
-            if (res.status == 200) {
-                window.location.reload(true);
-            } else {
-                res.json().then(function(json) {
-                    $('#update-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
-                });
-            }
-        })
+        noContentApi(url, 'DELETE', '#update-result');
     });
 </script>
 }

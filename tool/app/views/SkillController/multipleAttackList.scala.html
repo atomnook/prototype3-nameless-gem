@@ -164,30 +164,20 @@
         var range = parseInt(parseInt($('#range').val()));
         var target = parseInt(parseInt($('#target').val()));
 
-        fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'text/json'},
-            body: JSON.stringify({
-                'id': id,
-                'name': name,
-                'prerequisites': prerequisites,
-                'types': types,
-                'elements': elements,
-                'power': {'base': basePower, 'increasing': incrPower},
-                'tp': {'base': baseTp, 'increasing': incrTp},
-                'times': {'base': baseTimes, 'increasing': incrTimes},
-                'range': range,
-                'target': target
-            })
-        }).then(function(res) {
-            if (res.status == 200) {
-                window.location.reload(true);
-            } else {
-                res.json().then(function(json) {
-                    $('#create-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
-                });
-            }
-        })
+        var body = {
+            'id': id,
+            'name': name,
+            'prerequisites': prerequisites,
+            'types': types,
+            'elements': elements,
+            'power': {'base': basePower, 'increasing': incrPower},
+            'tp': {'base': baseTp, 'increasing': incrTp},
+            'times': {'base': baseTimes, 'increasing': incrTimes},
+            'range': range,
+            'target': target
+        };
+
+        jsonApi(url, 'POST', body, '#create-result');
     });
 </script>
 }

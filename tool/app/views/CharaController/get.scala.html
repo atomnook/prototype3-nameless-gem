@@ -1,4 +1,6 @@
-@(id: String, chara: Option[model.Chara], races: Map[model.RaceId, model.Race], classes: Map[model.ClassId, model.Class])
+@(id: String, chara: Option[model.Chara])(implicit helper: models.ModelHelper)
+
+@import helper._
 
 @tnl(level: model.CharaLevel) = { @(domain.formula.TilNextLevel(level.level + 1).xp - level.xp) }
 
@@ -31,22 +33,18 @@
             <dt>Id</dt><dd>@id</dd>
             <dt>Name</dt><dd>@c.name</dd>
 
-            @for(r <- races.get(c.getRace)) {
             <dt>Race</dt>
             <dd>
-                @r.name L@c.getRaceLevel.level<br/>
+                @c.getRace.name L@c.getRaceLevel.level<br/>
                 @c.getRaceLevel.xp xp, @tnl(c.getRaceLevel) til next level, @c.getRaceLevel.cp cp
             </dd>
-            }
 
-            @for(r <- c.classes.zipWithIndex) {
-            @for(cls <- classes.get(r._1.getId)) {
-            <dt>Class[@r._2]</dt>
+            @for(cls <- c.classes.zipWithIndex) {
+            <dt>Class[@cls._2]</dt>
             <dd>
-                @cls.name L@r._1.getLevel.level<br/>
-                @r._1.getLevel.xp xp, @tnl(r._1.getLevel) til next level, @r._1.getLevel.cp cp
+                @cls._1.getId.name L@cls._1.getLevel.level<br/>
+                @cls._1.getLevel.xp xp, @tnl(cls._1.getLevel) til next level, @cls._1.getLevel.cp cp
             </dd>
-            }
             }
         </dl>
     </div>
@@ -77,35 +75,13 @@
         var url = window.location.origin + '@routes.CharaController.gainXp(id)';
         var xp = parseInt($('#xp').val());
 
-        fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'text/json'},
-            body: JSON.stringify({'xp': xp})
-        }).then(function(res) {
-            if (res.status == 200) {
-                window.location.reload(true);
-            } else {
-                res.json().then(function(json) {
-                    $('#update-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
-                });
-            }
-        })
+        jsonApi(url, 'POST', {'xp': xp}, '#update-result');
     });
 
     $('#delete').click(function() {
         var url = window.location.origin + '@routes.CharaController.delete(id)';
 
-        fetch(url, {
-            method: 'DELETE'
-        }).then(function(res) {
-            if (res.status == 200) {
-                window.location.reload(true);
-            } else {
-                res.json().then(function(json) {
-                    $('#update-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
-                });
-            }
-        })
+        noContentApi(url, 'DELETE', '#update-result');
     });
 </script>
 }

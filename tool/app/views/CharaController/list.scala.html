@@ -1,12 +1,6 @@
-@(characters: List[model.Chara], races: Map[model.RaceId, model.Race], classes: Map[model.ClassId, model.Class])
+@(characters: List[model.Chara], races: List[model.Race], classes: List[model.Class])(implicit helper: models.ModelHelper)
 
-@raceLevel(chara: model.Chara) = {
-  @if(races.get(chara.getRace).isEmpty) {
-    <td class="danger">id:@chara.getRace.id undefined</td>
-  } else {
-    <td>@(races(chara.getRace).name) L@chara.getRaceLevel.level</td>
-  }
-}
+@import helper._
 
 @main(title = "/characters") {
 <div class="row">
@@ -25,8 +19,8 @@
                 <tr>
                     <td><a href="@routes.CharaController.get(chara.getId.id)">@chara.getId.id</a></td>
                     <td>@chara.name</td>
-                    <td>@for(r <- races.get(chara.getRace)) { @r.name L@chara.getRaceLevel.level }</td>
-                    <td>@for(cc <- chara.classes) { @for(c <- classes.get(cc.getId)) { @c.name L@cc.getLevel.level } }</td>
+                    <td>@chara.getRace.name L@chara.getRaceLevel.level</td>
+                    <td>@for(cc <- chara.classes) { @cc.getId.name L@cc.getLevel.level }</td>
                 </tr>
                 }
             </table>
@@ -47,7 +41,7 @@
                 <label for="race">Race</label>
                 <select id="race" class="form-control">
                 @for(r <- races) {
-                <option value="@r._1.id">@r._2.name</option>
+                <option value="@r.getId.id">@r.name</option>
                 }
                 </select>
             </div>
@@ -55,7 +49,7 @@
                 <label for="classes">Classes</label>
                 <select id="classes" class="form-control" multiple>
                 @for(c <- classes) {
-                <option value="@c._1.id">@c._2.name</option>
+                <option value="@c.getId.id">@c.name</option>
                 }
                 </select>
             </div>
@@ -71,19 +65,7 @@
         var raceId = $('#race').val();
         var classIds = $('#classes').val();
 
-        fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type': 'text/json'},
-            body: JSON.stringify({'id': id, 'name': name, 'race': raceId, 'classes': classIds})
-        }).then(function(res) {
-            if (res.status == 200) {
-                window.location.reload(true);
-            } else {
-                res.json().then(function(json) {
-                    $('#create-result').html('<div class="alert alert-danger" role="alert">' + JSON.stringify(json) + '</div>');
-                });
-            }
-        })
+        jsonApi(url, 'POST', {'id': id, 'name': name, 'race': raceId, 'classes': classIds}, '#create-result');
     });
 </script>
 }

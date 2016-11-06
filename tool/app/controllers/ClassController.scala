@@ -3,8 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import domain.service.DatabaseService
-import models.ClassFormat
-import play.api.libs.json.Json
+import models.{ClassFormat, Identifier}
 import play.api.mvc.{Action, Controller}
 
 class ClassController @Inject() (service: DatabaseService) extends Controller with JsonApiController {
@@ -20,19 +19,13 @@ class ClassController @Inject() (service: DatabaseService) extends Controller wi
   val create = json[ClassFormat] { request =>
     val cls = request.body.asModel
     val res = service.classes().create(cls)
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      Conflict(Json.obj("msg" -> s"id:${cls.getId.id} already exists"))
-    }
+
+    if (res) created() else alreadyExists(request.body.id)
   }
 
   def delete(id: String) = Action { request =>
     val res = service.classes().delete(model.Class().update(_.id.id := id))
-    if (res) {
-      Ok(Json.obj())
-    } else {
-      NotFound(Json.obj("mes" -> s"id:$id not found"))
-    }
+
+    if (res) ok() else notFound(Identifier(id))
   }
 }
