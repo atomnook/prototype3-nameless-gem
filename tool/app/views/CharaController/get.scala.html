@@ -57,9 +57,8 @@
 <script>
     $('#gain-xp').click(function() {
         var url = window.location.origin + '@routes.CharaController.gainXp(id)';
-        var xp = parseInt($('#xp').val());
-
-        jsonApi(url, 'POST', {'xp': xp}, '#update-result');
+        var body = {'xp': number('#xp')};
+        jsonApi(url, 'POST', body, '#update-result');
     });
 
     $('#delete').click(function() {

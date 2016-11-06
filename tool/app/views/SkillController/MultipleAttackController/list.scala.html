@@ -129,48 +129,18 @@
 <script>
     $('#create').click(function() {
         var url = window.location.origin + '@routes.MultipleAttackController.create';
-        var id = $('#id').val();
-        var name = $('#name').val();
-
-        var prerequisites = $('#prerequisites').val();
-        if (prerequisites == null) {
-            prerequisites = [];
-        }
-
-        var types;
-        if ($('#types').val() == null) {
-            types = null;
-        } else {
-            types = $('#types').val().map(parseInt)
-        }
-
-        var elements;
-        if ($('#elements').val() == null) {
-            elements = null;
-        } else {
-            elements = $('#elements').val().map(parseInt)
-        }
-
-        var basePower = parseInt($('#base-power').val());
-        var incrPower = parseInt($('#incr-power').val());
-        var baseTp = parseInt($('#base-tp').val());
-        var incrTp = parseInt($('#incr-tp').val());
-        var baseTimes = parseInt($('#base-hit').val());
-        var incrTimes = parseInt($('#incr-hit').val());
-        var range = parseInt(parseInt($('#range').val()));
-        var target = parseInt(parseInt($('#target').val()));
 
         var body = {
-            'id': id,
-            'name': name,
-            'prerequisites': prerequisites,
-            'types': types,
-            'elements': elements,
-            'power': {'base': basePower, 'increasing': incrPower},
-            'tp': {'base': baseTp, 'increasing': incrTp},
-            'hit': {'base': baseTimes, 'increasing': incrTimes},
-            'range': range,
-            'target': target
+            'id': text('#id'),
+            'name': text('#name'),
+            'prerequisites': array('#prerequisites'),
+            'types': arrayNumber('#types'),
+            'elements': arrayNumber('#elements'),
+            'power': level('#base-power', '#incr-power'),
+            'tp': level('#base-tp', '#incr-tp'),
+            'hit': level('#base-hit', '#incr-hit'),
+            'range': number('#range'),
+            'target': number('#target')
         };
 
         jsonApi(url, 'POST', body, '#create-result');

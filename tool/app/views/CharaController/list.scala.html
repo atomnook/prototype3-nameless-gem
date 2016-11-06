@@ -55,12 +55,8 @@
 <script>
     $('#create').click(function() {
         var url = window.location.origin + '@routes.CharaController.create';
-        var id = $('#id').val();
-        var name = $('#name').val();
-        var raceId = $('#race').val();
-        var classIds = $('#classes').val();
-
-        jsonApi(url, 'POST', {'id': id, 'name': name, 'race': raceId, 'classes': classIds}, '#create-result');
+        var body = {'id': text('#id'), 'name': text('#name'), 'race': text('#race'), 'classes': array('#classes')};
+        jsonApi(url, 'POST', body, '#create-result');
     });
 </script>
 }

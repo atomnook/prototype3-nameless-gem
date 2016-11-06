@@ -40,6 +40,31 @@
             }
         });
     };
+
+    text = function(id) {
+        return $(id).val();
+    };
+
+    number = function(id) {
+        return parseInt($(id).val());
+    };
+
+    array = function(id) {
+        if ($(id).val() == null) {
+            return [];
+        } else {
+            return $(id).val();
+        }
+    };
+
+    arrayNumber = function(id) {
+        return array(id).map(parseInt);
+    };
+
+    level = function(base, increasing) {
+        return {'base': number(base), 'increasing': number(increasing)};
+    };
+
 </script>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
