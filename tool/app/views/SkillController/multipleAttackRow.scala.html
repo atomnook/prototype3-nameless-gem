@@ -1,0 +1,6 @@
+@(row: model.skill.MultipleAttackSkill)(implicit helper: models.ModelHelper)
+@attackRow(row.getSkill) {
+    <td>@attackLevel(row.getHit)</td>
+    <td>@row.range.name</td>
+    <td>@row.target.name</td>
+}

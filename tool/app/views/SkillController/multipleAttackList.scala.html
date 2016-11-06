@@ -1,7 +1,5 @@
 @(skills: Set[model.skill.MultipleAttackSkill], prerequisites: Set[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@import helper._
-
 @main(title = "/skills/multiple-attack") {
 <div class="row">
     <div class="col-xs-12">
@@ -22,23 +20,12 @@
                     <th>Elements</th>
                     <th>Power</th>
                     <th>TP</th>
-                    <th>Times</th>
+                    <th>Hit</th>
                     <th>Range</th>
                     <th>Target</th>
                 </tr>
                 @for(s <- skills) {
-                <tr>
-                    <td>@s.getSkill.getSkill.getId.id</td>
-                    <td>@s.getSkill.getSkill.name</td>
-                    <td>@s.getSkill.getSkill.prerequisites.map(_.name).mkString(",")</td>
-                    <td>@s.getSkill.types.map(_.name).mkString(",")</td>
-                    <td>@s.getSkill.elements.map(_.name).mkString(",")</td>
-                    <td>@s.getSkill.basePower (@s.getSkill.increasingPower%)</td>
-                    <td>@s.getSkill.baseTpCost (@s.getSkill.increasingTpCost%)</td>
-                    <td>@s.baseTimes (@s.increasingTimes%)</td>
-                    <td>@s.range.name</td>
-                    <td>@s.target.name</td>
-                </tr>
+                @multipleAttackRow(s)
                 }
                 <tr>
                     <td>
@@ -85,7 +72,6 @@
                                 <span class="input-group-addon">%</span>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon">L+</span>
                                 <input type="number" class="form-control" id="incr-power" placeholder="0">
                                 <span class="input-group-addon">%</span>
                             </div>
@@ -98,22 +84,20 @@
                                 <span class="input-group-addon">TP</span>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon">L+</span>
                                 <input type="number" class="form-control" id="incr-tp" placeholder="0">
-                                <span class="input-group-addon">TP</span>
+                                <span class="input-group-addon">%</span>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="number" class="form-control" id="base-times" placeholder="0">
-                                <span class="input-group-addon">times</span>
+                                <input type="number" class="form-control" id="base-hit" placeholder="0">
+                                <span class="input-group-addon">Hit</span>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon">L+</span>
-                                <input type="number" class="form-control" id="incr-times" placeholder="0">
-                                <span class="input-group-addon">times</span>
+                                <input type="number" class="form-control" id="incr-hit" placeholder="0">
+                                <span class="input-group-addon">%</span>
                             </div>
                         </div>
                     </td>
@@ -171,8 +155,8 @@
         var incrPower = parseInt($('#incr-power').val());
         var baseTp = parseInt($('#base-tp').val());
         var incrTp = parseInt($('#incr-tp').val());
-        var baseTimes = parseInt($('#base-times').val());
-        var incrTimes = parseInt($('#incr-times').val());
+        var baseTimes = parseInt($('#base-hit').val());
+        var incrTimes = parseInt($('#incr-hit').val());
         var range = parseInt(parseInt($('#range').val()));
         var target = parseInt(parseInt($('#target').val()));
 
@@ -184,7 +168,7 @@
             'elements': elements,
             'power': {'base': basePower, 'increasing': incrPower},
             'tp': {'base': baseTp, 'increasing': incrTp},
-            'times': {'base': baseTimes, 'increasing': incrTimes},
+            'hit': {'base': baseTimes, 'increasing': incrTimes},
             'range': range,
             'target': target
         };
