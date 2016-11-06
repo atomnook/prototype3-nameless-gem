@@ -11,4 +11,12 @@ lazy val domain = (project in file("domain")).
   settings(defaultSettings, libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test").
   dependsOn(model)
 
-lazy val tool = (project in file("tool")).enablePlugins(PlayScala).settings(defaultSettings).dependsOn(domain)
+val chromedriver = file(sys.props.getOrElse("webdriver.chrome.driver", "chromedriver")).getAbsolutePath
+
+lazy val tool = (project in file("tool")).
+  enablePlugins(PlayScala).
+  settings(
+    defaultSettings,
+    javaOptions in Test += s"-Dwebdriver.chrome.driver=$chromedriver",
+    libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test").
+  dependsOn(domain)
