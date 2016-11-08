@@ -1,5 +1,9 @@
-@(row: model.Race)
+@(row: model.Race)(implicit helper: models.ModelHelper)
+
+@import helper._
+
 <tr>
     <td><a href="@routes.RaceController.get(row.getId.id)">@row.getId.id</a></td>
     <td>@row.name</td>
+    <td>@row.skillTree.map(_.name).mkString(", ")</td>
 </tr>

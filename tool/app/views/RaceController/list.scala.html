@@ -1,4 +1,4 @@
-@(races: List[model.Race])
+@(races: List[model.Race], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 @main(title = "/races") {
 <div class="row">
     <div class="col-xs-12">
@@ -11,7 +11,7 @@
     <div class="col-xs-12">
         <div class="row">
             <table class="table table-striped">
-                <tr><th>Id</th><th>Name</th></tr>
+                <tr><th>Id</th><th>Name</th><th>Skills</th></tr>
                 @for(race <- races) {
                     @raceRow(race)
                 }
@@ -24,6 +24,13 @@
                     <td>
                         <input type="text" class="form-control" id="name" placeholder="Race Name">
                     </td>
+                    <td>
+                        <select id="skill-tree" class="form-control" multiple>
+                            @for(s <- skills) {
+                            <option value="@s.getId.id">@s.name</option>
+                            }
+                        </select>
+                    </td>
                 </tr>
             </table>
             <div id="create-result"></div>
@@ -34,7 +41,7 @@
 <script>
     $('#create').click(function() {
         var url = window.location.origin + '@routes.RaceController.create';
-        var body = {'id': text('#id'), 'name': text('#name')};
+        var body = {'id': text('#id'), 'name': text('#name'), 'skills': array('#skill-tree')};
         jsonApi(url, 'POST', body, '#create-result');
     });
 </script>
