@@ -1,11 +1,11 @@
 package controllers
 
 import domain.service.DatabaseService.Crud
-import models.{Identifier, ModelFormat}
+import models.core.{Identifier, AsModel}
 import play.api.libs.json.Reads
 import play.api.mvc.{Action, Controller, Result}
 
-abstract class CrudController[A, B <: ModelFormat[A]](implicit reads: Reads[B]) extends Controller with JsonApiController {
+abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) extends Controller with JsonApiController {
   protected[this] val crud: Crud[A]
 
   protected[this] def identity(a: A): Identifier

@@ -1,6 +1,6 @@
 package controllers
 
-import models.Identifier
+import models.core.Identifier
 import play.api.libs.json.{JsError, JsSuccess, Json, Reads}
 import play.api.mvc.{Action, Controller, Request, Result}
 

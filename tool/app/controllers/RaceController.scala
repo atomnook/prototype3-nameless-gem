@@ -5,10 +5,12 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import model.Race
-import models.{Identifier, ModelHelper, RaceFormat, SkillAggregator, SkillTreeFormat}
+import models.core.Identifier
+import models.request.{CreateRace, UpdateSkillTree}
+import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
-class RaceController @Inject() (service: DatabaseService) extends CrudController[Race, RaceFormat] with SkillAggregator {
+class RaceController @Inject() (service: DatabaseService) extends CrudController[Race, CreateRace] with SkillAggregator {
   private[this] val skills = skillAggregator(service)
 
   private[this] implicit val helper = new ModelHelper(service)
@@ -23,5 +25,7 @@ class RaceController @Inject() (service: DatabaseService) extends CrudController
 
   override protected[this] def getPage(id: String, a: Option[Race]): Result = Ok(views.html.RaceController.get(id, a, skills.all))
 
-  def updateSkillTree(id: String) = json[SkillTreeFormat](request => update(id)(r => r.update(_.skillTree := request.body.asModel)))
+  def updateSkillTree(id: String) = json[UpdateSkillTree] { request =>
+    update(id)(r => r.update(_.skillTree := request.body.asModel))
+  }
 }

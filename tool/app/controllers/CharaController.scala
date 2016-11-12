@@ -5,10 +5,12 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import model.Chara
-import models.{CharaFormat, GainExpFormat, Identifier, ModelHelper}
+import models.request.{CreateChara, GainExp}
+import models.ModelHelper
+import models.core.Identifier
 import play.api.mvc.Result
 
-class CharaController @Inject() (service: DatabaseService) extends CrudController[Chara, CharaFormat] {
+class CharaController @Inject() (service: DatabaseService) extends CrudController[Chara, CreateChara] {
   implicit val helper = new ModelHelper(service)
 
   override protected[this] val crud: Crud[Chara] = service.characters()
@@ -27,7 +29,7 @@ class CharaController @Inject() (service: DatabaseService) extends CrudControlle
     Ok(views.html.CharaController.get(id, a))
   }
 
-  def gainXp(id: String) = json[GainExpFormat] { request =>
+  def gainXp(id: String) = json[GainExp] { request =>
     service.characters().read().find(_.getId.id == id) match {
       case Some(chara) =>
         import domain.formula.GainXp._

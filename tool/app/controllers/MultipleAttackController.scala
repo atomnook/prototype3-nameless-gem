@@ -4,12 +4,14 @@ import javax.inject.Inject
 
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
-import model.skill.{MultipleAttackSkill, Skill}
-import models.{Identifier, ModelHelper, MultipleAttackFormat, SkillAggregator}
+import model.skill.MultipleAttackSkill
+import models.core.Identifier
+import models.request.CreateMultipleAttack
+import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
 class MultipleAttackController @Inject() (service: DatabaseService)
-  extends CrudController[MultipleAttackSkill, MultipleAttackFormat] with SkillAggregator {
+  extends CrudController[MultipleAttackSkill, CreateMultipleAttack] with SkillAggregator {
 
   private[this] val skills = skillAggregator(service)
 
