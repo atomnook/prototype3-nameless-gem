@@ -5,13 +5,15 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import model.skill.ChainAttackSkill
-import models.{ChainAttackFormat, Identifier, ModelHelper}
+import models.{ChainAttackFormat, Identifier, ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
 class ChainAttackController @Inject() (service: DatabaseService)
-  extends CrudController[ChainAttackSkill, ChainAttackFormat] with BasicSkillController {
+  extends CrudController[ChainAttackSkill, ChainAttackFormat] with SkillAggregator {
 
-  implicit val helper = new ModelHelper(service)
+  private[this] val skills = skillAggregator(service)
+
+  private[this] implicit val helper = new ModelHelper(service)
 
   override protected[this] val crud: Crud[ChainAttackSkill] = service.chainAttackSkills()
 
@@ -20,7 +22,7 @@ class ChainAttackController @Inject() (service: DatabaseService)
   override protected[this] def identity(id: Identifier): ChainAttackSkill = ChainAttackSkill().update(_.skill.skill.id.id := id.id)
 
   override protected[this] def listPage(a: List[ChainAttackSkill]): Result = {
-    Ok(views.html.SkillController.ChainAttackController.list(a, allSkills(service)))
+    Ok(views.html.SkillController.ChainAttackController.list(a, skills.all))
   }
 
   override protected[this] def getPage(id: String, a: Option[ChainAttackSkill]): Result = {

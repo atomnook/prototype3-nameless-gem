@@ -1,22 +1,27 @@
 package models
 
 import domain.service.DatabaseService
+import model.skill.{ChainAttackSkill, MultipleAttackSkill, Skill, SkillId}
 import model.{ClassId, RaceId}
-import model.skill.{Skill, SkillId}
 
-class ModelHelper(service: DatabaseService) {
-  private[this] val undefined = "\\xE2\\x9A\\xA0"
+class ModelHelper(service: DatabaseService) extends SkillAggregator {
+  private[this] val skills = skillAggregator(service)
 
-  private[this] def skills(): Map[SkillId, Skill] = {
-    val all =
-      service.multipleAttackSkills().read().map(_.getSkill.getSkill) ++
-        service.chainAttackSkills().read().map(_.getSkill.getSkill)
-
-    all.map(s => (s.getId, s)).toMap
-  }
+  private[this] val undefined = "⚠"
 
   implicit class SkillIdResolver(id: SkillId) {
-    def name: String = skills().get(id).map(_.name).getOrElse(undefined)
+    private[this] def find: Option[Skill] = skills.all.find(_.getId == id)
+
+    def name: String = find.map(_.name).getOrElse(undefined)
+
+    def prerequisites: Seq[SkillId] = find.map(_.prerequisites).getOrElse(Seq.empty)
+
+    def category: String = {
+      skills.categorized(id) {
+        case s: MultipleAttackSkill => "multiple-attack"
+        case s: ChainAttackSkill => "chain-attack"
+      }.getOrElse("undefined")
+    }
   }
 
   implicit class RaceIdResolver(id: RaceId) {

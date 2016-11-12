@@ -1,4 +1,4 @@
-@(id: String, cls: Option[model.Class])
+@(id: String, cls: Option[model.Class])(implicit helper: models.ModelHelper)
 @main(title = "/classes/" + id) {
 @if(cls.isEmpty) {
 <div class="row">
@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-xs-12">
         <table class="table table-striped">
-            <tr><th>Id</th><th>Name</th></tr>
+            <tr><th>Id</th><th>Name</th><th>Skills</th></tr>
             @classRow(c)
         </table>
     </div>
@@ -31,7 +31,9 @@
         <button id="delete" type="button" class="btn btn-danger">Delete</button>
     </div>
 </div>
-}
+<div class="row">
+    @skillTree(c.skillTree)
+</div>
 <script>
     $('#delete').click(function() {
         var url = window.location.origin + '@routes.ClassController.delete(id)';
@@ -39,4 +41,5 @@
         noContentApi(url, 'DELETE', '#update-result');
     });
 </script>
+}
 }

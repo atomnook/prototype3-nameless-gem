@@ -5,15 +5,15 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import model.skill.{MultipleAttackSkill, Skill}
-import models.{Identifier, ModelHelper, MultipleAttackFormat}
+import models.{Identifier, ModelHelper, MultipleAttackFormat, SkillAggregator}
 import play.api.mvc.Result
 
 class MultipleAttackController @Inject() (service: DatabaseService)
-  extends CrudController[MultipleAttackSkill, MultipleAttackFormat] with BasicSkillController {
+  extends CrudController[MultipleAttackSkill, MultipleAttackFormat] with SkillAggregator {
 
-  implicit val helper = new ModelHelper(service)
+  private[this] val skills = skillAggregator(service)
 
-  private[this] def all: List[Skill] = service.multipleAttackSkills().read().map(_.getSkill.getSkill).toList
+  private[this] implicit val helper = new ModelHelper(service)
 
   override protected[this] val crud: Crud[MultipleAttackSkill] = service.multipleAttackSkills()
 
@@ -22,7 +22,7 @@ class MultipleAttackController @Inject() (service: DatabaseService)
   override protected[this] def identity(id: Identifier): MultipleAttackSkill = MultipleAttackSkill().update(_.skill.skill.id.id := id.id)
 
   override protected[this] def listPage(a: List[MultipleAttackSkill]): Result = {
-    Ok(views.html.SkillController.MultipleAttackController.list(a, allSkills(service)))
+    Ok(views.html.SkillController.MultipleAttackController.list(a, skills.all))
   }
 
   override protected[this] def getPage(id: String, a: Option[MultipleAttackSkill]): Result = {

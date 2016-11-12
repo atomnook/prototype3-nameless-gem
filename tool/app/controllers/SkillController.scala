@@ -3,22 +3,21 @@ package controllers
 import javax.inject.Inject
 
 import domain.service.DatabaseService
-import models.ModelHelper
+import model.skill.{ChainAttackSkill, MultipleAttackSkill, SkillId}
+import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.{Action, Controller}
 
-class SkillController @Inject() (service: DatabaseService) extends Controller with BasicSkillController {
-  implicit val helper = new ModelHelper(service)
+class SkillController @Inject() (service: DatabaseService) extends Controller with SkillAggregator {
+  private[this] val skills = skillAggregator(service)
 
-  val list = Action { request =>
-    val skills = allSkills(service)
-    Ok(views.html.SkillController.list(skills))
-  }
+  private[this] implicit val helper = new ModelHelper(service)
+
+  val list = Action(_ => Ok(views.html.SkillController.list(skills.all)))
 
   def redirect(id: String) = Action { request =>
-    if (service.multipleAttackSkills().read().exists(_.getSkill.getSkill.getId.id == id)) {
-      Redirect(routes.MultipleAttackController.get(id))
-    } else {
-      throw new RuntimeException(s"$id not found")
-    }
+    skills.categorized(SkillId(id)) {
+      case s: MultipleAttackSkill => Redirect(routes.MultipleAttackController.get(id))
+      case s: ChainAttackSkill => Redirect(routes.ChainAttackController.get(id))
+    }.getOrElse(throw new RuntimeException(s"$id not found"))
   }
 }

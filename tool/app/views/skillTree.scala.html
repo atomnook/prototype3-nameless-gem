@@ -1,0 +1,90 @@
+@(skills: Seq[model.skill.SkillId])(implicit helper: models.ModelHelper)
+
+@import helper._
+
+@node(s: model.skill.SkillId) = {
+    {
+        'data': {
+            'id': '@s.id',
+            'name': '@s.name'
+        },
+        'scratch': {
+            'href': '@routes.SkillController.redirect(s.id)'
+        },
+        'locked': false,
+        'grabbable': false,
+        'classes': 'fixme'
+    }
+}
+
+@edge(s: model.skill.SkillId, t: model.skill.SkillId) = {
+    {
+        'data': {
+            'id': '@t.id-@s.id',
+            'source': '@t.id',
+            'target': '@s.id'
+        }
+    }
+}
+
+<div class="col-xs-12">
+    <div id="cy" style="width: 1024px;height: 768px;display: block;"></div>
+</div>
+<script>
+    var nodes = [
+        @for(s <- skills.zipWithIndex) {
+            @node(s._1) @if(s._2 != skills.length - 1) {,}
+        }
+    ];
+
+    var edges = [
+        @for(s <- skills.zipWithIndex) {
+            @for(p <- s._1.prerequisites.zipWithIndex) {
+                @edge(s._1, p._1) @if(p._2 != s._1.prerequisites.length -1) {,}
+            }
+            @if(s._2 != skills.length - 1 && s._1.prerequisites.nonEmpty) {,}
+        }
+    ];
+
+    var style = [
+        {
+            'selector': 'node',
+            'style': {
+                'background-color': '#666',
+                'label': 'data(name)'
+            }
+        },
+        {
+            'selector': '.fixme',
+            'style': {
+                'background-color': '#a00'
+            }
+        },
+        {
+            'selector': 'edge',
+            'style': {
+                'width': 3,
+                'line-color': '#ccc',
+                'target-arrow-color': '#ccc',
+                'target-arrow-shape': 'triangle',
+                'curve-style': 'bezier'
+            }
+        }
+    ];
+
+    var cy = cytoscape({
+        'container': $('#cy'),
+        'elements': nodes.concat(edges),
+        'style': style,
+        'userPanningEnabled': false,
+        'layout': {
+            'name': 'breadthfirst'
+        }
+    });
+
+    cy.on('tap', 'node', function(evt) {
+        var node = evt.cyTarget;
+        window.location.href = node.scratch().href;
+    });
+
+</script>
