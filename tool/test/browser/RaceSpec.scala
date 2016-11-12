@@ -5,7 +5,7 @@ import org.scalatestplus.play._
 class RaceSpec extends BrowserSpec {
   def sharedTests(browser: BrowserInfo) = {
     "/races" must {
-      "create " + browser.name in {
+      "create race " + browser.name in {
         val prerequisite = newMultipleAttack(Nil)
 
         service.multipleAttackSkills().create(prerequisite)

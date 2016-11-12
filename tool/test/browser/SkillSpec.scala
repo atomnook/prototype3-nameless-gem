@@ -5,7 +5,7 @@ import org.scalatestplus.play.BrowserInfo
 class SkillSpec extends BrowserSpec {
   def sharedTests(browser: BrowserInfo) = {
     "/skills/multiple-attack" must {
-      "create " + browser.name in {
+      "create multiple attack skill " + browser.name in {
         val prerequisite = newMultipleAttack(Nil)
 
         service.multipleAttackSkills().create(prerequisite)
@@ -38,7 +38,7 @@ class SkillSpec extends BrowserSpec {
     }
 
     "/skills/chain-attack" must {
-      "create " + browser.name in {
+      "create chain attack skill " + browser.name in {
         val prerequisite = newChainAttack(Nil)
 
         service.chainAttackSkills().create(prerequisite)

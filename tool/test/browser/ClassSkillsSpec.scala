@@ -2,23 +2,23 @@ package browser
 
 import org.scalatestplus.play.BrowserInfo
 
-class ClassSpec extends BrowserSpec {
+class ClassSkillsSpec extends BrowserSpec {
   def sharedTests(browser: BrowserInfo) = {
-    "/classes" must {
-      "create class " + browser.name in {
+    "/classes/:id/skills.json" must {
+      "update skill tree " + browser.name in {
         val prerequisite = newMultipleAttack(Nil)
+        val last = newClass
 
         service.multipleAttackSkills().create(prerequisite)
+        service.classes().create(last)
 
-        val expected = newClass.update(_.skillTree := prerequisite.getSkill.getSkill.getId :: Nil)
+        val expected = last.update(_.skillTree := prerequisite.getSkill.getSkill.getId :: Nil)
 
-        go to s"http://localhost:$port/classes"
+        go to s"http://localhost:$port/classes/${expected.getId.id}"
 
-        textField("id").value = expected.getId.id
-        textField("name").value = expected.name
         multiSel("skill-tree").values = expected.skillTree.map(_.id)
 
-        click on id("create")
+        click on id("update-skills")
 
         eventually {
           assert(service.classes().read() === Set(expected))
