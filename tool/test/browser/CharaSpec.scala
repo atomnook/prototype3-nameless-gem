@@ -5,7 +5,7 @@ import org.scalatestplus.play.BrowserInfo
 class CharaSpec extends BrowserSpec {
   def sharedTests(browser: BrowserInfo) = {
     "/characters" must {
-      "create " + browser.name in {
+      "create character " + browser.name in {
         val race = newRace
         val classes = Seq(newClass, newClass)
 

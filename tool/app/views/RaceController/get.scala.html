@@ -1,4 +1,4 @@
-@(id: String, race: Option[model.Race])(implicit helper: models.ModelHelper)
+@(id: String, race: Option[model.Race], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 @main(title = "/races/" + id) {
 @if(race.isEmpty) {
 <div class="row">
@@ -24,10 +24,22 @@
             @raceRow(r)
         </table>
     </div>
+    <div id="update-result"></div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div id="update-result"></div>
+        <td>
+            <select id="skill-tree" class="form-control" multiple>
+                @for(s <- skills) {
+                <option value="@s.getId.id" @if(r.skillTree.contains(s.getId)) {selected} >@s.name</option>
+                }
+            </select>
+        </td>
+        <button id="update-skills" type="button" class="btn btn-default">Update Skills</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <button id="delete" type="button" class="btn btn-danger">Delete</button>
     </div>
 </div>
@@ -35,6 +47,12 @@
     @skillTree(r.skillTree)
 </div>
 <script>
+    $('#update-skills').click(function() {
+        var url = window.location.origin + '@routes.RaceController.updateSkillTree(id)';
+        var body = {'skills': array('#skill-tree')};
+        jsonApi(url, 'POST', body, '#update-result');
+    });
+
     $('#delete').click(function() {
         var url = window.location.origin + '@routes.RaceController.delete(id)';
         noContentApi(url, 'DELETE', '#update-result');

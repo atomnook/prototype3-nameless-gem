@@ -31,4 +31,10 @@ abstract class CrudController[A, B <: ModelFormat[A]](implicit reads: Reads[B]) 
 
     if (res) ok() else notFound(identifier)
   }
+
+  protected[this] def update(id: String)(f: A => A) = {
+    val identifier = Identifier(id)
+    val found = crud.read().find(identity(_) == identifier)
+    if (found.map(f).exists(crud.update)) ok() else notFound(identifier)
+  }
 }

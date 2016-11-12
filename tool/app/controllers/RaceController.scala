@@ -5,7 +5,7 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import model.Race
-import models.{Identifier, ModelHelper, RaceFormat, SkillAggregator}
+import models.{Identifier, ModelHelper, RaceFormat, SkillAggregator, SkillTreeFormat}
 import play.api.mvc.Result
 
 class RaceController @Inject() (service: DatabaseService) extends CrudController[Race, RaceFormat] with SkillAggregator {
@@ -21,5 +21,7 @@ class RaceController @Inject() (service: DatabaseService) extends CrudController
 
   override protected[this] def listPage(a: List[Race]): Result = Ok(views.html.RaceController.list(a, skills.all))
 
-  override protected[this] def getPage(id: String, a: Option[Race]): Result = Ok(views.html.RaceController.get(id, a))
+  override protected[this] def getPage(id: String, a: Option[Race]): Result = Ok(views.html.RaceController.get(id, a, skills.all))
+
+  def updateSkillTree(id: String) = json[SkillTreeFormat](request => update(id)(r => r.update(_.skillTree := request.body.asModel)))
 }

@@ -1,4 +1,4 @@
-@(id: String, cls: Option[model.Class])(implicit helper: models.ModelHelper)
+@(id: String, cls: Option[model.Class], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 @main(title = "/classes/" + id) {
 @if(cls.isEmpty) {
 <div class="row">
@@ -23,11 +23,23 @@
             <tr><th>Id</th><th>Name</th><th>Skills</th></tr>
             @classRow(c)
         </table>
+        <div id="update-result"></div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div id="update-result"></div>
+        <td>
+            <select id="skill-tree" class="form-control" multiple>
+                @for(s <- skills) {
+                <option value="@s.getId.id" @if(c.skillTree.contains(s.getId)) {selected} >@s.name</option>
+                }
+            </select>
+        </td>
+        <button id="update-skills" type="button" class="btn btn-default">Update Skills</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
         <button id="delete" type="button" class="btn btn-danger">Delete</button>
     </div>
 </div>
@@ -35,6 +47,12 @@
     @skillTree(c.skillTree)
 </div>
 <script>
+    $('#update-skills').click(function() {
+        var url = window.location.origin + '@routes.ClassController.updateSkillTree(id)';
+        var body = {'skills': array('#skill-tree')};
+        jsonApi(url, 'POST', body, '#update-result');
+    });
+
     $('#delete').click(function() {
         var url = window.location.origin + '@routes.ClassController.delete(id)';
 

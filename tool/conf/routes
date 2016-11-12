@@ -3,15 +3,17 @@ GET   /   controllers.MainController.index
 GET   /databases/raw  controllers.DatabaseController.raw
 GET   /databases/file controllers.DatabaseController.file
 
-GET     /races            controllers.RaceController.list
-GET     /races/:id        controllers.RaceController.get(id: String)
-POST    /races.json       controllers.RaceController.create
-DELETE  /races/:id.json   controllers.RaceController.delete(id: String)
+GET     /races                    controllers.RaceController.list
+GET     /races/:id                controllers.RaceController.get(id: String)
+POST    /races.json               controllers.RaceController.create
+POST    /races/:id/skills.json    controllers.RaceController.updateSkillTree(id: String)
+DELETE  /races/:id.json           controllers.RaceController.delete(id: String)
 
-GET     /classes            controllers.ClassController.list
-GET     /classes/:id        controllers.ClassController.get(id: String)
-POST    /classes.json       controllers.ClassController.create
-DELETE  /classes/:id.json   controllers.ClassController.delete(id: String)
+GET     /classes                    controllers.ClassController.list
+GET     /classes/:id                controllers.ClassController.get(id: String)
+POST    /classes.json               controllers.ClassController.create
+POST    /classes/:id/skills.json    controllers.ClassController.updateSkillTree(id: String)
+DELETE  /classes/:id.json           controllers.ClassController.delete(id: String)
 
 GET     /characters             controllers.CharaController.list
 GET     /characters/:id         controllers.CharaController.get(id: String)
