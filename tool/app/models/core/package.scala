@@ -1,9 +1,11 @@
+package models
+
 import com.trueaccord.scalapb.{GeneratedEnum, GeneratedEnumCompanion}
-import model.{Element, Target}
 import model.skill.SkillType
+import model.{Element, Target}
 import play.api.libs.json.{Format, JsNumber, JsResult, JsValue}
 
-package object models {
+package object core {
   private[this] def protoFormat[A <: GeneratedEnum](c: GeneratedEnumCompanion[A]): Format[A] = {
     new Format[A] {
       override def writes(o: A): JsValue = JsNumber(o.value)

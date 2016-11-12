@@ -1,9 +1,10 @@
-package models
+package models.request
 
 import model.{Chara, ClassLevel}
+import models.core.{Identifier, AsModel, Name}
 import play.api.libs.json.Json
 
-case class CharaFormat(id: Identifier, name: Name, race: Identifier, classes: Seq[Identifier]) extends ModelFormat[Chara] {
+case class CreateChara(id: Identifier, name: Name, race: Identifier, classes: Seq[Identifier]) extends AsModel[Chara] {
   def asModel: Chara = {
     Chara().update(
       _.id.id := id.id,
@@ -13,6 +14,6 @@ case class CharaFormat(id: Identifier, name: Name, race: Identifier, classes: Se
   }
 }
 
-object CharaFormat {
-  implicit val format = Json.format[CharaFormat]
+object CreateChara {
+  implicit val format = Json.format[CreateChara]
 }

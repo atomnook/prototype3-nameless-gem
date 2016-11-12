@@ -5,11 +5,13 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import model.skill.ChainAttackSkill
-import models.{ChainAttackFormat, Identifier, ModelHelper, SkillAggregator}
+import models.core.Identifier
+import models.request.CreateChainAttack
+import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
 class ChainAttackController @Inject() (service: DatabaseService)
-  extends CrudController[ChainAttackSkill, ChainAttackFormat] with SkillAggregator {
+  extends CrudController[ChainAttackSkill, CreateChainAttack] with SkillAggregator {
 
   private[this] val skills = skillAggregator(service)
 

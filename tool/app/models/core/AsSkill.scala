@@ -1,8 +1,8 @@
-package models
+package models.core
 
 import model.skill.{Skill, SkillId}
 
-trait SkillFormat {
+trait AsSkill {
   val id: Identifier
   val name: Name
   val prerequisites: Set[Identifier]
