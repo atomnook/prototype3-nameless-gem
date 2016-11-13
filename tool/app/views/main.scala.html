@@ -59,7 +59,7 @@
     };
 
     arrayNumber = function(id) {
-        return array(id).map(parseInt);
+        return array(id).map(function(x) { return parseInt(x, 10); });
     };
 
     level = function(base, increasing) {

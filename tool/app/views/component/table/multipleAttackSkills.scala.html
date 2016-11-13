@@ -1,0 +1,30 @@
+@(skills: List[model.skill.MultipleAttackSkill], prerequisites: List[model.skill.Skill])(extend: Html)(implicit helper: models.ModelHelper)
+
+@import helper._
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>prerequisites</th>
+        <th>types</th>
+        <th>elements</th>
+        <th>power</th>
+        <th>tp</th>
+        <th>hit</th>
+        <th>range</th>
+        <th>target</th>
+    </tr>
+
+    @for(s <- skills) {
+        <tr>
+            @component.column.skill(s.getSkill.getSkill)
+            @component.column.attackSkill(s.getSkill)
+            <td>@component.column.attackLevel(s.getHit)</td>
+            <td>@s.range.name</td>
+            <td>@s.target.name</td>
+        </tr>
+    }
+
+    @extend
+</table>

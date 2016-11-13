@@ -1,8 +1,0 @@
-@(row: model.skill.AttackSkill)(derived: Html)(implicit helper: models.ModelHelper)
-@skillRow(row.getSkill) {
-    <td>@row.types.map(_.name).mkString(", ")</td>
-    <td>@row.elements.map(_.name).mkString(", ")</td>
-    <td>@attackLevel(row.getPower)</td>
-    <td>@attackLevel(row.getTpCost)</td>
-    @derived
-}

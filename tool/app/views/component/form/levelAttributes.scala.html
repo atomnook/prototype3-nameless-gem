@@ -1,0 +1,47 @@
+@(default: model.LevelAttributes = model.LevelAttributes())
+
+@baseId(label: String) = {base-@label}
+
+@increasingId(label: String) = {increasing-@label}
+
+@row(label: String, f: model.Attributes => Long) = {
+    <tr>
+        <td>@label.toUpperCase</td>
+        <td>
+            <input type="number" class="form-control" id="@baseId(label)" value="@f(default.getBase)">
+        </td>
+        <td>
+            <input type="number" class="form-control" id="@increasingId(label)" value="@f(default.getIncreasing)">
+        </td>
+    </tr>
+}
+
+<table class="table table-striped">
+    @row("hp", _.hp)
+    @row("tp", _.tp)
+    @row("str", _.str)
+    @row("vit", _.vit)
+    @row("int", _.int)
+    @row("wis", _.wis)
+    @row("agi", _.agi)
+    @row("luc", _.luc)
+</table>
+
+@defining(Seq("hp", "tp", "str", "vit", "int", "wis", "agi", "luc")) { attributes =>
+    <script>
+        levelAttributesValue = function() {
+            return {
+                'base': {
+                    @for((label, i) <- attributes.zipWithIndex) {
+                        '@label': number('#@baseId(label)') @if(i != attributes.length - 1) { , }
+                    }
+                },
+                'increasing': {
+                    @for((label, i) <- attributes.zipWithIndex) {
+                        '@label': number('#@increasingId(label)') @if(i != attributes.length - 1) { , }
+                    }
+                }
+            };
+        }
+    </script>
+}

@@ -5,7 +5,7 @@ import javax.inject.Inject
 import domain.service.DatabaseService
 import domain.service.DatabaseService.Crud
 import models.core.Identifier
-import models.request.{CreateClass, UpdateSkillTree}
+import models.request.CreateClass
 import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
@@ -25,8 +25,4 @@ class ClassController @Inject() (service: DatabaseService)
   override protected[this] def listPage(a: List[model.Class]): Result = Ok(views.html.ClassController.list(a, skills.all))
 
   override protected[this] def getPage(id: String, a: Option[model.Class]): Result = Ok(views.html.ClassController.get(id, a, skills.all))
-
-  def updateSkillTree(id: String) = json[UpdateSkillTree] { request =>
-    update(id)(c => c.update(_.skillTree := request.body.asModel))
-  }
 }

@@ -28,6 +28,6 @@ class MultipleAttackController @Inject() (service: DatabaseService)
   }
 
   override protected[this] def getPage(id: String, a: Option[MultipleAttackSkill]): Result = {
-    Ok(views.html.SkillController.MultipleAttackController.get(id, a))
+    Ok(views.html.SkillController.MultipleAttackController.get(id, a, skills.all))
   }
 }

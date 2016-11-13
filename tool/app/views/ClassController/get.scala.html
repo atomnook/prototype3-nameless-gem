@@ -1,63 +1,58 @@
 @(id: String, cls: Option[model.Class], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
 @main(title = "/classes/" + id) {
-@if(cls.isEmpty) {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/classes/@id not found</h1>
+
+    @if(cls.isEmpty) {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>/classes/@id not found</h1>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-}
-@for(c <- cls) {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/classes/@id</h1>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <table class="table table-striped">
-            <tr><th>Id</th><th>Name</th><th>Skills</th></tr>
-            @classRow(c)
-        </table>
-        <div id="update-result"></div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <td>
-            <select id="skill-tree" class="form-control" multiple>
-                @for(s <- skills) {
-                <option value="@s.getId.id" @if(c.skillTree.contains(s.getId)) {selected} >@s.name</option>
+    }
+
+    @for(c <- cls) {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>/classes/@id</h1>
+                </div>
+
+                @component.table.classes(c :: Nil) {
+                    <tr>
+                        <td></td>
+                        <td>@component.form.name(default = c.name)</td>
+                        <td>@component.form.skills(skills = skills, default = c.skillTree.toList)</td>
+                        <td>@component.form.levelAttributes(default = c.getAttributes)</td>
+                    </tr>
                 }
-            </select>
-        </td>
-        <button id="update-skills" type="button" class="btn btn-default">Update Skills</button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <button id="delete" type="button" class="btn btn-danger">Delete</button>
-    </div>
-</div>
-<div class="row">
-    @skillTree(c.skillTree)
-</div>
-<script>
-    $('#update-skills').click(function() {
-        var url = window.location.origin + '@routes.ClassController.updateSkillTree(id)';
-        var body = {'skills': array('#skill-tree')};
-        jsonApi(url, 'POST', body, '#update-result');
-    });
+            </div>
 
-    $('#delete').click(function() {
-        var url = window.location.origin + '@routes.ClassController.delete(id)';
+            <div id="update-result"></div>
 
-        noContentApi(url, 'DELETE', '#update-result');
-    });
-</script>
-}
+            <button id="update" type="button" class="btn btn-default">Update</button>
+            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        </div>
+
+        <script>
+            $('#update').click(function() {
+                var url = window.location.origin + '@routes.ClassController.update';
+
+                var body = {
+                    'id': '@id',
+                    'name': nameValue(),
+                    'skills': skillsValue(),
+                    'attributes': levelAttributesValue()
+                };
+
+                jsonApi(url, 'PUT', body, '#update-result');
+            });
+
+            $('#delete').click(function() {
+                var url = window.location.origin + '@routes.ClassController.delete(id)';
+                noContentApi(url, 'DELETE', '#update-result');
+            });
+        </script>
+    }
 }

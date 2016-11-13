@@ -12,8 +12,8 @@ trait AsAttackSkill extends AsSkill {
   def asAttackSkill: AttackSkill = {
     AttackSkill().update(
       _.skill := asSkill,
-      _.types := types.toSeq,
-      _.elements := elements.toSeq,
+      _.types := types.toList.sortBy(_.value),
+      _.elements := elements.toList.sortBy(_.value),
       _.power := power.asAttackLevel,
       _.tpCost := tp.asAttackLevel)
   }

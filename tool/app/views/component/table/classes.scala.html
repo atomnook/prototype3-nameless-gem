@@ -1,0 +1,27 @@
+@(classes: List[model.Class])(extend: Html)(implicit helper: models.ModelHelper)
+
+@import helper._
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>skills</th>
+        <th>attributes</th>
+    </tr>
+
+    @for(cls <- classes) {
+        <tr>
+            <td><a href="@routes.ClassController.get(cls.getId.id)">@cls.getId.id</a></td>
+            <td>@cls.name</td>
+            <td>
+                @for(id <- cls.skillTree) {
+                    <span class="label label-primary">@id.name</span>
+                }
+            </td>
+            <td>@component.column.levelAttributes(cls.getAttributes)</td>
+        </tr>
+    }
+
+    @extend
+</table>

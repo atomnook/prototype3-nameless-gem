@@ -1,0 +1,17 @@
+@(skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
+@import helper._
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>prerequisites</th>
+    </tr>
+
+    @for(s <- skills) {
+        <tr>
+            @component.column.skill(s)
+        </tr>
+    }
+</table>

@@ -1,35 +1,22 @@
 @(skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
 @main(title = "/skills") {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/skills</h1>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>/skills</h1>
+            </div>
+
+            <nav aria-label="multiple-attack">
+                <ul class="pager">
+                    <li class="next"><a href="@routes.MultipleAttackController.list">Multiple Attack <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+                <ul class="pager">
+                    <li class="next"><a href="@routes.ChainAttackController.list">Chain Attack <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+            </nav>
+
+            @component.table.skills(skills)
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <nav aria-label="multiple-attack">
-            <ul class="pager">
-                <li class="next"><a href="@routes.MultipleAttackController.list">Multiple Attack <span aria-hidden="true">&rarr;</span></a></li>
-            </ul>
-            <ul class="pager">
-                <li class="next"><a href="@routes.ChainAttackController.list">Chain Attack <span aria-hidden="true">&rarr;</span></a></li>
-            </ul>
-        </nav>
-        <table class="table table-striped">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Prerequisites</th>
-            </tr>
-            @for(s <- skills) {
-            @skillRow(s){<!---->}
-            }
-        </table>
-    </div>
-</div>
-<div class="row">
-    @skillTree(skills.map(_.getId))
-</div>
 }

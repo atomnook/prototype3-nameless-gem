@@ -28,6 +28,6 @@ class ChainAttackController @Inject() (service: DatabaseService)
   }
 
   override protected[this] def getPage(id: String, a: Option[ChainAttackSkill]): Result = {
-    Ok(views.html.SkillController.ChainAttackController.get(id, a))
+    Ok(views.html.SkillController.ChainAttackController.get(id, a, skills.all))
   }
 }

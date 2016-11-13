@@ -1,9 +1,0 @@
-@(row: model.Class)(implicit helper: models.ModelHelper)
-
-@import helper._
-
-<tr>
-    <td><a href="@routes.ClassController.get(row.getId.id)">@row.getId.id</a></td>
-    <td>@row.name</td>
-    <td>@row.skillTree.map(_.name).mkString(", ")</td>
-</tr>

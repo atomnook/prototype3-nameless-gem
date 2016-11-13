@@ -15,8 +15,13 @@ case class CreateChainAttack(id: Identifier,
                              follow: Set[Element],
                              chain: AsAttackLevel,
                              range: model.Range) extends AsModel[ChainAttackSkill] with AsAttackSkill {
+
   override def asModel: ChainAttackSkill = {
-    ChainAttackSkill().update(_.skill := asAttackSkill, _.follow := follow.toList, _.chain := chain.asAttackLevel, _.range := range)
+    ChainAttackSkill().update(
+      _.skill := asAttackSkill,
+      _.follow := follow.toList.sortBy(_.value),
+      _.chain := chain.asAttackLevel,
+      _.range := range)
   }
 }
 

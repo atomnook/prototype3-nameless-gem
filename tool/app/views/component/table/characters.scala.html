@@ -1,0 +1,35 @@
+@(characters: List[model.Chara])(extend: Html)(implicit helper: models.ModelHelper)
+
+@import helper._
+
+@charaLevel(level: model.CharaLevel) = {
+    <span class="label label-default">@level.xp xp</span>
+    <span class="label label-default">@(domain.formula.TilNextLevel(level.level + 1).xp - level.xp) xp til next level</span>
+    <span class="label label-default">@level.cp cp</span>
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>race</th>
+        <th>class</th>
+    </tr>
+
+    @for(c <- characters) {
+        <tr>
+            <td><a href="@routes.CharaController.get(c.getId.id)">@c.getId.id</a></td>
+            <td>@c.name</td>
+            <td>
+                @c.getRace.name @charaLevel(c.getRaceLevel)
+            </td>
+            <td>
+                @for((cls, i) <- c.classes.zipWithIndex) {
+                    @cls.getId.name @charaLevel(cls.getLevel) @if(i != c.classes.length - 1) { <br> }
+                }
+            </td>
+        </tr>
+    }
+
+    @extend
+</table>

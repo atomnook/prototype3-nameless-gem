@@ -1,0 +1,10 @@
+@(skill: model.skill.AttackSkill)
+
+<td>
+    @for(typ <- skill.types) {
+        <span class="label label-primary">@typ.name</span>
+    }
+</td>
+<td>@component.column.elements(skill.elements.toSet)</td>
+<td>@component.column.attackLevel(skill.getPower)</td>
+<td>@component.column.attackLevel(skill.getTpCost)</td>

@@ -1,70 +1,60 @@
 package browser
 
-import java.util.UUID
-
+import browser.arbitrary._
 import domain.service.DatabaseService
+import model.{Attributes, LevelAttributes}
 import model.skill._
-import model._
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play._
 
-import scala.util.Random
-
-trait BrowserSpec extends PlaySpec with OneServerPerSuite with AllBrowsersPerSuite {
+trait BrowserSpec extends PlaySpec with OneServerPerSuite with AllBrowsersPerSuite with BeforeAndAfterEach {
   override lazy val browsers = Vector(ChromeInfo)
+
+  protected[this] implicit class ChainAttackSkillId(s: ChainAttackSkill) {
+    def id(): SkillId = s.getSkill.getSkill.getId
+  }
+
+  protected[this] implicit class MultipleAttackSkillId(s: MultipleAttackSkill) {
+    def id(): SkillId = s.getSkill.getSkill.getId
+  }
 
   protected[this] def service: DatabaseService = app.injector.instanceOf(classOf[DatabaseService])
 
-  private[this] def arbitrary: String = UUID.randomUUID().toString
-
-  private[this] def arbitrary[A](a: Seq[A]): A = a(Random.nextInt(a.size))
-
-  protected[this] def newRace: Race = Race().update(_.id.id := arbitrary, _.name := arbitrary)
-
-  protected[this] def newClass: model.Class = model.Class().update(_.id.id := arbitrary, _.name := arbitrary)
-
-  protected[this] def newChara(race: Race, classes: Seq[model.Class]): Chara = {
-    Chara().update(
-      _.id.id := arbitrary,
-      _.name := arbitrary,
-      _.race := race.getId,
-      _.classes := classes.map(c => ClassLevel().update(_.id := c.getId)))
-  }
-
-  protected[this] def newSkill(prerequisites: Seq[Skill]): Skill = {
-    Skill().update(_.id.id := arbitrary, _.name := arbitrary, _.prerequisites := prerequisites.map(_.getId))
-  }
-
-  protected[this] def newAttackLevel: AttackLevel = {
-    AttackLevel().update(_.base := Random.nextInt(Int.MaxValue), _.increasingPct := Random.nextInt(Int.MaxValue))
-  }
-
-  protected[this] def newAttackSkill(prerequisites: Seq[Skill]): AttackSkill = {
-    AttackSkill().update(
-      _.skill := newSkill(prerequisites),
-      _.types := arbitrary(SkillType.values) :: Nil,
-      _.elements := arbitrary(Element.values) :: Nil,
-      _.power := newAttackLevel,
-      _.tpCost := newAttackLevel)
-  }
-
-  protected[this] def newMultipleAttack(prerequisites: Seq[Skill]): MultipleAttackSkill = {
-    MultipleAttackSkill().update(
-      _.skill := newAttackSkill(prerequisites),
-      _.hit := newAttackLevel,
-      _.range := arbitrary(model.Range.values),
-      _.target := arbitrary(Target.values))
-  }
-
-  protected[this] def newChainAttack(prerequisites: Seq[Skill]): ChainAttackSkill = {
-    ChainAttackSkill().update(
-      _.skill := newAttackSkill(prerequisites),
-      _.follow := arbitrary(Element.values) :: Nil,
-      _.chain := newAttackLevel,
-      _.range := arbitrary(model.Range.values))
-  }
-
-  protected[this] def textLevel(base: String, increasing: String, level: AttackLevel) = {
+  protected[this] def textLevel(base: String, increasing: String, level: AttackLevel): Unit = {
     numberField(base).value = level.base.toString
     numberField(increasing).value = level.increasingPct.toString
+  }
+
+  private[this] def fill(prefix: String, a: Attributes): Unit = {
+    def set(k: String, v: Long): Unit = numberField(prefix + k).value = v.toString
+
+    set("hp", a.hp)
+    set("tp", a.tp)
+    set("str", a.str)
+    set("vit", a.vit)
+    set("int", a.int)
+    set("wis", a.wis)
+    set("agi", a.agi)
+    set("luc", a.luc)
+  }
+
+  protected[this] def fill(a: LevelAttributes): Unit = {
+    fill("base-", a.getBase)
+    fill("increasing-", a.getIncreasing)
+  }
+
+  protected[this] val arbMultipleAttackSkill = ArbitraryMultipleAttackSkill
+
+  protected[this] val arbChainAttackSkill = ArbitraryChainAttackSkill
+
+  protected[this] val arbRace = ArbitraryRace
+
+  protected[this] val arbClass = ArbitraryClass
+
+  protected[this] val arbChara = ArbitraryChara
+
+  override protected def beforeEach(): Unit = {
+    super.beforeEach()
+    service.read("")
   }
 }
