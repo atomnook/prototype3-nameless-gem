@@ -1,62 +1,38 @@
 @(characters: List[model.Chara], races: List[model.Race], classes: List[model.Class])(implicit helper: models.ModelHelper)
 
 @main(title = "/characters") {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/characters</h1>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <div class="row">
-            <table class="table table-striped">
-                <tr><th>Id</th><th>Name</th><th>Race</th><th>Class</th></tr>
-                @for(chara <- characters) {
-                @charaRow(chara)
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>/characters</h1>
+
+                @component.table.characters(characters) {
+                    <tr>
+                        <td>@component.form.id(placeholder = "character id")</td>
+                        <td>@component.form.name(placeholder = "character name")</td>
+                        <td>@component.form.race(races)</td>
+                        <td>@component.form.classes(classes)</td>
+                    </tr>
                 }
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="id" placeholder="Character Id">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="name" placeholder="Character Name">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <select id="race" class="form-control">
-                                @for(r <- races) {
-                                <option value="@r.getId.id">@r.name</option>
-                                }
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <select id="classes" class="form-control" multiple>
-                                @for(c <- classes) {
-                                <option value="@c.getId.id">@c.name</option>
-                                }
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <div id="create-result"></div>
-            <button id="create" type="button" class="btn btn-default">Create</button>
+
+                <div id="create-result"></div>
+                <button id="create" type="button" class="btn btn-default">Create</button>
+            </div>
         </div>
     </div>
-</div>
-<script>
-    $('#create').click(function() {
-        var url = window.location.origin + '@routes.CharaController.create';
-        var body = {'id': text('#id'), 'name': text('#name'), 'race': text('#race'), 'classes': array('#classes')};
-        jsonApi(url, 'POST', body, '#create-result');
-    });
-</script>
+
+    <script>
+        $('#create').click(function() {
+            var url = window.location.origin + '@routes.CharaController.create';
+
+            var body = {
+                'id': idValue(),
+                'name': nameValue(),
+                'race': raceValue(),
+                'classes': classesValue()
+            };
+
+            jsonApi(url, 'POST', body, '#create-result');
+        });
+    </script>
 }

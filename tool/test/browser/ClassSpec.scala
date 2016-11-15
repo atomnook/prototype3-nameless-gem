@@ -1,29 +1,37 @@
 package browser
 
-import org.scalatestplus.play.BrowserInfo
+import controllers.ReverseClassController
+import domain.service.DatabaseService.Crud
+import model.Class
+import play.api.mvc.Call
 
-class ClassSpec extends BrowserSpec {
-  def sharedTests(browser: BrowserInfo) = {
-    "/classes" must {
-      "create class " + browser.name in {
-        val prerequisite = newMultipleAttack(Nil)
+class ClassSpec extends  CrudSpec[Class, ReverseClassController] {
+  override protected[this] def list: Call = reverseController.list()
 
-        service.multipleAttackSkills().create(prerequisite)
+  override protected[this] def get(id: String): Call = reverseController.get(id)
 
-        val expected = newClass.update(_.skillTree := prerequisite.getSkill.getSkill.getId :: Nil)
-
-        go to s"http://localhost:$port/classes"
-
-        textField("id").value = expected.getId.id
-        textField("name").value = expected.name
-        multiSel("skill-tree").values = expected.skillTree.map(_.id)
-
-        click on id("create")
-
-        eventually {
-          assert(service.classes().read() === Set(expected))
-        }
-      }
+  override protected[this] def fill(a: Class, hasIdField: Boolean): Unit = {
+    if (hasIdField) {
+      textField("id").value = a.getId.id
     }
+
+    textField("name").value = a.name
+    multiSel("skills").values = a.skillTree.map(_.id)
+
+    fill(a.getAttributes)
   }
+
+  override protected[this] def id(a: Class): String = a.getId.id
+
+  override protected[this] def create(): Class = {
+    val prerequisite = arbMultipleAttackSkill.arbitrary(Nil)
+    service.multipleAttackSkills().create(prerequisite)
+    arbClass.arbitrary.update(_.skillTree := prerequisite.id() :: Nil)
+  }
+
+  override protected[this] def crud: Crud[Class] = service.classes()
+
+  override protected[this] def update(id: Class, data: Class): Class = data.update(_.id := id.getId)
+
+  override protected[this] def reverseController: ReverseClassController = controllers.routes.ClassController
 }

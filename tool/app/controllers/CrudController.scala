@@ -22,6 +22,7 @@ abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) exte
 
   val create = json[B] { request =>
     val a = request.body.asModel
+
     if (crud.create(a)) created() else alreadyExists(identity(a))
   }
 
@@ -32,9 +33,9 @@ abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) exte
     if (res) ok() else notFound(identifier)
   }
 
-  protected[this] def update(id: String)(f: A => A) = {
-    val identifier = Identifier(id)
-    val found = crud.read().find(identity(_) == identifier)
-    if (found.map(f).exists(crud.update)) ok() else notFound(identifier)
+  val update = json[B] { request =>
+    val a = request.body.asModel
+
+    if (crud.update(a)) ok() else notFound(identity(a))
   }
 }

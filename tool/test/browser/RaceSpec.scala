@@ -1,29 +1,37 @@
 package browser
 
-import org.scalatestplus.play._
+import controllers.ReverseRaceController
+import domain.service.DatabaseService.Crud
+import model.Race
+import play.api.mvc.Call
 
-class RaceSpec extends BrowserSpec {
-  def sharedTests(browser: BrowserInfo) = {
-    "/races" must {
-      "create race " + browser.name in {
-        val prerequisite = newMultipleAttack(Nil)
+class RaceSpec extends CrudSpec[Race, ReverseRaceController] {
+  override protected[this] def list: Call = reverseController.list()
 
-        service.multipleAttackSkills().create(prerequisite)
+  override protected[this] def get(id: String): Call = reverseController.get(id)
 
-        val expected = newRace.update(_.skillTree := prerequisite.getSkill.getSkill.getId :: Nil)
-
-        go to s"http://localhost:$port/races"
-
-        textField("id").value = expected.getId.id
-        textField("name").value = expected.name
-        multiSel("skill-tree").values = expected.skillTree.map(_.id)
-
-        click on id("create")
-
-        eventually {
-          assert(service.races().read() === Set(expected))
-        }
-      }
+  override protected[this] def fill(a: Race, hasIdField: Boolean): Unit = {
+    if (hasIdField) {
+      textField("id").value = a.getId.id
     }
+
+    textField("name").value = a.name
+    multiSel("skills").values = a.skillTree.map(_.id)
+
+    fill(a.getAttributes)
   }
+
+  override protected[this] def id(a: Race): String = a.getId.id
+
+  override protected[this] def create(): Race = {
+    val prerequisite = arbMultipleAttackSkill.arbitrary(Nil)
+    service.multipleAttackSkills().create(prerequisite)
+    arbRace.arbitrary.update(_.skillTree := prerequisite.id() :: Nil)
+  }
+
+  override protected[this] def crud: Crud[Race] = service.races()
+
+  override protected[this] def update(id: Race, data: Race): Race = data.update(_.id := id.getId)
+
+  override protected[this] def reverseController: ReverseRaceController = controllers.routes.RaceController
 }

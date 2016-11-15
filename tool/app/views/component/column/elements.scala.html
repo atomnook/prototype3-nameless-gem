@@ -1,0 +1,5 @@
+@(elements: Set[model.Element])
+
+@for(elm <- elements) {
+    <span class="label label-primary">@elm.name</span>
+}

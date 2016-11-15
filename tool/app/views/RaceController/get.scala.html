@@ -1,62 +1,58 @@
 @(id: String, race: Option[model.Race], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
-@main(title = "/races/" + id) {
-@if(race.isEmpty) {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/races/@id not found</h1>
-        </div>
-    </div>
-</div>
-}
-@for(r <- race) {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/races/@id</h1>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <table class="table table-striped">
-            <tr><th>Id</th><th>Name</th><th>Skills</th></tr>
-            @raceRow(r)
-        </table>
-    </div>
-    <div id="update-result"></div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <td>
-            <select id="skill-tree" class="form-control" multiple>
-                @for(s <- skills) {
-                <option value="@s.getId.id" @if(r.skillTree.contains(s.getId)) {selected} >@s.name</option>
-                }
-            </select>
-        </td>
-        <button id="update-skills" type="button" class="btn btn-default">Update Skills</button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <button id="delete" type="button" class="btn btn-danger">Delete</button>
-    </div>
-</div>
-<div class="row">
-    @skillTree(r.skillTree)
-</div>
-<script>
-    $('#update-skills').click(function() {
-        var url = window.location.origin + '@routes.RaceController.updateSkillTree(id)';
-        var body = {'skills': array('#skill-tree')};
-        jsonApi(url, 'POST', body, '#update-result');
-    });
 
-    $('#delete').click(function() {
-        var url = window.location.origin + '@routes.RaceController.delete(id)';
-        noContentApi(url, 'DELETE', '#update-result');
-    });
-</script>
-}
+@main(title = "/races/" + id) {
+
+    @if(race.isEmpty) {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>/races/@id not found</h1>
+                </div>
+            </div>
+        </div>
+    }
+
+    @for(r <- race) {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>/races/@id</h1>
+                </div>
+
+                @component.table.races(r :: Nil) {
+                    <tr>
+                        <td></td>
+                        <td>@component.form.name(default = r.name)</td>
+                        <td>@component.form.skills(skills = skills, default = r.skillTree.toList)</td>
+                        <td>@component.form.levelAttributes(default = r.getAttributes)</td>
+                    </tr>
+                }
+            </div>
+
+            <div id="update-result"></div>
+
+            <button id="update" type="button" class="btn btn-default">Update</button>
+            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        </div>
+
+        <script>
+            $('#update').click(function() {
+                var url = window.location.origin + '@routes.RaceController.update';
+
+                var body = {
+                    'id': '@id',
+                    'name': nameValue(),
+                    'skills': skillsValue(),
+                    'attributes': levelAttributesValue()
+                };
+
+                jsonApi(url, 'PUT', body, '#update-result');
+            });
+
+            $('#delete').click(function() {
+                var url = window.location.origin + '@routes.RaceController.delete(id)';
+                noContentApi(url, 'DELETE', '#update-result');
+            });
+        </script>
+    }
 }

@@ -26,7 +26,9 @@ class CharaController @Inject() (service: DatabaseService) extends CrudControlle
   }
 
   override protected[this] def getPage(id: String, a: Option[Chara]): Result = {
-    Ok(views.html.CharaController.get(id, a))
+    val races = service.races().read().toList
+    val classes = service.classes().read().toList
+    Ok(views.html.CharaController.get(id, a, races, classes))
   }
 
   def gainXp(id: String) = json[GainExp] { request =>

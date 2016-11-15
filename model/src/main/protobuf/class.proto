@@ -3,6 +3,7 @@ syntax = "proto3";
 package model;
 
 import "skill/skill.proto";
+import "attributes.proto";
 
 message ClassId {
   string id = 1;
@@ -12,4 +13,5 @@ message Class {
   ClassId id = 1;
   string name = 2;
   repeated skill.SkillId skill_tree = 3;
+  LevelAttributes attributes = 4;
 }

@@ -1,0 +1,12 @@
+@(enumType: com.trueaccord.scalapb.GeneratedEnumCompanion[_ <: com.trueaccord.scalapb.GeneratedEnum], v: String, id: String, default: Int)
+
+<select id="@id" class="form-control">
+    @for(elm <- enumType.values) {
+        <option value="@elm.value" @if(elm.value == default) { selected } >@elm.name</option>
+    }
+</select>
+
+<script>
+    @v = function() { return number('#@id'); }
+</script>
+

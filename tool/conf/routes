@@ -1,24 +1,25 @@
 GET   /   controllers.MainController.index
 
-GET   /databases/raw  controllers.DatabaseController.raw
-GET   /databases/file controllers.DatabaseController.file
+GET   /databases/raw    controllers.DatabaseController.raw
+GET   /databases/file   controllers.DatabaseController.file
 
-GET     /races                    controllers.RaceController.list
-GET     /races/:id                controllers.RaceController.get(id: String)
-POST    /races.json               controllers.RaceController.create
-POST    /races/:id/skills.json    controllers.RaceController.updateSkillTree(id: String)
-DELETE  /races/:id.json           controllers.RaceController.delete(id: String)
+GET     /races            controllers.RaceController.list
+GET     /races/:id        controllers.RaceController.get(id: String)
+POST    /races.json       controllers.RaceController.create
+PUT     /races.json       controllers.RaceController.update
+DELETE  /races/:id.json   controllers.RaceController.delete(id: String)
 
-GET     /classes                    controllers.ClassController.list
-GET     /classes/:id                controllers.ClassController.get(id: String)
-POST    /classes.json               controllers.ClassController.create
-POST    /classes/:id/skills.json    controllers.ClassController.updateSkillTree(id: String)
-DELETE  /classes/:id.json           controllers.ClassController.delete(id: String)
+GET     /classes            controllers.ClassController.list
+GET     /classes/:id        controllers.ClassController.get(id: String)
+POST    /classes.json       controllers.ClassController.create
+PUT     /classes.json       controllers.ClassController.update
+DELETE  /classes/:id.json   controllers.ClassController.delete(id: String)
 
 GET     /characters             controllers.CharaController.list
 GET     /characters/:id         controllers.CharaController.get(id: String)
 POST    /characters.json        controllers.CharaController.create
 POST    /characters/:id/xp.json controllers.CharaController.gainXp(id: String)
+PUT     /characters.json        controllers.CharaController.update
 DELETE  /characters/:id.json    controllers.CharaController.delete(id: String)
 
 GET     /skills                       controllers.SkillController.list
@@ -27,11 +28,13 @@ GET     /skills/i/:id                 controllers.SkillController.redirect(id)
 GET     /skills/multiple-attack             controllers.MultipleAttackController.list
 GET     /skills/multiple-attack/:id         controllers.MultipleAttackController.get(id: String)
 POST    /skills/multiple-attack.json        controllers.MultipleAttackController.create
+PUT     /skills/multiple-attack.json        controllers.MultipleAttackController.update
 DELETE  /skills/multiple-attack/:id.json    controllers.MultipleAttackController.delete(id: String)
 
 GET     /skills/chain-attack            controllers.ChainAttackController.list
 GET     /skills/chain-attack/:id        controllers.ChainAttackController.get(id: String)
 POST    /skills/chain-attack.json       controllers.ChainAttackController.create
+PUT     /skills/chain-attack.json       controllers.ChainAttackController.update
 DELETE  /skills/chain-attack/:id.json   controllers.ChainAttackController.delete(id: String)
 
 GET   /favicon.ico    controllers.Assets.at(path="/public", file="images/favicon.ico")

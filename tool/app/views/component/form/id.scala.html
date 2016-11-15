@@ -1,0 +1,7 @@
+@(placeholder: String, id: String = "id")
+
+<input type="text" class="form-control" id="@id" placeholder="@placeholder">
+
+<script>
+    idValue = function() { return text('#@id'); }
+</script>

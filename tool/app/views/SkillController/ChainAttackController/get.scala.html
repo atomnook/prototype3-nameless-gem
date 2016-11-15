@@ -1,54 +1,69 @@
-@(id: String, skill: Option[model.skill.ChainAttackSkill])(implicit helper: models.ModelHelper)
-@main(title = "/skills/chain-attack/" + id) {
-@if(skill.isEmpty) {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/skills/chain-attack/@id not found</h1>
-        </div>
-    </div>
-</div>
-}
-@for(s <- skill) {
-<div class="row">
-    <div class="col-xs-12">
-        <div class="page-header">
-            <h1>/skills/chain-attack/@id</h1>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
+@(id: String, skill: Option[model.skill.ChainAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
+@main(title = "/skills/multiple-attack/" + id) {
+    @if(skill.isEmpty) {
         <div class="row">
-            <table class="table table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Prerequisites</th>
-                    <th>Types</th>
-                    <th>Elements</th>
-                    <th>Power</th>
-                    <th>TP</th>
-                    <th>Follow</th>
-                    <th>Chain</th>
-                    <th>Range</th>
-                </tr>
-                @chainAttackRow(s)
-            </table>
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>/skills/chain-attack/@id not found</h1>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <div id="update-result"></div>
-        <button id="delete" type="button" class="btn btn-danger">Delete</button>
-    </div>
-</div>
-<script>
-    $('#delete').click(function() {
-        var url = window.location.origin + '@routes.ChainAttackController.delete(id)';
-        noContentApi(url, 'DELETE', '#update-result');
-    });
-</script>
-}
+    }
+
+    @for(s <- skill) {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>/skills/chain-attack/@id</h1>
+                </div>
+
+                @component.table.chainAttackSkills(s :: Nil, prerequisites) {
+                    <tr>
+                        <td></td>
+                        <td>@component.form.name(placeholder = "skill name", default = s.getSkill.getSkill.name)</td>
+                        <td>@component.form.skills(prerequisites, default = s.getSkill.getSkill.prerequisites.toList)</td>
+                        <td>@component.form.skillTypes(default = s.getSkill.types.toSet)</td>
+                        <td>@component.form.elements(default = s.getSkill.elements.toSet)</td>
+                        <td>@component.form.attackLevel(id = "power", v = "powerValue", default = s.getSkill.getPower)</td>
+                        <td>@component.form.attackLevel(id = "tp", v = "tpValue", default = s.getSkill.getTpCost)</td>
+                        <td>@component.form.elements(id = "follow", v = "followValue", default = s.follow.toSet)</td>
+                        <td>@component.form.attackLevel(id = "chain", v = "chainValue", default = s.getChain)</td>
+                        <td>@component.form.range(default = s.range)</td>
+                    </tr>
+                }
+            </div>
+
+            <div id="update-result"></div>
+
+            <button id="update" type="button" class="btn btn-default">Update</button>
+            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        </div>
+
+        <script>
+                $('#update').click(function() {
+                    var url = window.location.origin + '@routes.ChainAttackController.update';
+
+                    var body = {
+                        'id': '@id',
+                        'name': nameValue(),
+                        'prerequisites': skillsValue(),
+                        'types': skillTypesValue(),
+                        'elements': elementsValue(),
+                        'power': powerValue(),
+                        'tp': tpValue(),
+                        'follow': followValue(),
+                        'chain': chainValue(),
+                        'range': rangeValue()
+                    };
+
+                    jsonApi(url, 'PUT', body, '#update-result');
+                });
+
+                $('#delete').click(function() {
+                    var url = window.location.origin + '@routes.ChainAttackController.delete(id)';
+                    noContentApi(url, 'DELETE', '#update-result');
+                });
+            </script>
+    }
 }
