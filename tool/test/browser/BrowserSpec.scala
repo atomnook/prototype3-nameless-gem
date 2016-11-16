@@ -6,9 +6,12 @@ import model.{Attributes, LevelAttributes}
 import model.skill._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play._
+import play.api.inject.guice.GuiceApplicationBuilder
 
 trait BrowserSpec extends PlaySpec with OneServerPerSuite with AllBrowsersPerSuite with BeforeAndAfterEach {
   override lazy val browsers = Vector(ChromeInfo)
+
+  implicit override lazy val app = new GuiceApplicationBuilder().configure("database.init.enable " -> false).build()
 
   protected[this] implicit class ChainAttackSkillId(s: ChainAttackSkill) {
     def id(): SkillId = s.getSkill.getSkill.getId
