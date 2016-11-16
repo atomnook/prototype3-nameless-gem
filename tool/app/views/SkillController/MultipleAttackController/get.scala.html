@@ -1,23 +1,9 @@
 @(id: String, skill: Option[model.skill.MultipleAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@main(title = "/skills/multiple-attack/" + id) {
-    @if(skill.isEmpty) {
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>/skills/multiple-attack/@id not found</h1>
-                </div>
-            </div>
-        </div>
-    }
-
+@mainWithHeader(call = routes.MultipleAttackController.get(id), obj = skill) {
     @for(s <- skill) {
         <div class="row">
             <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>/skills/multiple-attack/@id</h1>
-                </div>
-
                 @component.table.multipleAttackSkills(s :: Nil, prerequisites) {
                     <tr>
                         <td></td>
@@ -33,11 +19,14 @@
                     </tr>
                 }
             </div>
+        </div>
 
-            <div id="update-result"></div>
-
-            <button id="update" type="button" class="btn btn-default">Update</button>
-            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="update-result"></div>
+                <button id="update" type="button" class="btn btn-default">Update</button>
+                <button id="delete" type="button" class="btn btn-danger">Delete</button>
+            </div>
         </div>
 
         <script>

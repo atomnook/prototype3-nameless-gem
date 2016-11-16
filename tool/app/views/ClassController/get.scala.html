@@ -1,24 +1,9 @@
 @(id: String, cls: Option[model.Class], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@main(title = "/classes/" + id) {
-
-    @if(cls.isEmpty) {
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>/classes/@id not found</h1>
-                </div>
-            </div>
-        </div>
-    }
-
+@mainWithHeader(call = routes.ClassController.get(id), obj = cls) {
     @for(c <- cls) {
         <div class="row">
             <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>/classes/@id</h1>
-                </div>
-
                 @component.table.classes(c :: Nil) {
                     <tr>
                         <td></td>
@@ -28,11 +13,14 @@
                     </tr>
                 }
             </div>
+        </div>
 
-            <div id="update-result"></div>
-
-            <button id="update" type="button" class="btn btn-default">Update</button>
-            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="update-result"></div>
+                <button id="update" type="button" class="btn btn-default">Update</button>
+                <button id="delete" type="button" class="btn btn-danger">Delete</button>
+            </div>
         </div>
 
         <script>

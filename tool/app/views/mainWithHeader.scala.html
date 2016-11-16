@@ -1,0 +1,13 @@
+@(call: play.api.mvc.Call, obj: Option[_])(html: Html)
+
+@main(title = call.url) {
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>@call.url @if(obj.isEmpty) { not found }</h1>
+            </div>
+        </div>
+    </div>
+
+    @html
+}
