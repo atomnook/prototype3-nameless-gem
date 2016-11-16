@@ -9,6 +9,8 @@ import models.request.CreateClass
 import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
+import scala.concurrent.Future
+
 class ClassController @Inject() (service: DatabaseService)
   extends CrudController[model.Class, CreateClass] with SkillAggregator {
 
@@ -24,5 +26,7 @@ class ClassController @Inject() (service: DatabaseService)
 
   override protected[this] def listPage(a: List[model.Class]): Result = Ok(views.html.ClassController.list(a, skills.all))
 
-  override protected[this] def getPage(id: String, a: Option[model.Class]): Result = Ok(views.html.ClassController.get(id, a, skills.all))
+  override protected[this] def getPage(id: String, a: Option[model.Class]): Future[Result] = {
+    Future.successful(Ok(views.html.ClassController.get(id, a, skills.all)))
+  }
 }

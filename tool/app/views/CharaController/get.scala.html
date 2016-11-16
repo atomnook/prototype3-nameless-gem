@@ -1,4 +1,6 @@
-@(id: String, chara: Option[model.Chara], races: List[model.Race], classes: List[model.Class])(implicit helper: models.ModelHelper)
+@(view: controllers.CharaController.GetViewArgs)(implicit helper: models.ModelHelper)
+
+@import view._
 
 @mainWithHeader(call = routes.CharaController.get(id), obj = chara) {
     @for(c <- chara) {
@@ -65,5 +67,11 @@
                 jsonApi(url, 'POST', body, '#update-result');
             });
         </script>
+
+        <div class="row">
+            <div class="col-xs-12">
+                @component.table.attributes(attributes.attributes, attributes.alert)
+            </div>
+        </div>
     }
 }

@@ -10,6 +10,8 @@ import models.request.CreateChainAttack
 import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
+import scala.concurrent.Future
+
 class ChainAttackController @Inject() (service: DatabaseService)
   extends CrudController[ChainAttackSkill, CreateChainAttack] with SkillAggregator {
 
@@ -27,7 +29,7 @@ class ChainAttackController @Inject() (service: DatabaseService)
     Ok(views.html.SkillController.ChainAttackController.list(a, skills.all))
   }
 
-  override protected[this] def getPage(id: String, a: Option[ChainAttackSkill]): Result = {
-    Ok(views.html.SkillController.ChainAttackController.get(id, a, skills.all))
+  override protected[this] def getPage(id: String, a: Option[ChainAttackSkill]): Future[Result] = {
+    Future.successful(Ok(views.html.SkillController.ChainAttackController.get(id, a, skills.all)))
   }
 }
