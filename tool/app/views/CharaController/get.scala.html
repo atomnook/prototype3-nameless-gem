@@ -1,24 +1,9 @@
 @(id: String, chara: Option[model.Chara], races: List[model.Race], classes: List[model.Class])(implicit helper: models.ModelHelper)
 
-@main(title = "/characters/" + id) {
-
-    @if(chara.isEmpty) {
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>/characters/@id not found</h1>
-                </div>
-            </div>
-        </div>
-    }
-
+@mainWithHeader(call = routes.CharaController.get(id), obj = chara) {
     @for(c <- chara) {
         <div class="row">
             <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>/characters/@id</h1>
-                </div>
-
                 @component.table.characters(c :: Nil) {
                     <tr>
                         <td></td>
@@ -28,11 +13,14 @@
                     </tr>
                 }
             </div>
+        </div>
 
-            <div id="update-result"></div>
-
-            <button id="update" type="button" class="btn btn-default">Update</button>
-            <button id="delete" type="button" class="btn btn-danger">Delete</button>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="update-result"></div>
+                <button id="update" type="button" class="btn btn-default">Update</button>
+                <button id="delete" type="button" class="btn btn-danger">Delete</button>
+            </div>
         </div>
 
         <script>
