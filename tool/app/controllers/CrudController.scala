@@ -1,9 +1,11 @@
 package controllers
 
 import domain.service.DatabaseService.Crud
-import models.core.{Identifier, AsModel}
+import models.core.{AsModel, Identifier}
 import play.api.libs.json.Reads
 import play.api.mvc.{Action, Controller, Result}
+
+import scala.concurrent.Future
 
 abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) extends Controller with JsonApiController {
   protected[this] val crud: Crud[A]
@@ -14,11 +16,11 @@ abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) exte
 
   protected[this] def listPage(a: List[A]): Result
 
-  protected[this] def getPage(id: String, a: Option[A]): Result
+  protected[this] def getPage(id: String, a: Option[A]): Future[Result]
 
   val list = Action(_ => listPage(crud.read().toList))
 
-  def get(id: String) = Action(_ => getPage(id, crud.read().find(a => identity(a).id == id)))
+  def get(id: String) = Action.async(_ => getPage(id, crud.read().find(a => identity(a).id == id)))
 
   val create = json[B] { request =>
     val a = request.body.asModel

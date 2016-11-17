@@ -10,6 +10,8 @@ import models.request.CreateMultipleAttack
 import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
+import scala.concurrent.Future
+
 class MultipleAttackController @Inject() (service: DatabaseService)
   extends CrudController[MultipleAttackSkill, CreateMultipleAttack] with SkillAggregator {
 
@@ -27,7 +29,7 @@ class MultipleAttackController @Inject() (service: DatabaseService)
     Ok(views.html.SkillController.MultipleAttackController.list(a, skills.all))
   }
 
-  override protected[this] def getPage(id: String, a: Option[MultipleAttackSkill]): Result = {
-    Ok(views.html.SkillController.MultipleAttackController.get(id, a, skills.all))
+  override protected[this] def getPage(id: String, a: Option[MultipleAttackSkill]): Future[Result] = {
+    Future.successful(Ok(views.html.SkillController.MultipleAttackController.get(id, a, skills.all)))
   }
 }

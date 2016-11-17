@@ -10,6 +10,8 @@ import models.request.CreateRace
 import models.{ModelHelper, SkillAggregator}
 import play.api.mvc.Result
 
+import scala.concurrent.Future
+
 class RaceController @Inject() (service: DatabaseService) extends CrudController[Race, CreateRace] with SkillAggregator {
   private[this] val skills = skillAggregator(service)
 
@@ -23,5 +25,7 @@ class RaceController @Inject() (service: DatabaseService) extends CrudController
 
   override protected[this] def listPage(a: List[Race]): Result = Ok(views.html.RaceController.list(a, skills.all))
 
-  override protected[this] def getPage(id: String, a: Option[Race]): Result = Ok(views.html.RaceController.get(id, a, skills.all))
+  override protected[this] def getPage(id: String, a: Option[Race]): Future[Result] = {
+    Future.successful(Ok(views.html.RaceController.get(id, a, skills.all)))
+  }
 }
