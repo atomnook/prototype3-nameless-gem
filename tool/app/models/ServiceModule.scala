@@ -1,7 +1,5 @@
 package models
 
-import java.io.File
-
 import com.google.inject.AbstractModule
 import domain.service.DatabaseService
 import play.api.{Configuration, Environment, Logger}
@@ -10,20 +8,23 @@ import scala.io.Source
 
 class ServiceModule(environment: Environment, configuration: Configuration) extends AbstractModule {
   override def configure(): Unit = {
-    val txt = configuration.getConfig("app.database").getOrElse(Configuration.empty)
     val service = DatabaseService()
-    val file = new File(txt.getString("txt").getOrElse("database.txt"))
+    val enable = configuration.getBoolean("database.init.enable").getOrElse(false)
 
-    if (file.isFile) {
-      Logger.info(s"${file.getAbsolutePath} found")
+    if (enable) {
+      val database = "database"
 
-      val base64 = Source.fromFile(file).mkString
+      environment.resourceAsStream(database) match {
+        case Some(stream) =>
+          val base64 = Source.fromInputStream(stream, "UTF-8").mkString
+          val head = base64.take(100)
+          val ellipsis = if (base64.length > 100) "..." else ""
+          Logger.info(s"read($head$ellipsis) (${base64.length})")
+          service.read(base64)
 
-      Logger.debug(base64)
-
-      service.read(base64)
-    } else {
-      Logger.info(s"${file.getAbsolutePath} not found")
+        case None =>
+          Logger.info(s"$database not found")
+      }
     }
 
     bind(classOf[DatabaseService]).toInstance(service)
