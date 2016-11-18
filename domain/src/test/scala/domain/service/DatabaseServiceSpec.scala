@@ -1,57 +1,101 @@
 package domain.service
 
-import domain.service.DatabaseService.Crud
-import model.{Chara, Race}
+import model.item.{Accessory, Armor, Weapon}
+import model.skill.{ChainAttackSkill, MultipleAttackSkill}
+import model.{Chara, Class, Race}
 import org.scalatest.FlatSpec
 
 class DatabaseServiceSpec extends FlatSpec {
-  def testCRUD[A](crud: Crud[A], first: A, updated: A, created: A) = {
-    assert(crud.read() === Set())
+  def testCrud[A](Crud: DatabaseService => Crud[A], first: A, updated: A, created: A) = {
+    val service = DatabaseService()
+    val sut = Crud(service)
 
-    assert(crud.create(first))
-    assert(crud.read() === Set(first))
+    assert(sut.read() === List())
 
-    assert(crud.update(updated))
-    assert(crud.read() === Set(updated))
+    assert(sut.create(first))
+    assert(sut.read() === List(first))
 
-    assert(crud.create(first) === false)
-    assert(crud.read() === Set(updated))
+    assert(sut.update(updated))
+    assert(sut.read() === List(updated))
 
-    assert(crud.create(created))
-    assert(crud.read() === Set(updated, created))
+    assert(sut.create(first) === false)
+    assert(sut.read() === List(updated))
 
-    assert(crud.delete(first))
-    assert(crud.read() === Set(created))
+    assert(sut.create(created))
+    assert(sut.read() === List(updated, created))
 
-    assert(crud.delete(first) === false)
-    assert(crud.read() === Set(created))
+    assert(sut.delete(first))
+    assert(sut.read() === List(created))
+
+    assert(sut.delete(first) === false)
+    assert(sut.read() === List(created))
   }
 
-  "DatabaseService" should "have Race CRUD" in {
+  it should "have Race Crud" in {
     val first = Race().update(_.id.id := "idA", _.name := "nameA")
     val updated = first.update(_.name.modify(_ + "-updated"))
     val created = Race().update(_.id.id := "idB", _.name := "nameB")
 
-    testCRUD(crud = DatabaseService().races(), first = first, updated = updated, created = created)
+    testCrud(Crud = _.races(), first = first, updated = updated, created = created)
   }
 
-  "DatabaseService" should "have Class CRUD" in {
-    val first = model.Class().update(_.id.id := "idA", _.name := "nameA")
+  it should "have Class Crud" in {
+    val first = Class().update(_.id.id := "idA", _.name := "nameA")
     val updated = first.update(_.name.modify(_ + "-updated"))
-    val created = model.Class().update(_.id.id := "idB", _.name := "nameB")
+    val created = Class().update(_.id.id := "idB", _.name := "nameB")
 
-    testCRUD(crud = DatabaseService().classes(), first = first, updated = updated, created = created)
+    testCrud(Crud = _.classes(), first = first, updated = updated, created = created)
   }
 
-  "DatabaseService" should "have Chara CRUD" in {
+  it should "have Chara Crud" in {
     val first = Chara().update(_.id.id := "idA", _.name := "nameA")
     val updated = first.update(_.name.modify(_ + "-updated"))
     val created = Chara().update(_.id.id := "idB", _.name := "nameB")
 
-    testCRUD(crud = DatabaseService().characters(), first = first, updated = updated, created = created)
+    testCrud(Crud = _.characters(), first = first, updated = updated, created = created)
   }
 
-  "DatabaseService" should "write/read base64 encoded bytes" in {
+  it should "have MultipleAttackSkill Crud" in {
+    val first = MultipleAttackSkill().update(_.skill.skill.id.id := "idA", _.skill.skill.name := "nameA")
+    val updated = first.update(_.skill.skill.name.modify(_ + "-updated"))
+    val created = MultipleAttackSkill().update(_.skill.skill.id.id := "idB", _.skill.skill.name := "nameB")
+
+    testCrud(Crud = _.multipleAttackSkills(), first = first, updated = updated, created = created)
+  }
+
+  it should "have ChainAttackSkill Crud" in {
+    val first = ChainAttackSkill().update(_.skill.skill.id.id := "idA", _.skill.skill.name := "nameA")
+    val updated = first.update(_.skill.skill.name.modify(_ + "-updated"))
+    val created = ChainAttackSkill().update(_.skill.skill.id.id := "idB", _.skill.skill.name := "nameB")
+
+    testCrud(Crud = _.chainAttackSkills(), first = first, updated = updated, created = created)
+  }
+  
+  it should "have Weapon Crud" in {
+    val first = Weapon().update(_.item.id.id := "idA", _.item.name := "nameA")
+    val updated = first.update(_.item.name.modify(_ + "-updated"))
+    val created = Weapon().update(_.item.id.id := "idB", _.item.name := "nameB")
+    
+    testCrud(Crud = _.weapons(), first = first, updated = updated, created = created)
+  }
+  
+  it should "have Armor Crud" in {
+    val first = Armor().update(_.item.id.id := "idA", _.item.name := "nameA")
+    val updated = first.update(_.item.name.modify(_ + "-updated"))
+    val created = Armor().update(_.item.id.id := "idB", _.item.name := "nameB")
+
+    testCrud(Crud = _.armors(), first = first, updated = updated, created = created)
+  }
+
+  it should "have Accessory Crud" in {
+    val first = Accessory().update(_.item.id.id := "idA", _.item.name := "nameA")
+    val updated = first.update(_.item.name.modify(_ + "-updated"))
+    val created = Accessory().update(_.item.id.id := "idB", _.item.name := "nameB")
+
+    testCrud(Crud = _.accessories(), first = first, updated = updated, created = created)
+  }
+
+  it should "read/write base64 encoded bytes" in {
     val service = DatabaseService()
     val race = Race().update(_.id.id := "race-id")
     val cls = model.Class().update(_.id.id := "class-id")
@@ -64,14 +108,14 @@ class DatabaseServiceSpec extends FlatSpec {
     val database = service.write()
     val restored = DatabaseService()
 
-    assert(restored.races().read() === Set())
-    assert(restored.classes().read() === Set())
-    assert(restored.characters().read() === Set())
+    assert(restored.races().read() === List())
+    assert(restored.classes().read() === List())
+    assert(restored.characters().read() === List())
 
     restored.read(database)
 
-    assert(restored.races().read() === Set(race))
-    assert(restored.classes().read() === Set(cls))
-    assert(restored.characters().read() === Set(chara))
+    assert(restored.races().read() === List(race))
+    assert(restored.classes().read() === List(cls))
+    assert(restored.characters().read() === List(chara))
   }
 }

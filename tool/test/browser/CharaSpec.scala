@@ -1,7 +1,7 @@
 package browser
 
 import controllers.ReverseCharaController
-import domain.service.DatabaseService.Crud
+import domain.service.Crud
 import model.Chara
 import org.scalatestplus.play.BrowserInfo
 import play.api.mvc.Call
@@ -56,7 +56,7 @@ class CharaSpec extends CrudSpec[Chara, ReverseCharaController] {
         click on id("gain-xp")
 
         eventually {
-          assert(crud.read() === Set(expected))
+          assert(crud.read() === List(expected))
         }
       }
     }

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package model.item;
+
+message ItemId {
+  string id = 1;
+}
+
+message Item {
+  ItemId id = 1;
+  string name = 2;
+  int64 price = 3;
+}

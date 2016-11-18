@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package model.item;
+
+import "item/item.proto";
+
+enum WeaponType {
+  SWORD = 0;
+  RAPIER = 1;
+  GAUNTLET = 2;
+  BOW = 3;
+  KATANA = 4;
+}
+
+message Weapon {
+  Item item = 1;
+  int64 atk = 2;
+  int64 mat = 3;
+  WeaponType typ = 4;
+}

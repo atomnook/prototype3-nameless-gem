@@ -1,7 +1,7 @@
 package browser
 
 import controllers.ReverseClassController
-import domain.service.DatabaseService.Crud
+import domain.service.Crud
 import model.Class
 import play.api.mvc.Call
 

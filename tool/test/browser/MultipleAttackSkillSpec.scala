@@ -1,7 +1,7 @@
 package browser
 
 import controllers.ReverseMultipleAttackController
-import domain.service.DatabaseService.Crud
+import domain.service.Crud
 import model.skill.MultipleAttackSkill
 import play.api.mvc.Call
 

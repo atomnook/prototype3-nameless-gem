@@ -1,7 +1,7 @@
 package browser
 
 import controllers.ReverseChainAttackController
-import domain.service.DatabaseService.Crud
+import domain.service.Crud
 import model.skill.ChainAttackSkill
 import play.api.mvc.Call
 
