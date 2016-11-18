@@ -1,0 +1,25 @@
+@(items: List[model.item.Item])(implicit helper: models.ModelHelper)
+
+@main(title = routes.ItemController.list.url) {
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>@routes.ItemController.list</h1>
+            </div>
+
+            <nav aria-label="items">
+                <ul class="pager">
+                    <li class="next"><a href="@routes.WeaponController.list">Weapon <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+                <ul class="pager">
+                    <li class="next"><a href="@routes.ArmorController.list">Armor <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+                <ul class="pager">
+                    <li class="next"><a href="@routes.AccessoryController.list">Accessory <span aria-hidden="true">&rarr;</span></a></li>
+                </ul>
+            </nav>
+
+            @component.table.items(items)
+        </div>
+    </div>
+}

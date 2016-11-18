@@ -1,0 +1,15 @@
+@(items: List[model.item.Item])(implicit helper: models.ModelHelper)
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>price</th>
+    </tr>
+
+    @for(item <- items) {
+        <tr>
+            @component.column.item(item)
+        </tr>
+    }
+</table>

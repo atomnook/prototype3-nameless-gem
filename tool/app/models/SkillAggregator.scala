@@ -15,8 +15,8 @@ object SkillAggregator {
     def categorized[A](id: SkillId)(f: PartialFunction[Any, A]): Option[A] = {
       val s1 = service.multipleAttackSkills().read()
       val s2 = service.chainAttackSkills().read()
-      s1.find(_.getSkill.getSkill.getId == id).map(f).
-        orElse(s2.find(_.getSkill.getSkill.getId == id).map(f))
+      s1.find(_.getSkill.getSkill.getId == id).flatMap(f.lift).
+        orElse(s2.find(_.getSkill.getSkill.getId == id).flatMap(f.lift))
     }
   }
 }

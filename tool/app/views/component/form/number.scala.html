@@ -1,0 +1,7 @@
+@(id: String, v: String, default: Long)
+
+<input type="number" class="form-control" id="@id" value="@default">
+
+<script>
+    @v = function() { return number('#@id'); }
+</script>

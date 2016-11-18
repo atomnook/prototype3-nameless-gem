@@ -1,0 +1,3 @@
+@(id: String = "armor-type", default: model.item.ArmorType = model.item.ArmorType.fromValue(0))
+
+@component.form.protoEnumValue(enumType = model.item.ArmorType, v = "armorTypeValue", id = id, default = default.value)

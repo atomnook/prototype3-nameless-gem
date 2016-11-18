@@ -1,0 +1,51 @@
+@(id: String, armor: Option[model.item.Armor])(implicit helper: models.ModelHelper)
+
+@mainWithHeader(call = routes.ArmorController.get(id), obj = armor) {
+    @for(a <- armor) {
+        <div class="row">
+            <div class="col-xs-12">
+                @component.table.armors(a :: Nil) {
+                    <tr>
+                        <td></td>
+                        <td>@component.form.name(placeholder = "item name", default = a.getItem.name)</td>
+                        <td>@component.form.price(default = a.getItem.price)</td>
+                        <td>@component.form.number(id = "def", v = "defValue", default = a.`def`)</td>
+                        <td>@component.form.mdf(default = a.mdf)</td>
+                        <td>@component.form.armorType(default = a.`type`)</td>
+                    </tr>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="update-result"></div>
+                <button id="update" type="button" class="btn btn-default">Update</button>
+                <button id="delete" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+
+        <script>
+            $('#update').click(function() {
+                var url = window.location.origin + '@routes.ArmorController.update';
+
+            var body = {
+                'id': '@id',
+                'name': nameValue(),
+                'price': priceValue(),
+                'def': defValue(),
+                'mdf': mdfValue(),
+                'type': armorTypeValue()
+            };
+
+                jsonApi(url, 'PUT', body, '#update-result');
+            });
+
+            $('#delete').click(function() {
+                var url = window.location.origin + '@routes.ArmorController.delete(id)';
+                noContentApi(url, 'DELETE', '#update-result');
+            });
+        </script>
+    }
+}
+

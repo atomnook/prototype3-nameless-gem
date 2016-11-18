@@ -1,6 +1,7 @@
 package models
 
 import com.trueaccord.scalapb.{GeneratedEnum, GeneratedEnumCompanion}
+import model.item.{ArmorType, WeaponType}
 import model.skill.SkillType
 import model.{Element, Target}
 import play.api.libs.json.{Format, JsNumber, JsResult, JsValue}
@@ -21,4 +22,8 @@ package object core {
   implicit val skillTypeFormat = protoFormat(SkillType)
 
   implicit val elementFormat = protoFormat(Element)
+
+  implicit val armorTypeFormat = protoFormat(ArmorType)
+
+  implicit val weaponTypeFormat = protoFormat(WeaponType)
 }
