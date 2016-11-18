@@ -6,6 +6,9 @@ import "chara.proto";
 import "class.proto";
 import "race.proto";
 import "skill/skill-attack.proto";
+import "item/weapon.proto";
+import "item/armor.proto";
+import "item/accessory.proto";
 
 message Database {
   repeated Chara charas = 1;
@@ -14,4 +17,8 @@ message Database {
 
   repeated skill.ChainAttackSkill chain_attack_skills = 4;
   repeated skill.MultipleAttackSkill multiple_attack_skills = 5;
+
+  repeated item.Weapon weapons = 6;
+  repeated item.Armor armors = 7;
+  repeated item.Accessory Accessories = 8;
 }

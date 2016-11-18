@@ -1,136 +1,96 @@
 package domain.service
 
 import java.util.Base64
+import java.util.concurrent.atomic.AtomicReference
 
-import com.trueaccord.lenses.Lens
-import domain.service.DatabaseService.Crud
-import model.Database.DatabaseLens
+import model.item.{Accessory, Armor, Item, Weapon}
 import model.skill.{ChainAttackSkill, MultipleAttackSkill, Skill}
-import model.{Chara, Database, Race}
+import model.{Chara, Class, Database, Race}
 
 class DatabaseService {
-  private[this] var database = Database()
+  private[this] val database = new AtomicReference[Database](Database())
 
-  private[this] val databaseLens = new Database.DatabaseLens(Lens.unit[Database])
-
-  private[this] trait DatabaseCrud[A, B] extends Crud[A] {
-    protected[this] def get(): Seq[A]
-
-    protected[this] def len(): Lens[Database, Seq[A]]
-
-    protected[this] def identity(a: A, b: A): Boolean
-
-    protected[this] def identities(): Seq[B]
-
-    protected[this] def altIdentity(a: A, b: B): Boolean
-
-    def read(): Set[A] = synchronized(get().toSet)
-
-    def create(a: A): Boolean = synchronized {
-      val res = identities().exists(altIdentity(a, _))
-      if (!res) {
-        database = len().modify(_ :+ a)(database)
-      }
-      !res
-    }
-
-    def update(a: A): Boolean = synchronized {
-      get().find(identity(a, _)) match {
-        case Some(found) =>
-          database = len().set(get().filter(!identity(a, _)) :+ a)(database)
-          true
-
-        case None => false
-      }
-    }
-
-    def delete(a: A): Boolean = synchronized {
-      get().find(identity(a, _)) match {
-        case Some(found) =>
-          database = len().set(get().filter(!identity(a, _)))(database)
-          true
-
-        case None => false
-      }
-    }
+  private[this] def skills(d: Database): List[Skill] = {
+    val res = d.multipleAttackSkills.map(_.getSkill.getSkill) ++ d.chainAttackSkills.map(_.getSkill.getSkill)
+    res.toList
   }
 
-  private[this] object DatabaseCrud {
-    def apply[A](g: Database => Seq[A],
-                 l: DatabaseLens[Database] => Lens[Database, Seq[A]],
-                 i: (A, A) => Boolean): DatabaseCrud[A, A] = {
-      new DatabaseCrud[A, A] {
-        override protected[this] def get(): Seq[A] = g(database)
-
-        override protected[this] def len(): Lens[Database, Seq[A]] = l(databaseLens)
-
-        override protected[this] def identity(a: A, b: A): Boolean = i(a, b)
-
-        override protected[this] def identities(): Seq[A] = get()
-
-        override protected[this] def altIdentity(a: A, b: A): Boolean = identity(a, b)
-      }
-    }
-
-    def apply[A, B](g: Database => Seq[A],
-                    l: DatabaseLens[Database] => Lens[Database, Seq[A]],
-                    i: (A, A) => Boolean,
-                    is: Database => Seq[B],
-                    ai: (A, B) => Boolean): DatabaseCrud[A, B] = {
-      new DatabaseCrud[A, B] {
-        override protected[this] def get(): Seq[A] = g(database)
-
-        override protected[this] def len(): Lens[Database, Seq[A]] = l(databaseLens)
-
-        override protected[this] def identity(a: A, b: A): Boolean = i(a, b)
-
-        override protected[this] def identities(): Seq[B] = is(database)
-
-        override protected[this] def altIdentity(a: A, b: B): Boolean = ai(a, b)
-      }
-    }
+  private[this] def items(d: Database): List[Item] = {
+    val res = d.weapons.map(_.getItem) ++ d.armors.map(_.getItem) ++ d.accessories.map(_.getItem)
+    res.toList
   }
 
-  private[this] def skillIdentities(d: Database): Seq[Skill] = {
-    d.multipleAttackSkills.map(_.getSkill.getSkill) ++ d.chainAttackSkills.map(_.getSkill.getSkill)
+  def read(s: String): Unit = database.set(Database.parseFrom(Base64.getDecoder.decode(s)))
+
+  def write(): String = Base64.getEncoder.encodeToString(Database.toByteArray(database.get()))
+
+  def races(): Crud[Race] = {
+    DatabaseCrud.apply(database = database, all = _.races, lens = _.races, equal = _.getId == _.getId)
   }
 
-  def read(s: String): Unit = synchronized(database = Database.parseFrom(Base64.getDecoder.decode(s)))
+  def classes(): Crud[Class] = {
+    DatabaseCrud.apply(database = database, all = _.classes, lens = _.classes, equal = _.getId == _.getId)
+  }
 
-  def write(): String = synchronized(Base64.getEncoder.encodeToString(Database.toByteArray(database)))
+  def characters(): Crud[Chara] = {
+    DatabaseCrud.apply(database = database, all = _.charas, lens = _.charas, equal = _.getId == _.getId)
+  }
 
-  def races(): Crud[Race] = DatabaseCrud.apply[Race](_.races, _.races, _.getId == _.getId)
-
-  def classes(): Crud[model.Class] = DatabaseCrud.apply[model.Class](_.classes, _.classes, _.getId == _.getId)
-
-  def characters(): Crud[Chara] = DatabaseCrud.apply[Chara](_.charas, _.charas, _.getId == _.getId)
+  def skills(): List[Skill] = skills(database.get())
 
   def multipleAttackSkills(): Crud[MultipleAttackSkill] = {
     DatabaseCrud.apply[MultipleAttackSkill, Skill](
-      _.multipleAttackSkills,
-      _.multipleAttackSkills,
-      _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
-      skillIdentities,
-      _.getSkill.getSkill.getId == _.getId)
+      database = database,
+      all = _.multipleAttackSkills,
+      lens = _.multipleAttackSkills,
+      ids = skills,
+      equal = _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
+      equal2id = _.getSkill.getSkill.getId == _.getId)
   }
 
   def chainAttackSkills(): Crud[ChainAttackSkill] = {
     DatabaseCrud.apply[ChainAttackSkill, Skill](
-      _.chainAttackSkills,
-      _.chainAttackSkills,
-      _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
-      skillIdentities,
-      _.getSkill.getSkill.getId == _.getId)
+      database = database,
+      all = _.chainAttackSkills,
+      lens = _.chainAttackSkills,
+      ids = skills,
+      equal = _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
+      equal2id = _.getSkill.getSkill.getId == _.getId)
+  }
+
+  def items(): List[Item] = items(database.get())
+
+  def weapons(): Crud[Weapon] = {
+    DatabaseCrud.apply[Weapon, Item](
+      database = database,
+      all = _.weapons,
+      lens = _.weapons,
+      ids = items,
+      equal = _.getItem.getId == _.getItem.getId,
+      equal2id = _.getItem.getId == _.getId)
+  }
+
+  def armors(): Crud[Armor] = {
+    DatabaseCrud.apply[Armor, Item](
+      database = database,
+      all = _.armors,
+      lens = _.armors,
+      ids = items,
+      equal = _.getItem.getId == _.getItem.getId,
+      equal2id = _.getItem.getId == _.getId)
+  }
+
+  def accessories(): Crud[Accessory] = {
+    DatabaseCrud.apply[Accessory, Item](
+      database = database,
+      all = _.accessories,
+      lens = _.accessories,
+      ids = items,
+      equal = _.getItem.getId == _.getItem.getId,
+      equal2id = _.getItem.getId == _.getId)
   }
 }
 
 object DatabaseService {
   def apply(): DatabaseService = new DatabaseService()
-
-  trait Crud[A] {
-    def read(): Set[A]
-    def create(a: A): Boolean
-    def update(a: A): Boolean
-    def delete(a: A): Boolean
-  }
 }

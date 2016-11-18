@@ -1,7 +1,7 @@
 package browser
 
 import controllers.ReverseRaceController
-import domain.service.DatabaseService.Crud
+import domain.service.Crud
 import model.Race
 import play.api.mvc.Call
 

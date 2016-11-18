@@ -1,6 +1,6 @@
 package controllers
 
-import domain.service.DatabaseService.Crud
+import domain.service.Crud
 import models.core.{AsModel, Identifier}
 import play.api.libs.json.Reads
 import play.api.mvc.{Action, Controller, Result}
@@ -18,7 +18,7 @@ abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) exte
 
   protected[this] def getPage(id: String, a: Option[A]): Future[Result]
 
-  val list = Action(_ => listPage(crud.read().toList))
+  val list = Action(_ => listPage(crud.read()))
 
   def get(id: String) = Action.async(_ => getPage(id, crud.read().find(a => identity(a).id == id)))
 
@@ -30,9 +30,8 @@ abstract class CrudController[A, B <: AsModel[A]](implicit reads: Reads[B]) exte
 
   def delete(id: String) = Action { _ =>
     val identifier = Identifier(id)
-    val res = crud.delete(identity(identifier))
-
-    if (res) ok() else notFound(identifier)
+    crud.delete(identity(identifier))
+    ok()
   }
 
   val update = json[B] { request =>

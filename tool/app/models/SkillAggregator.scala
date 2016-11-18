@@ -10,17 +10,11 @@ trait SkillAggregator {
 
 object SkillAggregator {
   class Aggregator(service: DatabaseService) {
-    private[this] def aggregate = {
-      (service.multipleAttackSkills().read(), service.chainAttackSkills().read())
-    }
-
-    def all: List[Skill] = {
-      val (s1, s2) = aggregate
-      s1.map(_.getSkill.getSkill).toList ++ s2.map(_.getSkill.getSkill).toList
-    }
+    def all: List[Skill] = service.skills()
 
     def categorized[A](id: SkillId)(f: PartialFunction[Any, A]): Option[A] = {
-      val (s1, s2) = aggregate
+      val s1 = service.multipleAttackSkills().read()
+      val s2 = service.chainAttackSkills().read()
       s1.find(_.getSkill.getSkill.getId == id).map(f).
         orElse(s2.find(_.getSkill.getSkill.getId == id).map(f))
     }

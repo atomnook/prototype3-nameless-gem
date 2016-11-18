@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package model.item;
+
+import "item/item.proto";
+
+message Accessory {
+  Item item = 1;
+}

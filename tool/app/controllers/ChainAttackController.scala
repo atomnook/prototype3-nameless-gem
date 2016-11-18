@@ -2,8 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import domain.service.DatabaseService
-import domain.service.DatabaseService.Crud
+import domain.service.{Crud, DatabaseService}
 import model.skill.ChainAttackSkill
 import models.core.Identifier
 import models.request.CreateChainAttack
@@ -26,10 +25,10 @@ class ChainAttackController @Inject() (service: DatabaseService)
   override protected[this] def identity(id: Identifier): ChainAttackSkill = ChainAttackSkill().update(_.skill.skill.id.id := id.id)
 
   override protected[this] def listPage(a: List[ChainAttackSkill]): Result = {
-    Ok(views.html.SkillController.ChainAttackController.list(a, skills.all))
+    Ok(views.html.ChainAttackController.list(a, skills.all))
   }
 
   override protected[this] def getPage(id: String, a: Option[ChainAttackSkill]): Future[Result] = {
-    Future.successful(Ok(views.html.SkillController.ChainAttackController.get(id, a, skills.all)))
+    Future.successful(Ok(views.html.ChainAttackController.get(id, a, skills.all)))
   }
 }

@@ -3,9 +3,8 @@ package controllers
 import javax.inject.Inject
 
 import controllers.CharaController.{AttributesViewArgs, GetViewArgs}
-import domain.service.DatabaseService.Crud
 import domain.service.DomainService.{ClassNotFoundException, RaceNotFoundException}
-import domain.service.{DatabaseService, DomainService}
+import domain.service.{Crud, DatabaseService, DomainService}
 import model._
 import models.ModelHelper
 import models.core.Identifier
@@ -27,14 +26,14 @@ class CharaController @Inject() (service: DatabaseService) extends CrudControlle
   override protected[this] def identity(id: Identifier): Chara = Chara().update(_.id.id := id.id)
 
   override protected[this] def listPage(a: List[Chara]): Result = {
-    val races = service.races().read().toList
-    val classes = service.classes().read().toList
+    val races = service.races().read()
+    val classes = service.classes().read()
     Ok(views.html.CharaController.list(a, races, classes))
   }
 
   override protected[this] def getPage(id: String, a: Option[Chara]): Future[Result] = {
-    val races = service.races().read().toList
-    val classes = service.classes().read().toList
+    val races = service.races().read()
+    val classes = service.classes().read()
 
     for {
       attributes <- a.map(domainService.attributes).

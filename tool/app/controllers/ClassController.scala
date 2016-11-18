@@ -2,8 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import domain.service.DatabaseService
-import domain.service.DatabaseService.Crud
+import domain.service.{Crud, DatabaseService}
 import models.core.Identifier
 import models.request.CreateClass
 import models.{ModelHelper, SkillAggregator}
