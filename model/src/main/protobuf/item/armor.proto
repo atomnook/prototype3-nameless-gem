@@ -18,5 +18,5 @@ message Armor {
   Item item = 1;
   int64 def = 2;
   int64 mdf = 3;
-  ArmorType typ = 4;
+  ArmorType type = 4;
 }

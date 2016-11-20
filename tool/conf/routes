@@ -23,7 +23,7 @@ PUT     /characters.json        controllers.CharaController.update
 DELETE  /characters/:id.json    controllers.CharaController.delete(id: String)
 
 GET     /skills                       controllers.SkillController.list
-GET     /skills/i/:id                 controllers.SkillController.redirect(id)
+GET     /skills/i/:id                 controllers.SkillController.redirect(id: String)
 
 GET     /skills/multiple-attack             controllers.MultipleAttackController.list
 GET     /skills/multiple-attack/:id         controllers.MultipleAttackController.get(id: String)
@@ -36,5 +36,26 @@ GET     /skills/chain-attack/:id        controllers.ChainAttackController.get(id
 POST    /skills/chain-attack.json       controllers.ChainAttackController.create
 PUT     /skills/chain-attack.json       controllers.ChainAttackController.update
 DELETE  /skills/chain-attack/:id.json   controllers.ChainAttackController.delete(id: String)
+
+GET   /items        controllers.ItemController.list
+GET   /items/i/:id  controllers.ItemController.redirect(id: String)
+
+GET     /items/weapons            controllers.WeaponController.list
+GET     /items/weapons/:id        controllers.WeaponController.get(id: String)
+POST    /items/weapon.json        controllers.WeaponController.create
+PUT     /items/weapon.json        controllers.WeaponController.update
+DELETE  /items/weapons/:id.json   controllers.WeaponController.delete(id: String)
+
+GET     /items/armors             controllers.ArmorController.list
+GET     /items/armors/:id         controllers.ArmorController.get(id: String)
+POST    /items/armor.json         controllers.ArmorController.create
+PUT     /items/armor.json         controllers.ArmorController.update
+DELETE  /items/armors/:id.json    controllers.ArmorController.delete(id: String)
+
+GET     /items/accessories            controllers.AccessoryController.list
+GET     /items/accessories/:id        controllers.AccessoryController.get(id: String)
+POST    /items/accessory.json         controllers.AccessoryController.create
+PUT     /items/accessory.json         controllers.AccessoryController.update
+DELETE  /items/accessories/:id.json   controllers.AccessoryController.delete(id: String)
 
 GET   /favicon.ico    controllers.Assets.at(path="/public", file="images/favicon.ico")

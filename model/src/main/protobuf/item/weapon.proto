@@ -16,5 +16,5 @@ message Weapon {
   Item item = 1;
   int64 atk = 2;
   int64 mat = 3;
-  WeaponType typ = 4;
+  WeaponType type = 4;
 }

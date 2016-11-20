@@ -1,0 +1,41 @@
+@(accessories: List[model.item.Accessory])(implicit helper: models.ModelHelper)
+
+@main(title = routes.AccessoryController.list.url) {
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>@routes.AccessoryController.list</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            @component.table.accessories(accessories) {
+                <tr>
+                    <td>@component.form.id(placeholder = "item id")</td>
+                    <td>@component.form.name(placeholder = "item name")</td>
+                    <td>@component.form.price()</td>
+                </tr>
+            }
+        </div>
+    </div>
+    <div>
+        <div class="col-xs-12">
+            <div id="create-result"></div>
+            <button id="create" type="button" class="btn btn-default">Create</button>
+        </div>
+    </div>
+    <script>
+        $('#create').click(function() {
+            var url = window.location.origin + '@routes.AccessoryController.create';
+
+            var body = {
+                'id': idValue(),
+                'name': nameValue(),
+                'price': priceValue()
+            };
+
+            jsonApi(url, 'POST', body, '#create-result');
+        });
+    </script>
+}
