@@ -1,0 +1,11 @@
+@(classes: List[model.Class], id: String, v: String, default: Seq[model.ClassId] = Nil)
+
+<select id="@id" class="form-control" multiple>
+    @for(cls <- classes) {
+        <option value="@cls.getId.id" @if(default.contains(cls.getId)) { selected } >@cls.name</option>
+    }
+</select>
+
+<script>
+    @v = function() { return array('#@id'); }
+</script>

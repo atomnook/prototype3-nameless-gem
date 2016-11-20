@@ -1,51 +1,27 @@
 @(id: String, weapon: Option[model.item.Weapon])(implicit helper: models.ModelHelper)
 
-@mainWithHeader(call = routes.WeaponController.get(id), obj = weapon) {
+@pages.get(call = routes.WeaponController.get(id), update = routes.WeaponController.update, delete = routes.WeaponController.delete(id), obj = weapon) {
     @for(w <- weapon) {
-        <div class="row">
-            <div class="col-xs-12">
-                @component.table.weapons(w :: Nil) {
-                    <tr>
-                        <td></td>
-                        <td>@component.form.name(placeholder = "item name", default = w.getItem.name)</td>
-                        <td>@component.form.price(default = w.getItem.price)</td>
-                        <td>@component.form.atk(default = w.atk)</td>
-                        <td>@component.form.mat(default = w.mat)</td>
-                        <td>@component.form.weaponType(default = w.`type`)</td>
-                    </tr>
-                }
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="update-result"></div>
-                <button id="update" type="button" class="btn btn-default">Update</button>
-                <button id="delete" type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-
-        <script>
-            $('#update').click(function() {
-                var url = window.location.origin + '@routes.WeaponController.update';
-
-            var body = {
-                'id': '@id',
-                'name': nameValue(),
-                'price': priceValue(),
-                'atk': atkValue(),
-                'mat': matValue(),
-                'type': weaponTypeValue()
-            };
-
-                jsonApi(url, 'PUT', body, '#update-result');
-            });
-
-            $('#delete').click(function() {
-                var url = window.location.origin + '@routes.WeaponController.delete(id)';
-                noContentApi(url, 'DELETE', '#update-result');
-            });
-        </script>
+        @table.weapons(w :: Nil) {
+            <tr>
+                <td></td>
+                <td>@forms.text(id = "name", v = "nameValue", default = w.getItem.name)</td>
+                <td>@forms.number(id = "price", v = "priceValue", default = w.getItem.price)</td>
+                <td>@forms.number(id = "atk", v = "atkValue", default = w.atk)</td>
+                <td>@forms.number(id = "mat", v = "matValue", default = w.mat)</td>
+                <td>@forms.enum(id = "weapon-type", v = "weaponTypeValue", companion = model.item.WeaponType, default = w.`type`.value)</td>
+            </tr>
+        }
     }
+} {
+    {
+        'id': '@id',
+        'name': nameValue(),
+        'price': priceValue(),
+        'atk': atkValue(),
+        'mat': matValue(),
+        'type': weaponTypeValue()
+    }
+} {
+    <!---->
 }
-

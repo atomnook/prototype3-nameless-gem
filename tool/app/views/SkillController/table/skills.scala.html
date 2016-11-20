@@ -1,0 +1,15 @@
+@(skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
+@import helper._
+
+<table class="table table-striped">
+    <tr>
+        @columns.headers.skill()
+    </tr>
+
+    @for(s <- skills) {
+        <tr>
+            @columns.skill(s)
+        </tr>
+    }
+</table>

@@ -31,8 +31,8 @@ trait BrowserSpec extends PlaySpec with OneServerPerSuite with AllBrowsersPerSui
     numberField(increasing).value = level.increasingPct.toString
   }
 
-  private[this] def fill(prefix: String, a: Attributes): Unit = {
-    def set(k: String, v: Long): Unit = numberField(prefix + k).value = v.toString
+  private[this] def fill(prefix: String, postfix: String, a: Attributes): Unit = {
+    def set(k: String, v: Long): Unit = numberField(s"$prefix-$k-$postfix").value = v.toString
 
     set("hp", a.hp)
     set("tp", a.tp)
@@ -44,9 +44,9 @@ trait BrowserSpec extends PlaySpec with OneServerPerSuite with AllBrowsersPerSui
     set("luc", a.luc)
   }
 
-  protected[this] def fill(a: LevelAttributes): Unit = {
-    fill("base-", a.getBase)
-    fill("increasing-", a.getIncreasing)
+  protected[this] def fill(id: String, a: LevelAttributes): Unit = {
+    fill("base", id, a.getBase)
+    fill("increasing", id, a.getIncreasing)
   }
 
   protected[this] val arbMultipleAttackSkill = ArbitraryMultipleAttackSkill

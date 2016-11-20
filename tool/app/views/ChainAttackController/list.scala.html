@@ -1,50 +1,31 @@
 @(skills: List[model.skill.ChainAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@main(title = "/skills/chain-attack") {
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="page-header">
-                <h1>/skills/chain-attack</h1>
-
-                @component.table.chainAttackSkills(skills, prerequisites) {
-                    <tr>
-                        <td>@component.form.id(placeholder = "skill id")</td>
-                        <td>@component.form.name(placeholder = "skill name")</td>
-                        <td>@component.form.skills(prerequisites)</td>
-                        <td>@component.form.skillTypes()</td>
-                        <td>@component.form.elements()</td>
-                        <td>@component.form.attackLevel(id = "power", v = "powerValue")</td>
-                        <td>@component.form.attackLevel(id = "tp", v = "tpValue")</td>
-                        <td>@component.form.elements(id = "follow", v = "followValue")</td>
-                        <td>@component.form.attackLevel(id = "chain", v = "chainValue")</td>
-                        <td>@component.form.range()</td>
-                    </tr>
-                }
-
-                <div id="create-result"></div>
-                <button id="create" type="button" class="btn btn-default">Create</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $('#create').click(function() {
-            var url = window.location.origin + '@routes.ChainAttackController.create';
-
-            var body = {
-                'id': idValue(),
-                'name': nameValue(),
-                'prerequisites': skillsValue(),
-                'types': skillTypesValue(),
-                'elements': elementsValue(),
-                'power': powerValue(),
-                'tp': tpValue(),
-                'follow': followValue(),
-                'chain': chainValue(),
-                'range': rangeValue()
-            };
-
-            jsonApi(url, 'POST', body, '#create-result');
-        });
-    </script>
+@pages.list(call = routes.ChainAttackController.list, create = routes.ChainAttackController.create) {
+    @table.chainAttackSkills(skills, prerequisites) {
+        <tr>
+            <td>@forms.text(id = "id", v = "idValue", placeholder = "skill id")</td>
+            <td>@forms.text(id = "name", v = "nameValue", placeholder = "skill name")</td>
+            <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites)</td>
+            <td>@forms.enums(id = "types", v = "skillTypesValue", companion = model.skill.SkillType)</td>
+            <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element)</td>
+            <td>@forms.attackLevel(id = "power", v = "powerValue")</td>
+            <td>@forms.attackLevel(id = "tp", v = "tpValue")</td>
+            <td>@forms.enums(id = "follow", v = "followValue", companion = model.Element)</td>
+            <td>@forms.attackLevel(id = "chain", v = "chainValue")</td>
+            <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range)</td>
+        </tr>
+    }
+} {
+    {
+        'id': idValue(),
+        'name': nameValue(),
+        'prerequisites': skillsValue(),
+        'types': skillTypesValue(),
+        'elements': elementsValue(),
+        'power': powerValue(),
+        'tp': tpValue(),
+        'follow': followValue(),
+        'chain': chainValue(),
+        'range': rangeValue()
+    }
 }

@@ -1,0 +1,11 @@
+@(races: List[model.Race], id: String, v: String, default: model.RaceId = model.RaceId())
+
+<select id="@id" class="form-control">
+    @for(race <- races) {
+        <option value="@race.getId.id" @if(race.getId == default) { selected } >@race.name</option>
+    }
+</select>
+
+<script>
+    @v = function() { return text('#@id'); }
+</script>

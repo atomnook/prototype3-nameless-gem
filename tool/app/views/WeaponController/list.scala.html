@@ -1,47 +1,23 @@
 @(weapons: List[model.item.Weapon])(implicit helper: models.ModelHelper)
 
-@main(title = routes.WeaponController.list.url) {
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="page-header">
-                <h1>@routes.WeaponController.list</h1>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            @component.table.weapons(weapons) {
-                <tr>
-                    <td>@component.form.id(placeholder = "item id")</td>
-                    <td>@component.form.name(placeholder = "item name")</td>
-                    <td>@component.form.price()</td>
-                    <td>@component.form.atk()</td>
-                    <td>@component.form.mat()</td>
-                    <td>@component.form.weaponType()</td>
-                </tr>
-            }
-        </div>
-    </div>
-    <div>
-        <div class="col-xs-12">
-            <div id="create-result"></div>
-            <button id="create" type="button" class="btn btn-default">Create</button>
-        </div>
-    </div>
-    <script>
-        $('#create').click(function() {
-            var url = window.location.origin + '@routes.WeaponController.create';
-
-            var body = {
-                'id': idValue(),
-                'name': nameValue(),
-                'price': priceValue(),
-                'atk': atkValue(),
-                'mat': matValue(),
-                'type': weaponTypeValue()
-            };
-
-            jsonApi(url, 'POST', body, '#create-result');
-        });
-    </script>
+@pages.list(call = routes.WeaponController.list, create = routes.WeaponController.create) {
+    @table.weapons(weapons) {
+        <tr>
+            <td>@forms.text(id = "id", v = "idValue", placeholder = "item id")</td>
+            <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name")</td>
+            <td>@forms.number(id = "price", v = "priceValue")</td>
+            <td>@forms.number(id = "atk", v = "atkValue")</td>
+            <td>@forms.number(id = "mat", v = "matValue")</td>
+            <td>@forms.enum(id = "weapon-type", v = "weaponTypeValue", companion = model.item.WeaponType)</td>
+        </tr>
+    }
+} {
+    {
+        'id': idValue(),
+        'name': nameValue(),
+        'price': priceValue(),
+        'atk': atkValue(),
+        'mat': matValue(),
+        'type': weaponTypeValue()
+    }
 }
