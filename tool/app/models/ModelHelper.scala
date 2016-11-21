@@ -1,6 +1,7 @@
 package models
 
 import domain.service.DatabaseService
+import model.item.ItemId
 import model.skill.{ChainAttackSkill, MultipleAttackSkill, Skill, SkillId}
 import model.{ClassId, RaceId}
 
@@ -30,5 +31,9 @@ class ModelHelper(service: DatabaseService) extends SkillAggregator {
 
   implicit class ClassIdResolver(id: ClassId) {
     def name: String = service.classes().read().find(_.getId == id).map(_.name).getOrElse(undefined)
+  }
+
+  implicit class ItemIdResolver(id: ItemId) {
+    def name: String = service.items().find(_.getId == id).map(_.name).getOrElse(undefined)
   }
 }

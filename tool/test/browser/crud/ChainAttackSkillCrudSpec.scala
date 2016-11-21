@@ -1,11 +1,11 @@
-package browser
+package browser.crud
 
 import controllers.ReverseChainAttackController
 import domain.service.Crud
 import model.skill.ChainAttackSkill
 import play.api.mvc.Call
 
-class ChainAttackSkillSpec extends CrudSpec[ChainAttackSkill, ReverseChainAttackController] {
+class ChainAttackSkillCrudSpec extends CrudSpec[ChainAttackSkill, ReverseChainAttackController] {
   override protected[this] def reverseController: ReverseChainAttackController = controllers.routes.ChainAttackController
 
   override protected[this] def list: Call = reverseController.list()

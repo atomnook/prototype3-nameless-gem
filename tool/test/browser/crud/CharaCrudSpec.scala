@@ -1,4 +1,4 @@
-package browser
+package browser.crud
 
 import controllers.ReverseCharaController
 import domain.service.Crud
@@ -6,7 +6,7 @@ import model.Chara
 import org.scalatestplus.play.BrowserInfo
 import play.api.mvc.Call
 
-class CharaSpec extends CrudSpec[Chara, ReverseCharaController] {
+class CharaCrudSpec extends CrudSpec[Chara, ReverseCharaController] {
   override protected[this] def list: Call = reverseController.list()
 
   override protected[this] def get(id: String): Call = reverseController.get(id)

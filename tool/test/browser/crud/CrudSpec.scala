@@ -1,5 +1,6 @@
-package browser
+package browser.crud
 
+import browser.{BrowserSpec, GoTo}
 import domain.service.Crud
 import org.scalatestplus.play.BrowserInfo
 import play.api.mvc.Call

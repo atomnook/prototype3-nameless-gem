@@ -1,0 +1,59 @@
+@(c: model.Chara, equipments: controllers.CharaController.EquipmentsViewArgs)(implicit helper: models.ModelHelper)
+
+@import equipments._
+@import helper._
+@import model.item._
+
+@row(id: String, label: String, f: model.Equipments => ItemId, options: List[model.item.Item]) = {
+    <tr>
+        <th>@label</th>
+        <td>@f(c.getEquipments).name</td>
+        <td>
+            <select id="@id" class="form-control">
+                <option value>-</option>
+                @for(o <- options) {
+                    <option value="@o.getId.id" @if(o.getId.id == f(c.getEquipments)) { selected } >@o.name</option>
+                }
+            </select>
+        </td>
+    </tr>
+
+    <script>
+        @(id)Value = function() {
+            var id = text('#@id');
+            if (id == '') {
+                return null;
+            } else {
+                return id;
+            }
+        }
+    </script>
+}
+
+<table class="table table-striped">
+    @row("primary", "primary", _.getPrimary, weapons.map(_.getItem))
+    @row("secondary", "secondary", _.getSecondary, typedArmors(ArmorType.SHIELD :: Nil))
+    @row("head", "head", _.getHead, typedArmors(ArmorType.HEAD :: Nil))
+    @row("arm", "arm", _.getArm, typedArmors(ArmorType.ARM :: Nil))
+    @row("body", "body", _.getBody, typedArmors(ArmorType.HEAVY :: ArmorType.LIGHT :: ArmorType.CLOTH :: Nil))
+    @row("foot", "foot", _.getFoot, typedArmors(ArmorType.FOOT :: Nil))
+    @row("accessory1", "accessory", _.getAccessory1, accessories.map(_.getItem))
+    @row("accessory2", "accessory", _.getAccessory2, accessories.map(_.getItem))
+    @row("accessory3", "accessory", _.getAccessory3, accessories.map(_.getItem))
+</table>
+
+<script>
+    equipmentsValue = function() {
+        return {
+            'primary': primaryValue(),
+            'secondary': secondaryValue(),
+            'head': headValue(),
+            'arm': armValue(),
+            'body': bodyValue(),
+            'foot': footValue(),
+            'accessory1': accessory1Value(),
+            'accessory2': accessory2Value(),
+            'accessory3': accessory3Value()
+        };
+    }
+</script>

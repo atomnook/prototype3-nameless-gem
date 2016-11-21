@@ -1,4 +1,4 @@
-package browser
+package browser.crud
 
 import browser.arbitrary.ArbitraryArmor
 import controllers.ReverseArmorController
@@ -6,7 +6,7 @@ import domain.service.Crud
 import model.item.Armor
 import play.api.mvc.Call
 
-class ArmorSpec extends CrudSpec[Armor, ReverseArmorController] {
+class ArmorCrudSpec extends CrudSpec[Armor, ReverseArmorController] {
   override protected[this] def list: Call = reverseController.list()
 
   override protected[this] def get(id: String): Call = reverseController.get(id)
