@@ -1,0 +1,15 @@
+@(accessories: List[model.item.Accessory])(extend: Html)(implicit helper: models.ModelHelper)
+
+<table class="table table-striped">
+    <tr>
+        @columns.headers.item()
+    </tr>
+
+    @for(accessory <- accessories) {
+        <tr>
+            @columns.item(accessory.getItem)
+        </tr>
+    }
+
+    @extend
+</table>

@@ -1,0 +1,13 @@
+@(items: List[model.item.Item])(implicit helper: models.ModelHelper)
+
+<table class="table table-striped">
+    <tr>
+        @columns.headers.item()
+    </tr>
+
+    @for(item <- items) {
+        <tr>
+            @columns.item(item)
+        </tr>
+    }
+</table>

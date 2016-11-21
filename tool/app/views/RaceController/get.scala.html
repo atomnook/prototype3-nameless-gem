@@ -1,46 +1,27 @@
 @(id: String, race: Option[model.Race], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@mainWithHeader(call = routes.RaceController.get(id), obj = race) {
+@pages.get(
+    call = routes.RaceController.get(id),
+    update = routes.RaceController.update,
+    delete = routes.RaceController.delete(id),
+    obj = race) {
     @for(r <- race) {
-        <div class="row">
-            <div class="col-xs-12">
-                @component.table.races(r :: Nil) {
-                    <tr>
-                        <td></td>
-                        <td>@component.form.name(default = r.name)</td>
-                        <td>@component.form.skills(skills = skills, default = r.skillTree.toList)</td>
-                        <td>@component.form.levelAttributes(default = r.getAttributes)</td>
-                    </tr>
-                }
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="update-result"></div>
-                <button id="update" type="button" class="btn btn-default">Update</button>
-                <button id="delete" type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-
-        <script>
-            $('#update').click(function() {
-                var url = window.location.origin + '@routes.RaceController.update';
-
-                var body = {
-                    'id': '@id',
-                    'name': nameValue(),
-                    'skills': skillsValue(),
-                    'attributes': levelAttributesValue()
-                };
-
-                jsonApi(url, 'PUT', body, '#update-result');
-            });
-
-            $('#delete').click(function() {
-                var url = window.location.origin + '@routes.RaceController.delete(id)';
-                noContentApi(url, 'DELETE', '#update-result');
-            });
-        </script>
+        @table.races(r :: Nil) {
+            <tr>
+                <td></td>
+                <td>@forms.text(id = "name", v = "nameValue", default = r.name)</td>
+                <td>@forms.skills(id = "skills", v = "skillsValue", skills = skills, default = r.skillTree.toList)</td>
+                <td>@forms.levelAttributes(id = "level-attributes", v = "levelAttributesValue", default = r.getAttributes)</td>
+            </tr>
+        }
     }
+} {
+    {
+        'id': '@id',
+        'name': nameValue(),
+        'skills': skillsValue(),
+        'attributes': levelAttributesValue()
+    }
+} {
+    <!---->
 }

@@ -1,58 +1,39 @@
 @(id: String, skill: Option[model.skill.MultipleAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@mainWithHeader(call = routes.MultipleAttackController.get(id), obj = skill) {
+@pages.get(
+    call = routes.MultipleAttackController.get(id),
+    update = routes.MultipleAttackController.update,
+    delete = routes.MultipleAttackController.delete(id),
+    obj = skill) {
     @for(s <- skill) {
-        <div class="row">
-            <div class="col-xs-12">
-                @component.table.multipleAttackSkills(s :: Nil, prerequisites) {
-                    <tr>
-                        <td></td>
-                        <td>@component.form.name(placeholder = "skill name", default = s.getSkill.getSkill.name)</td>
-                        <td>@component.form.skills(prerequisites, default = s.getSkill.getSkill.prerequisites.toList)</td>
-                        <td>@component.form.skillTypes(default = s.getSkill.types.toSet)</td>
-                        <td>@component.form.elements(default = s.getSkill.elements.toSet)</td>
-                        <td>@component.form.attackLevel(id = "power", v = "powerValue", default = s.getSkill.getPower)</td>
-                        <td>@component.form.attackLevel(id = "tp", v = "tpValue", default = s.getSkill.getTpCost)</td>
-                        <td>@component.form.attackLevel(id = "hit", v = "hitValue", default = s.getHit)</td>
-                        <td>@component.form.range(default = s.range)</td>
-                        <td>@component.form.target(default = s.target)</td>
-                    </tr>
-                }
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="update-result"></div>
-                <button id="update" type="button" class="btn btn-default">Update</button>
-                <button id="delete" type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-
-        <script>
-            $('#update').click(function() {
-                var url = window.location.origin + '@routes.MultipleAttackController.update';
-
-                var body = {
-                    'id': '@id',
-                    'name': nameValue(),
-                    'prerequisites': skillsValue(),
-                    'types': skillTypesValue(),
-                    'elements': elementsValue(),
-                    'power': powerValue(),
-                    'tp': tpValue(),
-                    'hit': hitValue(),
-                    'range': rangeValue(),
-                    'target': targetValue()
-                };
-
-                jsonApi(url, 'PUT', body, '#update-result');
-            });
-
-            $('#delete').click(function() {
-                var url = window.location.origin + '@routes.MultipleAttackController.delete(id)';
-                noContentApi(url, 'DELETE', '#update-result');
-            });
-        </script>
+        @table.multipleAttackSkills(s :: Nil, prerequisites) {
+            <tr>
+                <td></td>
+                <td>@forms.text(id = "name", v = "nameValue", default = s.getSkill.getSkill.name)</td>
+                <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites, default = s.getSkill.getSkill.prerequisites)</td>
+                <td>@forms.enums(id = "types", v = "skillTypesValue", companion = model.skill.SkillType, default = s.getSkill.types)</td>
+                <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element, default = s.getSkill.elements)</td>
+                <td>@forms.attackLevel(id = "power", v = "powerValue", default = s.getSkill.getPower)</td>
+                <td>@forms.attackLevel(id = "tp", v = "tpValue", default = s.getSkill.getTpCost)</td>
+                <td>@forms.attackLevel(id = "hit", v = "hitValue", default = s.getHit)</td>
+                <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range, default = s.range.value)</td>
+                <td>@forms.enum(id = "target", v = "targetValue", companion = model.Target, default = s.target.value)</td>
+            </tr>
+        }
     }
+} {
+    {
+        'id': '@id',
+        'name': nameValue(),
+        'prerequisites': skillsValue(),
+        'types': skillTypesValue(),
+        'elements': elementsValue(),
+        'power': powerValue(),
+        'tp': tpValue(),
+        'hit': hitValue(),
+        'range': rangeValue(),
+        'target': targetValue()
+    }
+} {
+    <!---->
 }

@@ -1,0 +1,19 @@
+@(value: model.Attributes)
+
+@row(label: String, f: model.Attributes => Long) = {
+    <tr>
+        <th>@label</th>
+        <td>@f(value)</td>
+    </tr>
+}
+
+<table class="table table-striped">
+    @row("HP", _.hp)
+    @row("TP", _.tp)
+    @row("STR", _.str)
+    @row("VIT", _.vit)
+    @row("INT", _.int)
+    @row("WIS", _.wis)
+    @row("AGI", _.agi)
+    @row("LUC", _.luc)
+</table>

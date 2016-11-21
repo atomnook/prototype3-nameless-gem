@@ -1,0 +1,11 @@
+@(call: play.api.mvc.Call)(html: Html)
+
+@main(title = call.url) {
+    @row1 {
+        <div class="page-header">
+            <h1>@call</h1>
+        </div>
+    }
+
+    @html
+}

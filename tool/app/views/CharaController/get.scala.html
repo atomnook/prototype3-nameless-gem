@@ -2,76 +2,53 @@
 
 @import view._
 
-@mainWithHeader(call = routes.CharaController.get(id), obj = chara) {
+@pages.get(
+    call = routes.CharaController.get(id),
+    update = routes.CharaController.update,
+    delete = routes.CharaController.delete(id),
+    obj = chara) {
     @for(c <- chara) {
-        <div class="row">
-            <div class="col-xs-12">
-                @component.table.characters(c :: Nil) {
-                    <tr>
-                        <td></td>
-                        <td>@component.form.name(default = c.name)</td>
-                        <td>@component.form.race(races = races, default = c.getRace)</td>
-                        <td>@component.form.classes(classes = classes, default = c.classes.map(_.getId).toSet)</td>
-                    </tr>
-                }
-            </div>
-        </div>
+        @table.characters(c :: Nil) {
+            <tr>
+                <td></td>
+                <td>@forms.text(id = "name", v = "nameValue", default = c.name)</td>
+                <td>@forms.race(id = "race", v = "raceValue", races = races, default = c.getRace)</td>
+                <td>@forms.classes(id = "classes", v = "classesValue", classes = classes, default = c.classes.map(_.getId))</td>
+            </tr>
+        }
+    }
+} {
+    {
+        'id': '@id',
+        'name': nameValue(),
+        'race': raceValue(),
+        'classes': classesValue()
+    }
+} {
+    @for(c <- chara) {
+        @row1 {
+            <form class="form-inline">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="xp" value="0">
+                    <div class="input-group-addon">xp</div>
+                </div>
+                <button id="gain-xp" type="button" class="btn btn-default">Gain Xp</button>
+            </form>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="update-result"></div>
-                <button id="update" type="button" class="btn btn-default">Update</button>
-                <button id="delete" type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
+            <script>
+                $('#gain-xp').click(function() {
+                    var url = window.location.origin + '@routes.CharaController.gainXp(id)';
 
-        <script>
-            $('#update').click(function() {
-                var url = window.location.origin + '@routes.CharaController.update';
+                    var body = {'xp': number('#xp')};
 
-                var body = {
-                    'id': '@id',
-                    'name': nameValue(),
-                    'race': raceValue(),
-                    'classes': classesValue()
-                };
+                    jsonApi(url, 'POST', body, '#update-result');
+                });
+            </script>
+        }
 
-                jsonApi(url, 'PUT', body, '#update-result');
-            });
-
-            $('#delete').click(function() {
-                var url = window.location.origin + '@routes.CharaController.delete(id)';
-
-                noContentApi(url, 'DELETE', '#update-result');
-            });
-        </script>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <form class="form-inline">
-                    <div class="input-group">
-                        <input type="number" class="form-control" id="xp" value="0">
-                        <div class="input-group-addon">xp</div>
-                    </div>
-                    <button id="gain-xp" type="button" class="btn btn-default">Gain Xp</button>
-                </form>
-            </div>
-        </div>
-
-        <script>
-            $('#gain-xp').click(function() {
-                var url = window.location.origin + '@routes.CharaController.gainXp(id)';
-
-                var body = {'xp': number('#xp')};
-
-                jsonApi(url, 'POST', body, '#update-result');
-            });
-        </script>
-
-        <div class="row">
-            <div class="col-xs-12">
-                @component.table.attributes(attributes.attributes, attributes.alert)
-            </div>
-        </div>
+        @row1 {
+            @if(attributes.attributes.isEmpty) { <div class="alert alert-danger" role="alert">@attributes.alert</div> }
+            @for(a <- attributes.attributes) { @tables.attributes(a) }
+        }
     }
 }

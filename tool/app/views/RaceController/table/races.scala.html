@@ -1,0 +1,27 @@
+@(races: List[model.Race])(extend: Html)(implicit helper: models.ModelHelper)
+
+@import helper._
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>skills</th>
+        <th>attributes</th>
+    </tr>
+
+    @for(race <- races) {
+        <tr>
+            <td><a href="@routes.RaceController.get(race.getId.id)">@race.getId.id</a></td>
+            <td>@race.name</td>
+            <td>
+                @for(id <- race.skillTree) {
+                    <span class="label label-primary">@id.name</span>
+                }
+            </td>
+            <td>@tables.levelAttributes(race.getAttributes)</td>
+        </tr>
+    }
+
+    @extend
+</table>

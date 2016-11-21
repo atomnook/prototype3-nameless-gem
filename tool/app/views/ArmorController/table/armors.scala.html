@@ -1,0 +1,21 @@
+@(armors: List[model.item.Armor])(extend: Html)(implicit helper: models.ModelHelper)
+
+<table class="table table-striped">
+    <tr>
+        @columns.headers.item()
+        <th>def</th>
+        <th>mdf</th>
+        <th>type</th>
+    </tr>
+
+    @for(armor <- armors) {
+        <tr>
+            @columns.item(armor.getItem)
+            <td>@(armor.`def`)</td>
+            <td>@armor.mdf</td>
+            <td>@(armor.`type`.name)</td>
+        </tr>
+    }
+
+    @extend
+</table>

@@ -18,7 +18,7 @@ class RaceSpec extends CrudSpec[Race, ReverseRaceController] {
     textField("name").value = a.name
     multiSel("skills").values = a.skillTree.map(_.id)
 
-    fill(a.getAttributes)
+    fill("level-attributes", a.getAttributes)
   }
 
   override protected[this] def id(a: Race): String = a.getId.id

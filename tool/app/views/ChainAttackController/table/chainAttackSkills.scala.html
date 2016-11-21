@@ -1,0 +1,23 @@
+@(skills: List[model.skill.ChainAttackSkill], prerequisites: List[model.skill.Skill])(extend: Html)(implicit helper: models.ModelHelper)
+
+@import helper._
+
+<table class="table table-striped">
+    <tr>
+        @columns.headers.attackSkill()
+        <th>follow</th>
+        <th>chain</th>
+        <th>range</th>
+    </tr>
+
+    @for(s <- skills) {
+        <tr>
+            @columns.attackSkill(s.getSkill)
+            <td>@texts.elements(s.follow)</td>
+            <td>@texts.attackLevel(s.getChain)</td>
+            <td>@s.range.name</td>
+        </tr>
+    }
+
+    @extend
+</table>

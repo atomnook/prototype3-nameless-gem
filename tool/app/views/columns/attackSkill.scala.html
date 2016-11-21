@@ -1,0 +1,11 @@
+@(value: model.skill.AttackSkill)(implicit helper: models.ModelHelper)
+
+@columns.skill(value.getSkill)
+<td>
+    @for(typ <- value.types) {
+        <span class="label label-primary">@typ.name</span>
+    }
+</td>
+<td>@texts.elements(value.elements)</td>
+<td>@texts.attackLevel(value.getPower)</td>
+<td>@texts.attackLevel(value.getTpCost)</td>

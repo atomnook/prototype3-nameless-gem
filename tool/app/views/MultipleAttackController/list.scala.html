@@ -1,50 +1,31 @@
 @(skills: List[model.skill.MultipleAttackSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@main(title = "/skills/multiple-attack") {
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="page-header">
-                <h1>/skills/multiple-attack</h1>
-
-                @component.table.multipleAttackSkills(skills, prerequisites) {
-                    <tr>
-                        <td>@component.form.id(placeholder = "skill id")</td>
-                        <td>@component.form.name(placeholder = "skill name")</td>
-                        <td>@component.form.skills(prerequisites)</td>
-                        <td>@component.form.skillTypes()</td>
-                        <td>@component.form.elements()</td>
-                        <td>@component.form.attackLevel(id = "power", v = "powerValue")</td>
-                        <td>@component.form.attackLevel(id = "tp", v = "tpValue")</td>
-                        <td>@component.form.attackLevel(id = "hit", v = "hitValue")</td>
-                        <td>@component.form.range()</td>
-                        <td>@component.form.target()</td>
-                    </tr>
-                }
-
-                <div id="create-result"></div>
-                <button id="create" type="button" class="btn btn-default">Create</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $('#create').click(function() {
-            var url = window.location.origin + '@routes.MultipleAttackController.create';
-
-            var body = {
-                'id': idValue(),
-                'name': nameValue(),
-                'prerequisites': skillsValue(),
-                'types': skillTypesValue(),
-                'elements': elementsValue(),
-                'power': powerValue(),
-                'tp': tpValue(),
-                'hit': hitValue(),
-                'range': rangeValue(),
-                'target': targetValue()
-            };
-
-            jsonApi(url, 'POST', body, '#create-result');
-        });
-    </script>
+@pages.list(call = routes.MultipleAttackController.list, create = routes.MultipleAttackController.create) {
+    @table.multipleAttackSkills(skills, prerequisites) {
+        <tr>
+            <td>@forms.text(id = "id", v = "idValue", placeholder = "skill id")</td>
+            <td>@forms.text(id = "name", v = "nameValue", placeholder = "skill name")</td>
+            <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites)</td>
+            <td>@forms.enums(id = "types", v = "skillTypesValue", companion = model.skill.SkillType)</td>
+            <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element)</td>
+            <td>@forms.attackLevel(id = "power", v = "powerValue")</td>
+            <td>@forms.attackLevel(id = "tp", v = "tpValue")</td>
+            <td>@forms.attackLevel(id = "hit", v = "hitValue")</td>
+            <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range)</td>
+            <td>@forms.enum(id = "target", v = "targetValue", companion = model.Target)</td>
+        </tr>
+    }
+} {
+    {
+        'id': idValue(),
+        'name': nameValue(),
+        'prerequisites': skillsValue(),
+        'types': skillTypesValue(),
+        'elements': elementsValue(),
+        'power': powerValue(),
+        'tp': tpValue(),
+        'hit': hitValue(),
+        'range': rangeValue(),
+        'target': targetValue()
+    }
 }

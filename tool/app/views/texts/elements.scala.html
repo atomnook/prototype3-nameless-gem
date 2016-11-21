@@ -1,0 +1,5 @@
+@(value: Seq[model.Element])
+
+@for(elm <- value) {
+    <span class="label label-primary">@elm.name</span>
+}

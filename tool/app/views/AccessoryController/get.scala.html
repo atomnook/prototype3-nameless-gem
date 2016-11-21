@@ -1,45 +1,25 @@
 @(id: String, accessory: Option[model.item.Accessory])(implicit helper: models.ModelHelper)
 
-@mainWithHeader(call = routes.AccessoryController.get(id), obj = accessory) {
+@pages.get(
+    call = routes.AccessoryController.get(id),
+    update = routes.AccessoryController.update,
+    delete = routes.AccessoryController.delete(id),
+    obj = accessory) {
     @for(a <- accessory) {
-        <div class="row">
-            <div class="col-xs-12">
-                @component.table.accessories(a :: Nil) {
-                    <tr>
-                        <td></td>
-                        <td>@component.form.name(placeholder = "item name", default = a.getItem.name)</td>
-                        <td>@component.form.price(default = a.getItem.price)</td>
-                    </tr>
-                }
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="update-result"></div>
-                <button id="update" type="button" class="btn btn-default">Update</button>
-                <button id="delete" type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-
-        <script>
-            $('#update').click(function() {
-                var url = window.location.origin + '@routes.AccessoryController.update';
-
-                var body = {
-                    'id': '@id',
-                    'name': nameValue(),
-                    'price': priceValue()
-                };
-
-                jsonApi(url, 'PUT', body, '#update-result');
-            });
-
-            $('#delete').click(function() {
-                var url = window.location.origin + '@routes.AccessoryController.delete(id)';
-                noContentApi(url, 'DELETE', '#update-result');
-            });
-        </script>
+        @table.accessories(a :: Nil) {
+            <tr>
+                <td></td>
+                <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name", default = a.getItem.name)</td>
+                <td>@forms.number(id = "price", v = "priceValue", default = a.getItem.price)</td>
+            </tr>
+        }
+    }
+} {
+    {
+        'id': '@id',
+        'name': nameValue(),
+        'price': priceValue()
+    }
+} {
+    <!---->
 }
-}
-

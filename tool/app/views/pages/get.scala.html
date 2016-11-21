@@ -1,0 +1,33 @@
+@(call: play.api.mvc.Call, update: play.api.mvc.Call, delete: play.api.mvc.Call, obj: Option[_])(table: Html)(script: Html)(html: Html)
+
+@defining(("update", "delete", "update-result")) { case (updateId, deleteId, alert) =>
+    @main(title = call.url) {
+        @row1 {
+            <div class="page-header">
+                <h1>@call.url @if(obj.isEmpty) { not found }</h1>
+            </div>
+        }
+
+        @row1 {
+            @table
+        }
+
+        @row1 {
+            <div id="@alert"></div>
+            <button id="@updateId" type="button" class="btn btn-default">Update</button>
+            <button id="@deleteId" type="button" class="btn btn-danger">Delete</button>
+        }
+
+        <script>
+            $('#@updateId').click(function() {
+                jsonApi(window.location.origin + '@update', '@update.method', @script, '#@alert');
+            });
+
+            $('#@deleteId').click(function() {
+                noContentApi(window.location.origin + '@delete', '@delete.method', '#@alert');
+            });
+        </script>
+
+        @html
+    }
+}

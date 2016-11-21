@@ -1,0 +1,26 @@
+@(call: play.api.mvc.Call, create: play.api.mvc.Call)(table: Html)(script: Html)
+
+@defining(("create", "create-result")) { case (button, alert) =>
+    @main(title = call.url) {
+        @row1 {
+            <div class="page-header">
+                <h1>@call</h1>
+            </div>
+        }
+
+        @row1 {
+            @table
+        }
+
+        @row1 {
+            <div id="@alert"></div>
+            <button id="@button" type="button" class="btn btn-default">Create</button>
+        }
+
+        <script>
+            $('#@button').click(function() {
+                jsonApi(window.location.origin + '@create', '@create.method', @script, '#@alert');
+            });
+        </script>
+    }
+}

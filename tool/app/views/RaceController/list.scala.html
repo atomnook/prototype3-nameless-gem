@@ -1,38 +1,19 @@
 @(races: List[model.Race], skills: List[model.skill.Skill])(implicit helper: models.ModelHelper)
 
-@main(title = "/races") {
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="page-header">
-                <h1>/races</h1>
-
-                @component.table.races(races) {
-                    <tr>
-                        <td>@component.form.id(placeholder = "race id")</td>
-                        <td>@component.form.name(placeholder = "race name")</td>
-                        <td>@component.form.skills(skills)</td>
-                        <td>@component.form.levelAttributes()</td>
-                    </tr>
-                }
-
-                <div id="create-result"></div>
-                <button id="create" type="button" class="btn btn-default">Create</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $('#create').click(function() {
-            var url = window.location.origin + '@routes.RaceController.create';
-
-            var body = {
-                'id': idValue(),
-                'name': nameValue(),
-                'skills': skillsValue(),
-                'attributes': levelAttributesValue()
-            };
-
-            jsonApi(url, 'POST', body, '#create-result');
-        });
-    </script>
+@pages.list(call = routes.RaceController.list, create = routes.RaceController.create) {
+    @table.races(races) {
+        <tr>
+            <td>@forms.text(id = "id", v = "idValue", placeholder = "race id")</td>
+            <td>@forms.text(id = "name", v = "nameValue", placeholder = "race name")</td>
+            <td>@forms.skills(id = "skills", v = "skillsValue", skills = skills)</td>
+            <td>@forms.levelAttributes(id = "level-attributes", v = "levelAttributesValue")</td>
+        </tr>
+    }
+} {
+    {
+        'id': idValue(),
+        'name': nameValue(),
+        'skills': skillsValue(),
+        'attributes': levelAttributesValue()
+    }
 }

@@ -1,38 +1,19 @@
 @(characters: List[model.Chara], races: List[model.Race], classes: List[model.Class])(implicit helper: models.ModelHelper)
 
-@main(title = "/characters") {
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="page-header">
-                <h1>/characters</h1>
-
-                @component.table.characters(characters) {
-                    <tr>
-                        <td>@component.form.id(placeholder = "character id")</td>
-                        <td>@component.form.name(placeholder = "character name")</td>
-                        <td>@component.form.race(races)</td>
-                        <td>@component.form.classes(classes)</td>
-                    </tr>
-                }
-
-                <div id="create-result"></div>
-                <button id="create" type="button" class="btn btn-default">Create</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $('#create').click(function() {
-            var url = window.location.origin + '@routes.CharaController.create';
-
-            var body = {
-                'id': idValue(),
-                'name': nameValue(),
-                'race': raceValue(),
-                'classes': classesValue()
-            };
-
-            jsonApi(url, 'POST', body, '#create-result');
-        });
-    </script>
+@pages.list(call = routes.CharaController.list, create = routes.CharaController.create) {
+    @table.characters(characters) {
+        <tr>
+            <td>@forms.text(id = "id", v = "idValue", placeholder = "character id")</td>
+            <td>@forms.text(id = "name", v = "nameValue", placeholder = "character name")</td>
+            <td>@forms.race(id = "race", v = "raceValue", races = races)</td>
+            <td>@forms.classes(id = "classes", v = "classesValue", classes = classes)</td>
+        </tr>
+    }
+} {
+    {
+        'id': idValue(),
+        'name': nameValue(),
+        'race': raceValue(),
+        'classes': classesValue()
+    }
 }

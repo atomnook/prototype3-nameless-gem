@@ -1,0 +1,30 @@
+@(id: String, v: String, default: model.skill.AttackLevel = model.skill.AttackLevel())
+
+<table class="table table-striped">
+    <tr>
+        <th>base</th>
+        <td>
+            <div class="input-group">
+                <input type="number" class="form-control" id="base-@id" placeholder="@default.base">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>increasing</th>
+        <td>
+            <div class="input-group">
+                <input type="number" class="form-control" id="increasing-@id" placeholder="@default.increasingPct">
+                <span class="input-group-addon">%</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+    @v = function() {
+        return {
+            'base': number('#base-@id'),
+            'increasing': number('#increasing-@id')
+        };
+    }
+</script>
