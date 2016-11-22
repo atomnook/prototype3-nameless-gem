@@ -23,12 +23,15 @@ trait CrudSpec[A, B] extends BrowserSpec with GoTo[B] {
     list.url must {
       "create " + browser.name in {
         val expected = create()
+        val button = id("create")
 
         goTo(list)
 
+        explicitlyWait(button)
+
         fill(expected, hasIdField = true)
 
-        click on id("create")
+        click on button
 
         eventually {
           assert(crud.read() === List(expected))
@@ -41,9 +44,13 @@ trait CrudSpec[A, B] extends BrowserSpec with GoTo[B] {
         val deleted = create()
         crud.create(deleted)
 
+        val button = id("delete")
+
         goTo(get(id(deleted)))
 
-        click on id("delete")
+        explicitlyWait(button)
+
+        click on button
 
         eventually {
           assert(crud.read() === List.empty)
@@ -55,11 +62,15 @@ trait CrudSpec[A, B] extends BrowserSpec with GoTo[B] {
         val updated = update(last, create())
         crud.create(last)
 
+        val button = id("update")
+
         goTo(get(id(last)))
+
+        explicitlyWait(button)
 
         fill(updated, hasIdField = false)
 
-        click on id("update")
+        click on button
 
         eventually {
           assert(crud.read() === List(updated))
