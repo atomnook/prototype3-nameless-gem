@@ -1,5 +1,7 @@
 val defaultSettings = Seq(scalaVersion := "2.11.8")
 
+defaultSettings
+
 lazy val model = (project in file("model")).
   settings(
     defaultSettings,
