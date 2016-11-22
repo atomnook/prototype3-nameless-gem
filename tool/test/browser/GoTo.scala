@@ -16,7 +16,7 @@ trait GoTo[A] extends BrowserSpec {
     goTo(f(reverseController))
   }
 
-  def explicitlyWait(query: Query, timeout: FiniteDuration = 5.seconds): Unit = {
+  def explicitlyWait(query: Query, timeout: FiniteDuration = 10.seconds): Unit = {
     new WebDriverWait(webDriver, timeout.toSeconds).until(ExpectedConditions.presenceOfElementLocated(query.by))
   }
 }

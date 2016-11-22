@@ -1,4 +1,8 @@
-val defaultSettings = Seq(scalaVersion := "2.11.8")
+val defaultSettings = Seq(
+  scalaVersion := "2.11.8",
+  parallelExecution in Test := false,
+  logBuffered in Test := false,
+  testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD"))
 
 defaultSettings
 
