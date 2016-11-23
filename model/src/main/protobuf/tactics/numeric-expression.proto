@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package model.tactics;
+
+enum NumericOperator {
+  EQUAL_TO = 0;
+  NOT_EQUAL_TO = 1;
+  LESS_THAN = 2;
+  LESS_THAN_EQUAL_TO = 3;
+  GREATER_THAN = 4;
+  GREATER_THAN_EQUAL_TO = 5;
+}
+
+message HpPct {
+  int32 pct = 1;
+}
+
+message TpPct {
+  int32 pct = 1;
+}
+
+message NumericExpression {
+  NumericOperator operator = 1;
+
+  oneof operand {
+    HpPct hp_pct = 2;
+    TpPct tp_pct = 3;
+  }
+}

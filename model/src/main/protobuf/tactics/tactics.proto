@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package model.tactics;
+
+import "skill/skill.proto";
+import "tactics/condition.proto";
+
+message Tactics {
+  repeated Condition conditions = 1;
+  Condition target = 2;
+  skill.SkillId action = 3;
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package model.tactics;
+
+import "tactics/numeric-expression.proto";
+
+enum Argument {
+  SELF = 0;
+  FRIEND_ALL = 1;
+  FRIEND_FRONT = 2;
+  FRIEND_REAR = 3;
+  ENEMY_ALL = 4;
+  ENEMY_FRONT = 5;
+  ENEMY_REAR = 6;
+}
+
+message Condition {
+  Argument argument = 1;
+
+  oneof expression {
+    NumericExpression numeric = 2;
+  }
+}
