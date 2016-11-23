@@ -1,11 +1,10 @@
-package browser.crud
+package browser.helper
 
-import browser.{BrowserSpec, GoTo}
 import domain.service.Crud
 import org.scalatestplus.play.BrowserInfo
 import play.api.mvc.Call
 
-trait CrudSpec[A, B] extends BrowserSpec with GoTo[B] {
+trait CrudSpec[A] extends BrowserSpec with GoTo {
   protected[this] def list: Call
 
   protected[this] def get(id: String): Call

@@ -1,26 +1,24 @@
 package browser.controllers
 
-import browser.arbitrary.{ArbitraryAccessory, ArbitraryArmor, ArbitraryWeapon}
-import browser.{BrowserSpec, GoTo}
+import browser.arbitrary._
+import browser.helper.create.CreateChara
+import browser.helper.{BrowserSpec, GoTo, ImplicitId}
 import controllers.ReverseCharaController
 import domain.service.Crud
 import model.item.ArmorType
 import model.{Chara, Equipments}
 import org.scalatestplus.play.BrowserInfo
+import play.api.mvc.Call
 
-class CharaControllerSpec extends BrowserSpec with GoTo[ReverseCharaController] {
+class CharaControllerSpec extends BrowserSpec with GoTo with CreateChara with ImplicitId {
   private[this] def crud: Crud[Chara] = service.characters()
 
-  private[this] def create(): Chara = {
-    val race = arbRace.arbitrary
-    val classes = Seq(arbClass.arbitrary, arbClass.arbitrary)
-    service.races().create(race)
-    classes.foreach(service.classes().create)
-    arbChara.arbitrary(race, classes)
-  }
+  private[this] def controller = controllers.routes.CharaController
+
+  private[this] def goTo(f: ReverseCharaController => Call): Unit = goTo(f(controller))
 
   override def sharedTests(browser: BrowserInfo): Unit = {
-    reverseController.gainXp(":id").url must {
+    controller.gainXp(":id").url must {
       "gain xp " + browser.name in {
         val button = id("gain-xp")
         val xp = 100
@@ -44,7 +42,7 @@ class CharaControllerSpec extends BrowserSpec with GoTo[ReverseCharaController] 
       }
     }
 
-    reverseController.equip(":id").url must {
+    controller.equip(":id").url must {
       def equipments(): Equipments = {
         val bodyTypes = Set(ArmorType.HEAVY, ArmorType.LIGHT, ArmorType.CLOTH)
 
@@ -63,15 +61,15 @@ class CharaControllerSpec extends BrowserSpec with GoTo[ReverseCharaController] 
         Seq(acc1, acc2, acc3).foreach(service.accessories().create)
 
         Equipments().update(
-          _.primary := primary.getItem.getId,
-          _.secondary := secondary.getItem.getId,
-          _.head := head.getItem.getId,
-          _.arm := arm.getItem.getId,
-          _.body := body.getItem.getId,
-          _.foot := foot.getItem.getId,
-          _.accessory1 := acc1.getItem.getId,
-          _.accessory2 := acc2.getItem.getId,
-          _.accessory3 := acc3.getItem.getId)
+          _.primary := primary.id(),
+          _.secondary := secondary.id(),
+          _.head := head.id(),
+          _.arm := arm.id(),
+          _.body := body.id(),
+          _.foot := foot.id(),
+          _.accessory1 := acc1.id(),
+          _.accessory2 := acc2.id(),
+          _.accessory3 := acc3.id())
       }
 
       "equip equipments " + browser.name in {
@@ -111,9 +109,8 @@ class CharaControllerSpec extends BrowserSpec with GoTo[ReverseCharaController] 
 
         explicitlyWait(button)
 
-        Seq("primary", "secondary", "head", "arm", "body", "foot", "accessory1", "accessory2", "accessory3").foreach { id =>
-          singleSel(id).value = ""
-        }
+        Seq("primary", "secondary", "head", "arm", "body", "foot", "accessory1", "accessory2", "accessory3").
+          foreach(id => singleSel(id).value = "")
 
         click on button
 
@@ -123,6 +120,4 @@ class CharaControllerSpec extends BrowserSpec with GoTo[ReverseCharaController] 
       }
     }
   }
-
-  override protected[this] def reverseController: ReverseCharaController = controllers.routes.CharaController
 }

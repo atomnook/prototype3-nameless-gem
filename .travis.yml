@@ -26,4 +26,4 @@ before_script:
   - unzip chromedriver_linux64.zip
 
 script:
-  - sbt test
+  - sbt -J-Xms1536M -J-Xmx1536M test
