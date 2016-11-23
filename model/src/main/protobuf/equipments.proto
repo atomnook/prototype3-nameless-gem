@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package model;
+
+import "item/item.proto";
+
+message Equipments {
+  item.ItemId primary = 1;
+  item.ItemId secondary = 2;
+  item.ItemId head = 3;
+  item.ItemId arm = 4;
+  item.ItemId body = 5;
+  item.ItemId foot = 6;
+  item.ItemId accessory1 = 7;
+  item.ItemId accessory2 = 8;
+  item.ItemId accessory3 = 9;
+}

@@ -1,4 +1,4 @@
-package browser
+package browser.crud
 
 import browser.arbitrary.ArbitraryAccessory
 import controllers.ReverseAccessoryController
@@ -6,7 +6,7 @@ import domain.service.Crud
 import model.item.Accessory
 import play.api.mvc.Call
 
-class AccessorySpec extends CrudSpec[Accessory, ReverseAccessoryController] {
+class AccessoryCrudSpec extends CrudSpec[Accessory, ReverseAccessoryController] {
   override protected[this] def list: Call = reverseController.list()
 
   override protected[this] def get(id: String): Call = reverseController.get(id)

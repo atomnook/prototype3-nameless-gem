@@ -1,11 +1,11 @@
-package browser
+package browser.crud
 
 import controllers.ReverseMultipleAttackController
 import domain.service.Crud
 import model.skill.MultipleAttackSkill
 import play.api.mvc.Call
 
-class MultipleAttackSkillSpec extends CrudSpec[MultipleAttackSkill, ReverseMultipleAttackController] {
+class MultipleAttackSkillCrudSpec extends CrudSpec[MultipleAttackSkill, ReverseMultipleAttackController] {
   override protected[this] def list: Call = reverseController.list()
 
   override protected[this] def get(id: String): Call = reverseController.get(id)

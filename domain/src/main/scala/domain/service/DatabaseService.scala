@@ -3,7 +3,7 @@ package domain.service
 import java.util.Base64
 import java.util.concurrent.atomic.AtomicReference
 
-import model.item.{Accessory, Armor, Item, Weapon}
+import model.item._
 import model.skill.{ChainAttackSkill, MultipleAttackSkill, Skill}
 import model.{Chara, Class, Database, Race}
 

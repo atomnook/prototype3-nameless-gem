@@ -1,6 +1,7 @@
 @(view: controllers.CharaController.GetViewArgs)(implicit helper: models.ModelHelper)
 
 @import view._
+@import helper._
 
 @pages.get(
     call = routes.CharaController.get(id),
@@ -49,6 +50,21 @@
         @row1 {
             @if(attributes.attributes.isEmpty) { <div class="alert alert-danger" role="alert">@attributes.alert</div> }
             @for(a <- attributes.attributes) { @tables.attributes(a) }
+        }
+
+        @row1 {
+            @table.equipments(c, equipments)
+            <button id="equip" type="button" class="btn btn-default">Equip</button>
+
+            <script>
+                $('#equip').click(function() {
+                    var url = window.location.origin + '@routes.CharaController.equip(id)';
+
+                    var body = equipmentsValue();
+
+                    jsonApi(url, 'POST', body, '#update-result');
+                });
+            </script>
         }
     }
 }

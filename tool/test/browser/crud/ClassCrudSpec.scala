@@ -1,11 +1,11 @@
-package browser
+package browser.crud
 
 import controllers.ReverseClassController
 import domain.service.Crud
 import model.Class
 import play.api.mvc.Call
 
-class ClassSpec extends  CrudSpec[Class, ReverseClassController] {
+class ClassCrudSpec extends  CrudSpec[Class, ReverseClassController] {
   override protected[this] def list: Call = reverseController.list()
 
   override protected[this] def get(id: String): Call = reverseController.get(id)
