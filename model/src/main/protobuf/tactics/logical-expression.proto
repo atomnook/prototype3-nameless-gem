@@ -4,6 +4,7 @@ package model.tactics;
 
 enum LogicalFunction {
   DEAD = 0;
+  ALIVE = 1;
 }
 
 message LogicalExpression {

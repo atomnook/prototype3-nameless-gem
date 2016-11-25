@@ -5,6 +5,7 @@ package model;
 import "class.proto";
 import "race.proto";
 import "equipments.proto";
+import "tactics/tactics.proto";
 
 message CharaId {
   string id = 1;
@@ -28,4 +29,5 @@ message Chara {
   CharaLevel race_level = 4;
   repeated ClassLevel classes = 5;
   Equipments equipments = 6;
+  repeated tactics.Tactics tactics = 7;
 }

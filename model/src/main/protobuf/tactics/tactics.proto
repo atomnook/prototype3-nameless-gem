@@ -6,6 +6,7 @@ import "skill/skill.proto";
 import "tactics/condition.proto";
 
 message Tactics {
-  Condition target = 1;
-  skill.SkillId action = 2;
+  repeated Condition preconditions = 1;
+  Condition target = 2;
+  skill.SkillId action = 3;
 }

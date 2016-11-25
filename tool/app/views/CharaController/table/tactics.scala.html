@@ -1,0 +1,18 @@
+@(tactics: Seq[model.tactics.Tactics])
+
+@row(t: model.tactics.Tactics) = {
+
+}
+
+<table class="table table-striped">
+  <tr>
+    <th>assertion</th>
+    <th>target</th>
+    <th>preconditions</th>
+    <th>action</th>
+  </tr>
+
+  @for(t <- tactics) {
+    @row(t)
+  }
+</table>
