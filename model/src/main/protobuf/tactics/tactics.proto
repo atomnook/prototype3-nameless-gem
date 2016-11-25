@@ -4,9 +4,11 @@ package model.tactics;
 
 import "skill/skill.proto";
 import "tactics/condition.proto";
+import "tactics/assertion.proto";
 
 message Tactics {
-  repeated Condition preconditions = 1;
+  Condition precondition = 1;
   Condition target = 2;
   skill.SkillId action = 3;
+  Assertion assertion = 4;
 }

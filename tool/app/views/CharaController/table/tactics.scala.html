@@ -1,18 +1,109 @@
-@(tactics: Seq[model.tactics.Tactics])
+@(tactics: Seq[model.tactics.Tactics], skills: Seq[model.skill.SkillId])(implicit helper: models.ModelHelper)
+
+@import domain.label._
+@import helper._
+
+@column(c: model.tactics.Condition) = {
+    <span class="label label-default">
+        @c.argument.name
+        @for(e <- c.expression.logicalExpression) {
+            @e.function.name
+        }
+        @for(e <- c.expression.numericExpression) {
+            @e.function.name @e.operator.sign (@e.value)
+        }
+    </span>
+}
 
 @row(t: model.tactics.Tactics) = {
+    <tr>
+        <td>@t.getAssertion.value @t.getAssertion.operator.sign</td>
+        <td>@column(t.getTarget)</td>
+        <td>@column(t.getPrecondition)</td>
+        <td>t.action.name</td>
+    </tr>
+}
 
+@operator(id: String, v: String) = {
+    <select id="@id" class="form-control">
+        @for(v <- model.tactics.NumericOperator.values) {
+            <option value="@v.value">@v.sign</option>
+        }
+    </select>
+
+    <script>
+        @v = function() { return number('#@id'); }
+    </script>
+}
+
+@expression(id: String, v: String) = {
+    <select id="@(id)-type" class="form-control">
+        @for(v <- model.tactics.NumericFunction.values) {
+            <option value="n@v.value">@v.name</option>
+        }
+        @for(v <- model.tactics.LogicalFunction.values) {
+            <option value="l@v.value">@v.name</option>
+        }
+    </select>
+
+    @operator(id + "-sign", "sign" + v)
+
+    <input type="number" class="form-control" id="@(id)-value" placeholder="numeric expression value">
+
+    <script>
+        @v = function() {
+            var typ = text('#@(id)-type').substring(0, 1);
+            var func = parseInteger(text('#@(id)-type').substring(3), 10);
+            if (typ == 'l') {
+                return {
+                    'logical': {
+                        'function': func
+                    }
+                };
+            }
+            return {
+                'numeric': {
+                    'function': func,
+                    'value': number('#@(id)-value'),
+                    'operator': sign@(v)()
+                }
+            };
+        }
+    </script>
 }
 
 <table class="table table-striped">
-  <tr>
-    <th>assertion</th>
-    <th>target</th>
-    <th>preconditions</th>
-    <th>action</th>
-  </tr>
+    <tr>
+        <th>assertion</th>
+        <th>target</th>
+        <th>precondition</th>
+        <th>action</th>
+    </tr>
 
-  @for(t <- tactics) {
-    @row(t)
-  }
+    @for(t <- tactics) {
+        @row(t)
+    }
+
+    <tr>
+        <td>
+            @operator("assertion-operator", "assertionOperatorValue")
+        </td>
+        <td>
+            @expression("target-expression", "targetExpressionValue")
+        </td>
+        <td>
+            @expression("precondition-expression", "preconditionExpressionValue")
+        </td>
+        <td>
+            <select id="action" class="form-control">
+                @for(s <- skills) {
+                    <option value="@s.id">@s.name</option>
+                }
+            </select>
+
+            <script>
+                actionValue = function() { return text('#action'); }
+            </script>
+        </td>
+    </tr>
 </table>

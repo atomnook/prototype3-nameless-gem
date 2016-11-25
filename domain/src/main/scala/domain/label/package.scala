@@ -3,6 +3,8 @@ package domain
 import model.tactics.NumericOperator
 import model.tactics.NumericOperator.{EQUAL_TO, GREATER_THAN, GREATER_THAN_EQUAL_TO, LESS_THAN, LESS_THAN_EQUAL_TO, NOT_EQUAL_TO, Unrecognized}
 
+
+
 package object label {
   private[this] def unrecognized(value: Int): String = s"unrecognized($value)"
 

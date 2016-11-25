@@ -4,7 +4,6 @@ package model.tactics;
 
 import "tactics/numeric-expression.proto";
 import "tactics/logical-expression.proto";
-import "tactics/assertion.proto";
 
 enum Argument {
   SELF = 0;
@@ -19,7 +18,9 @@ enum Argument {
 
 message Condition {
   Argument argument = 1;
-  repeated NumericExpression numeric_expressions = 2;
-  repeated LogicalExpression logical_expressions = 3;
-  Assertion assertion = 4;
+
+  oneof expression {
+    NumericExpression numeric_expression = 2;
+    LogicalExpression logical_expression = 3;
+  }
 }
