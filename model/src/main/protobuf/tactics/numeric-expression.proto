@@ -11,19 +11,13 @@ enum NumericOperator {
   GREATER_THAN_EQUAL_TO = 5;
 }
 
-message HpPct {
-  int32 pct = 1;
-}
-
-message TpPct {
-  int32 pct = 1;
+enum NumericFunction {
+  HP_PCT = 0;
+  TP_PCT = 1;
 }
 
 message NumericExpression {
   NumericOperator operator = 1;
-
-  oneof operand {
-    HpPct hp_pct = 2;
-    TpPct tp_pct = 3;
-  }
+  NumericFunction function = 2;
+  int64 value = 3;
 }

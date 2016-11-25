@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package model.tactics;
+
+enum LogicalFunction {
+  DEAD = 0;
+}
+
+message LogicalExpression {
+  LogicalFunction function = 1;
+}

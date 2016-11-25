@@ -3,6 +3,7 @@ syntax = "proto3";
 package model.tactics;
 
 import "tactics/numeric-expression.proto";
+import "tactics/logical-expression.proto";
 
 enum Argument {
   SELF = 0;
@@ -16,8 +17,7 @@ enum Argument {
 
 message Condition {
   Argument argument = 1;
-
-  oneof expression {
-    NumericExpression numeric = 2;
-  }
+  repeated NumericExpression numeric_expressions = 2;
+  repeated LogicalExpression logical_expressions = 3;
+  Assertion assertion = 4;
 }
