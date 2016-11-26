@@ -3,7 +3,7 @@ package models.request
 import model.Race
 import model.skill.SkillId
 import models.core.{AsLevelAttributes, AsModel, Identifier, Name}
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class CreateRace(id: Identifier, name: Name, skills: Set[Identifier], attributes: AsLevelAttributes)
   extends AsModel[Race] {
@@ -18,5 +18,5 @@ case class CreateRace(id: Identifier, name: Name, skills: Set[Identifier], attri
 }
 
 object CreateRace {
-  implicit val format = Json.format[CreateRace]
+  implicit val format: OFormat[CreateRace] = Json.format[CreateRace]
 }

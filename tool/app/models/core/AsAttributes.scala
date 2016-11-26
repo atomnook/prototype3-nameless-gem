@@ -1,7 +1,7 @@
 package models.core
 
 import model.Attributes
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class AsAttributes(hp: Long, tp: Long, str: Long, vit: Long, int: Long, wis: Long, agi: Long, luc: Long) {
   def asAttributes: Attributes = {
@@ -18,5 +18,5 @@ case class AsAttributes(hp: Long, tp: Long, str: Long, vit: Long, int: Long, wis
 }
 
 object AsAttributes {
-  implicit val format = Json.format[AsAttributes]
+  implicit val format: OFormat[AsAttributes] = Json.format[AsAttributes]
 }

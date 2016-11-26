@@ -6,7 +6,7 @@ import play.api.libs.json._
 case class Name(name: String)
 
 object Name {
-  implicit val format = new Format[Name] {
+  implicit val format: Format[Name] = new Format[Name] {
     override def reads(json: JsValue): JsResult[Name] = {
       json.validate[String].flatMap {
         case s if s.isEmpty => JsError(ValidationError("empty string"))

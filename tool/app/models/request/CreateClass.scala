@@ -2,7 +2,7 @@ package models.request
 
 import model.skill.SkillId
 import models.core.{AsLevelAttributes, AsModel, Identifier, Name}
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class CreateClass(id: Identifier, name: Name, skills: Set[Identifier], attributes: AsLevelAttributes)
   extends AsModel[model.Class] {
@@ -17,5 +17,5 @@ case class CreateClass(id: Identifier, name: Name, skills: Set[Identifier], attr
 }
 
 object CreateClass {
-  implicit val format = Json.format[CreateClass]
+  implicit val format: OFormat[CreateClass] = Json.format[CreateClass]
 }

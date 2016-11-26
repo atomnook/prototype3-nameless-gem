@@ -4,14 +4,18 @@ import java.util.Base64
 import java.util.concurrent.atomic.AtomicReference
 
 import model.item._
-import model.skill.{ChainAttackSkill, MultipleAttackSkill, Skill}
+import model.skill._
 import model.{Chara, Class, Database, Race}
 
 class DatabaseService {
   private[this] val database = new AtomicReference[Database](Database())
 
   private[this] def skills(d: Database): List[Skill] = {
-    val res = d.multipleAttackSkills.map(_.getSkill.getSkill) ++ d.chainAttackSkills.map(_.getSkill.getSkill)
+    val res =
+      d.multipleAttackSkills.map(_.getSkill.getSkill) ++
+        d.chainAttackSkills.map(_.getSkill.getSkill) ++
+        d.masterySkills.map(_.getSkill) ++
+        d.attributeBoostSkills.map(_.getSkill)
     res.toList
   }
 
@@ -56,6 +60,26 @@ class DatabaseService {
       ids = skills,
       equal = _.getSkill.getSkill.getId == _.getSkill.getSkill.getId,
       equal2id = _.getSkill.getSkill.getId == _.getId)
+  }
+
+  def masterySkills(): Crud[MasterySkill] = {
+    DatabaseCrud.apply[MasterySkill, Skill](
+      database = database,
+      all = _.masterySkills,
+      lens = _.masterySkills,
+      ids = skills,
+      equal = _.getSkill.getId == _.getSkill.getId,
+      equal2id = _.getSkill.getId == _.getId)
+  }
+
+  def attributeBoostSkills(): Crud[AttributeBoostSkill] = {
+    DatabaseCrud.apply[AttributeBoostSkill, Skill](
+      database = database,
+      all = _.attributeBoostSkills,
+      lens = _.attributeBoostSkills,
+      ids = skills,
+      equal = _.getSkill.getId == _.getSkill.getId,
+      equal2id = _.getSkill.getId == _.getId)
   }
 
   def items(): List[Item] = items(database.get())

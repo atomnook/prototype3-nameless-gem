@@ -1,0 +1,17 @@
+@(skills: List[model.skill.AttributeBoostSkill])(extend: Html)(implicit helper: models.ModelHelper)
+
+<table class="table table-striped">
+    <tr>
+        @columns.headers.skill()
+        <th>mastery</th>
+    </tr>
+
+    @for(s <- skills) {
+        <tr>
+            @columns.skill(s.getSkill)
+            <td><span class="label label-primary">@s.attribute.name</span></td>
+        </tr>
+    }
+
+    @extend
+</table>

@@ -1,0 +1,19 @@
+@(skills: List[model.skill.AttributeBoostSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
+@pages.list(call = routes.AttributeBoostController.list, create = routes.AttributeBoostController.create) {
+    @table.attributeBoostSkills(skills) {
+        <tr>
+            <td>@forms.text(id = "id", v = "idValue", placeholder = "skill id")</td>
+            <td>@forms.text(id = "name", v = "nameValue", placeholder = "skill name")</td>
+            <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites)</td>
+            <td>@forms.enum(id = "attribute", v = "attributeValue", companion = model.Attribute)</td>
+        </tr>
+    }
+} {
+    {
+        'id': idValue(),
+        'name': nameValue(),
+        'prerequisites': skillsValue(),
+        'attribute': attributeValue()
+    }
+}

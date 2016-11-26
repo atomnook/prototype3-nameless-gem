@@ -3,7 +3,7 @@ package models
 import com.trueaccord.scalapb.{GeneratedEnum, GeneratedEnumCompanion}
 import model.item.{ArmorType, WeaponType}
 import model.skill.SkillType
-import model.{Element, Target}
+import model.{Attribute, Element, Range, Target}
 import play.api.libs.json.{Format, JsNumber, JsResult, JsValue}
 
 package object core {
@@ -15,15 +15,17 @@ package object core {
     }
   }
 
-  implicit val rangeFormat = protoFormat(model.Range)
+  implicit val rangeFormat: Format[Range] = protoFormat(model.Range)
 
-  implicit val targetFormat = protoFormat(Target)
+  implicit val targetFormat: Format[Target] = protoFormat(Target)
 
-  implicit val skillTypeFormat = protoFormat(SkillType)
+  implicit val skillTypeFormat: Format[SkillType] = protoFormat(SkillType)
 
-  implicit val elementFormat = protoFormat(Element)
+  implicit val elementFormat: Format[Element] = protoFormat(Element)
 
-  implicit val armorTypeFormat = protoFormat(ArmorType)
+  implicit val armorTypeFormat: Format[ArmorType] = protoFormat(ArmorType)
 
-  implicit val weaponTypeFormat = protoFormat(WeaponType)
+  implicit val weaponTypeFormat: Format[WeaponType] = protoFormat(WeaponType)
+
+  implicit val attributeFormat: Format[Attribute] = protoFormat(Attribute)
 }

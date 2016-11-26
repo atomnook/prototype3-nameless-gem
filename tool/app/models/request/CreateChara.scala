@@ -1,8 +1,8 @@
 package models.request
 
 import model.{Chara, ClassLevel}
-import models.core.{Identifier, AsModel, Name}
-import play.api.libs.json.Json
+import models.core.{AsModel, Identifier, Name}
+import play.api.libs.json.{Json, OFormat}
 
 case class CreateChara(id: Identifier, name: Name, race: Identifier, classes: Seq[Identifier]) extends AsModel[Chara] {
   def asModel: Chara = {
@@ -15,5 +15,5 @@ case class CreateChara(id: Identifier, name: Name, race: Identifier, classes: Se
 }
 
 object CreateChara {
-  implicit val format = Json.format[CreateChara]
+  implicit val format: OFormat[CreateChara] = Json.format[CreateChara]
 }

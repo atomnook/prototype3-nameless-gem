@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package model.skill;
+
+import "skill/skill.proto";
+
+message MasterySkill {
+  Skill skill = 1;
+  SkillType mastery = 2;
+}

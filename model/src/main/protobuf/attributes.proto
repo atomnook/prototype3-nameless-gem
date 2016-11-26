@@ -2,6 +2,17 @@ syntax = "proto3";
 
 package model;
 
+enum Attribute {
+  HP = 0;
+  TP = 1;
+  STR = 2;
+  VIT = 3;
+  INT = 4;
+  WIS = 5;
+  AGI = 6;
+  LUC = 7;
+}
+
 message Attributes {
   int64 hp = 1;
   int64 tp = 2;

@@ -1,7 +1,7 @@
 package models.core
 
 import model.LevelAttributes
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class AsLevelAttributes(base: AsAttributes, increasing: AsAttributes) {
   def asLevelAttributes: LevelAttributes = {
@@ -10,5 +10,5 @@ case class AsLevelAttributes(base: AsAttributes, increasing: AsAttributes) {
 }
 
 object AsLevelAttributes {
-  implicit val format = Json.format[AsLevelAttributes]
+  implicit val format: OFormat[AsLevelAttributes] = Json.format[AsLevelAttributes]
 }
