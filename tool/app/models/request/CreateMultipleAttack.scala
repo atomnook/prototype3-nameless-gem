@@ -3,7 +3,7 @@ package models.request
 import model.Element
 import model.skill.{MultipleAttackSkill, SkillType}
 import models.core._
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class CreateMultipleAttack(id: Identifier,
                                 name: Name,
@@ -21,5 +21,5 @@ case class CreateMultipleAttack(id: Identifier,
 }
 
 object CreateMultipleAttack {
-  implicit val format = Json.format[CreateMultipleAttack]
+  implicit val format: OFormat[CreateMultipleAttack] = Json.format[CreateMultipleAttack]
 }

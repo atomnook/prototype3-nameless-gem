@@ -1,12 +1,12 @@
 package domain.service
 
 import model.item.{Accessory, Armor, Weapon}
-import model.skill.{ChainAttackSkill, MultipleAttackSkill}
+import model.skill.{AttributeBoostSkill, ChainAttackSkill, MasterySkill, MultipleAttackSkill}
 import model.{Chara, Class, Race}
 import org.scalatest.FlatSpec
 
 class DatabaseServiceSpec extends FlatSpec {
-  def testCrud[A](Crud: DatabaseService => Crud[A], first: A, updated: A, created: A) = {
+  private[this] def testCrud[A](Crud: DatabaseService => Crud[A], first: A, updated: A, created: A): Unit = {
     val service = DatabaseService()
     val sut = Crud(service)
 
@@ -69,6 +69,22 @@ class DatabaseServiceSpec extends FlatSpec {
     val created = ChainAttackSkill().update(_.skill.skill.id.id := "idB", _.skill.skill.name := "nameB")
 
     testCrud(Crud = _.chainAttackSkills(), first = first, updated = updated, created = created)
+  }
+
+  it should "have MasterySkill Crud" in {
+    val first = MasterySkill().update(_.skill.id.id := "idA", _.skill.name := "nameA")
+    val updated = first.update(_.skill.name.modify(_ + "-updated"))
+    val created = MasterySkill().update(_.skill.id.id := "idB", _.skill.name := "nameB")
+
+    testCrud(Crud = _.masterySkills(), first = first, updated = updated, created = created)
+  }
+
+  it should "have AttributeBoostSkill Crud" in {
+    val first = AttributeBoostSkill().update(_.skill.id.id := "idA", _.skill.name := "nameA")
+    val updated = first.update(_.skill.name.modify(_ + "-updated"))
+    val created = AttributeBoostSkill().update(_.skill.id.id := "idB", _.skill.name := "nameB")
+
+    testCrud(Crud = _.attributeBoostSkills(), first = first, updated = updated, created = created)
   }
   
   it should "have Weapon Crud" in {

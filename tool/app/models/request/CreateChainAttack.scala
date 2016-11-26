@@ -3,7 +3,7 @@ package models.request
 import model.Element
 import model.skill.{ChainAttackSkill, SkillType}
 import models.core._
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class CreateChainAttack(id: Identifier,
                              name: Name,
@@ -26,5 +26,5 @@ case class CreateChainAttack(id: Identifier,
 }
 
 object CreateChainAttack {
-  implicit val format = Json.format[CreateChainAttack]
+  implicit val format: OFormat[CreateChainAttack] = Json.format[CreateChainAttack]
 }

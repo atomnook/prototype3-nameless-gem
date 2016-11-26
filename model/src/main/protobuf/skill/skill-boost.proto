@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package model.skill;
+
+import "skill/skill.proto";
+import "attributes.proto";
+
+message AttributeBoostSkill {
+  Skill skill = 1;
+  Attribute attribute = 2;
+}

@@ -1,0 +1,27 @@
+@(id: String, skill: Option[model.skill.AttributeBoostSkill], prerequisites: List[model.skill.Skill])(implicit helper: models.ModelHelper)
+
+@pages.get(
+    call = routes.AttributeBoostController.get(id),
+    update = routes.AttributeBoostController.update,
+    delete = routes.AttributeBoostController.delete(id),
+    obj = skill) {
+    @for(s <- skill) {
+        @table.attributeBoostSkills(s :: Nil) {
+            <tr>
+                <td></td>
+                <td>@forms.text(id = "name", v = "nameValue", default = s.getSkill.name)</td>
+                <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites, default = s.getSkill.prerequisites)</td>
+                <td>@forms.enum(id = "attribute", v = "attributeValue", companion = model.Attribute, default = s.attribute.value)</td>
+            </tr>
+        }
+    }
+} {
+    {
+        'id': '@id',
+        'name': nameValue(),
+        'prerequisites': skillsValue(),
+        'attribute': attributeValue()
+    }
+} {
+    <!---->
+}

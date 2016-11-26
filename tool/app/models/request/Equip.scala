@@ -4,7 +4,7 @@ import com.trueaccord.lenses.Lens
 import model.Equipments
 import model.item.ItemId
 import models.core.{AsModel, Identifier}
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class Equip(primary: Option[Identifier],
                  secondary: Option[Identifier],
@@ -42,5 +42,5 @@ case class Equip(primary: Option[Identifier],
 }
 
 object Equip {
-  implicit val format = Json.format[Equip]
+  implicit val format: OFormat[Equip] = Json.format[Equip]
 }
