@@ -10,12 +10,9 @@
         </tr>
     }
 } {
-    {
-        'id': idValue(),
-        'name': nameValue(),
-        'price': priceValue(),
+    Object.assign({}, itemValues(), {
         'def': defValue(),
         'mdf': mdfValue(),
         'type': armorTypeValue()
-    }
+    })
 }

@@ -16,19 +16,11 @@
         }
     }
 } {
-    {
-        'id': '@id',
-        'name': nameValue(),
-        'prerequisites': skillsValue(),
-        'types': skillTypesValue(),
-        'elements': elementsValue(),
-        'power': powerValue(),
-        'tp': tpValue(),
-        'part': partValue(),
+    Object.assign({}, attackSkillValues('@id'), {
         'follow': followValue(),
         'chain': chainValue(),
         'range': rangeValue()
-    }
+    })
 } {
     <!---->
 }

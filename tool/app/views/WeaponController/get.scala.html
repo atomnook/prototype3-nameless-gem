@@ -4,7 +4,7 @@
     @for(w <- weapon) {
         @table.weapons(w :: Nil) {
             <tr>
-                @columns.forms.item(hasIdField = true, value = w.getItem)
+                @columns.forms.item(hasIdField = false, value = w.getItem)
                 <td>@forms.number(id = "atk", v = "atkValue", default = w.atk)</td>
                 <td>@forms.number(id = "mat", v = "matValue", default = w.mat)</td>
                 <td>@forms.enum(id = "weapon-type", v = "weaponTypeValue", companion = model.item.WeaponType, default = w.`type`.value)</td>
@@ -12,14 +12,11 @@
         }
     }
 } {
-    {
-        'id': '@id',
-        'name': nameValue(),
-        'price': priceValue(),
+    Object.assign({}, itemValues('@id'), {
         'atk': atkValue(),
         'mat': matValue(),
         'type': weaponTypeValue()
-    }
+    })
 } {
     <!---->
 }

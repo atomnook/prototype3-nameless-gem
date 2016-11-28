@@ -9,7 +9,7 @@
 
 <script>
     attackSkillValues = function(id = null) {
-        return skillValues(id).concat({
+        return Object.assign({}, skillValues(id), {
             'types': skillTypesValue(),
             'elements': elementsValue(),
             'power': powerValue(),

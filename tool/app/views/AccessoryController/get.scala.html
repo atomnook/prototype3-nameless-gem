@@ -8,16 +8,12 @@
     @for(a <- accessory) {
         @table.accessories(a :: Nil) {
             <tr>
-                @columns.forms.item(hasIdField = true, value = a.getItem)
+                @columns.forms.item(hasIdField = false, value = a.getItem)
             </tr>
         }
     }
 } {
-    {
-        'id': '@id',
-        'name': nameValue(),
-        'price': priceValue()
-    }
+    itemValues('@id')
 } {
     <!---->
 }

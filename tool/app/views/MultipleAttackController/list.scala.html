@@ -10,17 +10,9 @@
         </tr>
     }
 } {
-    {
-        'id': idValue(),
-        'name': nameValue(),
-        'prerequisites': skillsValue(),
-        'types': skillTypesValue(),
-        'elements': elementsValue(),
-        'power': powerValue(),
-        'tp': tpValue(),
-        'part': partValue(),
+    Object.assign({}, attackSkillValues(), {
         'hit': hitValue(),
         'range': rangeValue(),
         'target': targetValue()
-    }
+    })
 }

@@ -14,12 +14,7 @@
         }
     }
 } {
-    {
-        'id': '@id',
-        'name': nameValue(),
-        'prerequisites': skillsValue(),
-        'attribute': attributeValue()
-    }
+    Object.assign({}, skillValues('@id'), {'attribute': attributeValue()})
 } {
     <!---->
 }

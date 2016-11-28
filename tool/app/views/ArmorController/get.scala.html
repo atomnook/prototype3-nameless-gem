@@ -8,7 +8,7 @@
     @for(a <- armor) {
         @table.armors(a :: Nil) {
             <tr>
-                @columns.forms.item(hasIdField = true, value = a.getItem)
+                @columns.forms.item(hasIdField = false, value = a.getItem)
                 <td>@forms.number(id = "def", v = "defValue", default = a.`def`)</td>
                 <td>@forms.number(id = "mdf", v = "mdfValue", default = a.mdf)</td>
                 <td>@forms.enum(id = "armor-type", v = "armorTypeValue", companion = model.item.ArmorType, default = a.`type`.value)</td>
@@ -16,14 +16,11 @@
         }
     }
 } {
-    {
-        'id': '@id',
-        'name': nameValue(),
-        'price': priceValue(),
+    Object.assign({}, itemValues('@id'), {
         'def': defValue(),
         'mdf': mdfValue(),
         'type': armorTypeValue()
-    }
+    })
 } {
     <!---->
 }

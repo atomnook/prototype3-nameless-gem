@@ -10,12 +10,9 @@
         </tr>
     }
 } {
-    {
-        'id': idValue(),
-        'name': nameValue(),
-        'price': priceValue(),
+    Object.assign({}, itemValues(), {
         'atk': atkValue(),
         'mat': matValue(),
         'type': weaponTypeValue()
-    }
+    })
 }

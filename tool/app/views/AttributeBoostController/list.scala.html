@@ -8,10 +8,5 @@
         </tr>
     }
 } {
-    {
-        'id': idValue(),
-        'name': nameValue(),
-        'prerequisites': skillsValue(),
-        'attribute': attributeValue()
-    }
+    Object.assign({}, skillValues(), {'attribute': attributeValue()})
 }
