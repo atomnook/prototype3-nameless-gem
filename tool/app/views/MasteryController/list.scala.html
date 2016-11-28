@@ -3,9 +3,7 @@
 @pages.list(call = routes.MasteryController.list, create = routes.MasteryController.create) {
     @table.masterySkills(skills) {
         <tr>
-            <td>@forms.text(id = "id", v = "idValue", placeholder = "skill id")</td>
-            <td>@forms.text(id = "name", v = "nameValue", placeholder = "skill name")</td>
-            <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites)</td>
+            @columns.forms.skill(hasIdField = true, prerequisites = prerequisites)
             <td>@forms.enum(id = "mastery", v = "masteryValue", companion = model.skill.SkillType)</td>
         </tr>
     }

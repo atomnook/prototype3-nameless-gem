@@ -8,9 +8,7 @@
     @for(s <- skill) {
         @table.masterySkills(s :: Nil) {
             <tr>
-                <td></td>
-                <td>@forms.text(id = "name", v = "nameValue", default = s.getSkill.name)</td>
-                <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites, default = s.getSkill.prerequisites)</td>
+                @columns.forms.skill(hasIdField = false, prerequisites = prerequisites, value = s.getSkill)
                 <td>@forms.enum(id = "mastery", v = "masteryValue", companion = model.skill.SkillType, default = s.mastery.value)</td>
             </tr>
         }
