@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package model;
+
+enum Effect {
+  POISON = 0;
+  PETRIFY = 1;
+  CURSE = 2;
+  SLEEP = 3;
+  CONFUSE = 4;
+  PARALYZE = 5;
+  BLIND = 6;
+}
