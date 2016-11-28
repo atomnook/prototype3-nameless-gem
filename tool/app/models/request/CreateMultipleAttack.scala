@@ -1,6 +1,6 @@
 package models.request
 
-import model.Element
+import model.{BodyPart, Element}
 import model.skill.{MultipleAttackSkill, SkillType}
 import models.core._
 import play.api.libs.json.{Json, OFormat}
@@ -12,6 +12,7 @@ case class CreateMultipleAttack(id: Identifier,
                                 elements: Set[Element],
                                 power: AsAttackLevel,
                                 tp: AsAttackLevel,
+                                part: BodyPart,
                                 hit: AsAttackLevel,
                                 range: model.Range,
                                 target: model.Target) extends AsModel[MultipleAttackSkill] with AsAttackSkill {

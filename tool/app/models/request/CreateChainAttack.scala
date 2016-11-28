@@ -1,6 +1,6 @@
 package models.request
 
-import model.Element
+import model.{BodyPart, Element}
 import model.skill.{ChainAttackSkill, SkillType}
 import models.core._
 import play.api.libs.json.{Json, OFormat}
@@ -12,6 +12,7 @@ case class CreateChainAttack(id: Identifier,
                              elements: Set[Element],
                              power: AsAttackLevel,
                              tp: AsAttackLevel,
+                             part: BodyPart,
                              follow: Set[Element],
                              chain: AsAttackLevel,
                              range: model.Range) extends AsModel[ChainAttackSkill] with AsAttackSkill {

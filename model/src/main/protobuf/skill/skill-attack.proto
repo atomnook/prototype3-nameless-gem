@@ -6,6 +6,7 @@ import "element.proto";
 import "range.proto";
 import "skill/skill.proto";
 import "target.proto";
+import "body-part.proto";
 
 message AttackLevel {
   int64 base = 1;
@@ -18,6 +19,7 @@ message AttackSkill {
   repeated Element elements = 3;
   AttackLevel power = 4;
   AttackLevel tp_cost = 5;
+  BodyPart used_part = 6;
 }
 
 message ChainAttackSkill {

@@ -15,6 +15,7 @@
                 <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element, default = s.getSkill.elements)</td>
                 <td>@forms.attackLevel(id = "power", v = "powerValue", default = s.getSkill.getPower)</td>
                 <td>@forms.attackLevel(id = "tp", v = "tpValue", default = s.getSkill.getTpCost)</td>
+                <td>@forms.enum(id = "part", v = "partValue", companion = model.BodyPart, default = s.getSkill.usedPart.value)</td>
                 <td>@forms.enums(id = "follow", v = "followValue", companion = model.Element, default = s.follow)</td>
                 <td>@forms.attackLevel(id = "chain", v = "chainValue", default = s.getChain)</td>
                 <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range, default = s.range.value)</td>
@@ -30,6 +31,7 @@
         'elements': elementsValue(),
         'power': powerValue(),
         'tp': tpValue(),
+        'part': partValue(),
         'follow': followValue(),
         'chain': chainValue(),
         'range': rangeValue()

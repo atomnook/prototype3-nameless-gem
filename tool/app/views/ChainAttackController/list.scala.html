@@ -10,6 +10,7 @@
             <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element)</td>
             <td>@forms.attackLevel(id = "power", v = "powerValue")</td>
             <td>@forms.attackLevel(id = "tp", v = "tpValue")</td>
+            <td>@forms.enum(id = "part", v = "partValue", companion = model.BodyPart)</td>
             <td>@forms.enums(id = "follow", v = "followValue", companion = model.Element)</td>
             <td>@forms.attackLevel(id = "chain", v = "chainValue")</td>
             <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range)</td>
@@ -24,6 +25,7 @@
         'elements': elementsValue(),
         'power': powerValue(),
         'tp': tpValue(),
+        'part': partValue(),
         'follow': followValue(),
         'chain': chainValue(),
         'range': rangeValue()
