@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package model;
 
-enum Effect {
+enum Ailment {
   POISON = 0;
   PETRIFY = 1;
   CURSE = 2;
