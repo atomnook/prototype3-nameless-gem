@@ -1,0 +1,5 @@
+@(hasIdField: Boolean, value: model.item.Item = model.item.Item())
+
+<td>@if(hasIdField) { @forms.text(id = "id", v = "idValue", placeholder = "item id") }</td>
+<td>@forms.text(id = "name", v = "nameValue", placeholder = "item name", default = value.name)</td>
+<td>@forms.number(id = "price", v = "priceValue", default = value.price)</td>

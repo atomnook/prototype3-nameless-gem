@@ -8,9 +8,7 @@
     @for(a <- accessory) {
         @table.accessories(a :: Nil) {
             <tr>
-                <td></td>
-                <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name", default = a.getItem.name)</td>
-                <td>@forms.number(id = "price", v = "priceValue", default = a.getItem.price)</td>
+                @columns.forms.item(hasIdField = true, value = a.getItem)
             </tr>
         }
     }

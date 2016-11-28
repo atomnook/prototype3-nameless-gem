@@ -11,5 +11,6 @@ trait FillAttackSkill extends FillSkill with AttackLevelField {
     multiSel("elements").values = skill.elements.map(_.value.toString)
     attackLevelField("base-power", "increasing-power") := skill.getPower
     attackLevelField("base-tp", "increasing-tp") := skill.getTpCost
+    singleSel("part").value = skill.usedPart.value.toString
   }
 }

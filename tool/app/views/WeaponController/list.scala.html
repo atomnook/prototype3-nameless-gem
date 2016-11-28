@@ -3,9 +3,7 @@
 @pages.list(call = routes.WeaponController.list, create = routes.WeaponController.create) {
     @table.weapons(weapons) {
         <tr>
-            <td>@forms.text(id = "id", v = "idValue", placeholder = "item id")</td>
-            <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name")</td>
-            <td>@forms.number(id = "price", v = "priceValue")</td>
+            @columns.forms.item(hasIdField = true)
             <td>@forms.number(id = "atk", v = "atkValue")</td>
             <td>@forms.number(id = "mat", v = "matValue")</td>
             <td>@forms.enum(id = "weapon-type", v = "weaponTypeValue", companion = model.item.WeaponType)</td>

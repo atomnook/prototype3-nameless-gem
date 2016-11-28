@@ -3,9 +3,7 @@
 @pages.list(call = routes.ArmorController.list, create = routes.ArmorController.create) {
     @table.armors(armors) {
         <tr>
-            <td>@forms.text(id = "id", v = "idValue", placeholder = "item id")</td>
-            <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name")</td>
-            <td>@forms.number(id = "price", v = "priceValue")</td>
+            @columns.forms.item(hasIdField = true)
             <td>@forms.number(id = "def", v = "defValue")</td>
             <td>@forms.number(id = "mdf", v = "mdfValue")</td>
             <td>@forms.enum(id = "armor-type", v = "armorTypeValue", companion = model.item.ArmorType)</td>

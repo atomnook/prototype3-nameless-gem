@@ -4,9 +4,7 @@
     @for(w <- weapon) {
         @table.weapons(w :: Nil) {
             <tr>
-                <td></td>
-                <td>@forms.text(id = "name", v = "nameValue", default = w.getItem.name)</td>
-                <td>@forms.number(id = "price", v = "priceValue", default = w.getItem.price)</td>
+                @columns.forms.item(hasIdField = true, value = w.getItem)
                 <td>@forms.number(id = "atk", v = "atkValue", default = w.atk)</td>
                 <td>@forms.number(id = "mat", v = "matValue", default = w.mat)</td>
                 <td>@forms.enum(id = "weapon-type", v = "weaponTypeValue", companion = model.item.WeaponType, default = w.`type`.value)</td>

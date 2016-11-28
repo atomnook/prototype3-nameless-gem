@@ -3,9 +3,7 @@
 @pages.list(call = routes.AccessoryController.list, create = routes.AccessoryController.create) {
     @table.accessories(accessories) {
         <tr>
-            <td>@forms.text(id = "id", v = "idValue", placeholder = "item id")</td>
-            <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name")</td>
-            <td>@forms.number(id = "price", v = "priceValue")</td>
+            @columns.forms.item(hasIdField = true)
         </tr>
     }
 } {
