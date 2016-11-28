@@ -8,14 +8,7 @@
     @for(s <- skill) {
         @table.chainAttackSkills(s :: Nil, prerequisites) {
             <tr>
-                <td></td>
-                <td>@forms.text(id = "name", v = "nameValue", default = s.getSkill.getSkill.name)</td>
-                <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites, default = s.getSkill.getSkill.prerequisites)</td>
-                <td>@forms.enums(id = "types", v = "skillTypesValue", companion = model.skill.SkillType, default = s.getSkill.types)</td>
-                <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element, default = s.getSkill.elements)</td>
-                <td>@forms.attackLevel(id = "power", v = "powerValue", default = s.getSkill.getPower)</td>
-                <td>@forms.attackLevel(id = "tp", v = "tpValue", default = s.getSkill.getTpCost)</td>
-                <td>@forms.enum(id = "part", v = "partValue", companion = model.BodyPart, default = s.getSkill.usedPart.value)</td>
+                @columns.forms.attackSkill(hasIdField = false, prerequisites = prerequisites, value = s.getSkill)
                 <td>@forms.enums(id = "follow", v = "followValue", companion = model.Element, default = s.follow)</td>
                 <td>@forms.attackLevel(id = "chain", v = "chainValue", default = s.getChain)</td>
                 <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range, default = s.range.value)</td>

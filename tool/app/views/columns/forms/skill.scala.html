@@ -1,0 +1,5 @@
+@(hasIdField: Boolean, prerequisites: List[model.skill.Skill], value: model.skill.Skill = model.skill.Skill())
+
+<td>@if(hasIdField) { @forms.text(id = "id", v = "idValue", placeholder = "skill id") }</td>
+<td>@forms.text(id = "name", v = "nameValue", placeholder = "skill name", default = value.name)</td>
+<td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites, default = value.prerequisites)</td>

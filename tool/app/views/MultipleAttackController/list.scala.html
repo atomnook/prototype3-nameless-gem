@@ -3,14 +3,7 @@
 @pages.list(call = routes.MultipleAttackController.list, create = routes.MultipleAttackController.create) {
     @table.multipleAttackSkills(skills, prerequisites) {
         <tr>
-            <td>@forms.text(id = "id", v = "idValue", placeholder = "skill id")</td>
-            <td>@forms.text(id = "name", v = "nameValue", placeholder = "skill name")</td>
-            <td>@forms.skills(id = "skills", v = "skillsValue", skills = prerequisites)</td>
-            <td>@forms.enums(id = "types", v = "skillTypesValue", companion = model.skill.SkillType)</td>
-            <td>@forms.enums(id = "elements", v = "elementsValue", companion = model.Element)</td>
-            <td>@forms.attackLevel(id = "power", v = "powerValue")</td>
-            <td>@forms.attackLevel(id = "tp", v = "tpValue")</td>
-            <td>@forms.enum(id = "part", v = "partValue", companion = model.BodyPart)</td>
+            @columns.forms.attackSkill(hasIdField = true, prerequisites = prerequisites)
             <td>@forms.attackLevel(id = "hit", v = "hitValue")</td>
             <td>@forms.enum(id = "range", v = "rangeValue", companion = model.Range)</td>
             <td>@forms.enum(id = "target", v = "targetValue", companion = model.Target)</td>
