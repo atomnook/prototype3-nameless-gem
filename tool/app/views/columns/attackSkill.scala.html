@@ -10,3 +10,10 @@
 <td>@texts.attackLevel(value.getPower)</td>
 <td>@texts.attackLevel(value.getTpCost)</td>
 <td><span class="label label-primary">@value.usedPart.name</span></td>
+<td>
+    @for(debuff <- value.debuff) {
+        <span class="label label-primary">@debuff.debuff.name</span>
+        @texts.attackLevel(debuff.getLevel)
+        @texts.attackLevel(debuff.getDuration)</td>
+    }
+</td>

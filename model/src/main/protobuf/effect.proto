@@ -2,12 +2,39 @@ syntax = "proto3";
 
 package model;
 
-enum Ailment {
-  POISON = 0;
-  PETRIFY = 1;
-  CURSE = 2;
-  SLEEP = 3;
-  CONFUSE = 4;
-  PARALYZE = 5;
-  BLIND = 6;
+enum Debuff {
+  POISON_RES_DOWN = 0;
+  PETRIFY_RES_DOWN = 1;
+  CURSE_RES_DOWN = 2;
+  SLEEP_RES_DOWN = 3;
+  CONFUSE_RES_DOWN = 4;
+  PARALYZE_RES_DOWN = 5;
+  BLIND_RES_DOWN = 6;
+  FIRE_RES_DOWN = 7;
+  ICE_RES_DOWN = 8;
+  VOLT_RES_DOWN = 9;
+  ATK_DOWN = 10;
+  DEF_DOWN = 11;
+  POISON = 12;
+  PETRIFY = 13;
+  CURSE = 14;
+  SLEEP = 15;
+  CONFUSE = 16;
+  PARALYZE = 17;
+  BLIND = 18;
+}
+
+enum Buff {
+  POISON_RES_UP = 0;
+  PETRIFY_RES_UP = 1;
+  CURSE_RES_UP = 2;
+  SLEEP_RES_UP = 3;
+  CONFUSE_RES_UP = 4;
+  PARALYZE_RES_UP = 5;
+  BLIND_RES_UP = 6;
+  FIRE_RES_UP = 7;
+  ICE_RES_UP = 8;
+  VOLT_RES_UP = 9;
+  ATK_UP = 10;
+  DEF_UP = 11;
 }

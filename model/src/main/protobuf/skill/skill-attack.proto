@@ -7,10 +7,17 @@ import "range.proto";
 import "skill/skill.proto";
 import "target.proto";
 import "body-part.proto";
+import "effect.proto";
 
 message AttackLevel {
   int64 base = 1;
   int64 increasing_pct = 2;
+}
+
+message DebuffLevel {
+  Debuff debuff = 1;
+  AttackLevel level = 2;
+  AttackLevel duration = 3;
 }
 
 message AttackSkill {
@@ -20,6 +27,7 @@ message AttackSkill {
   AttackLevel power = 4;
   AttackLevel tp_cost = 5;
   BodyPart used_part = 6;
+  DebuffLevel debuff = 7;
 }
 
 message ChainAttackSkill {
