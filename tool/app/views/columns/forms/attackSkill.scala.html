@@ -7,3 +7,14 @@
 <td>@forms.attackLevel(id = "tp", v = "tpValue", default = value.getTpCost)</td>
 <td>@forms.enum(id = "part", v = "partValue", companion = model.BodyPart, default = value.usedPart.value)</td>
 
+<script>
+    attackSkillValues = function(id = null) {
+        return skillValues(id).concat({
+            'types': skillTypesValue(),
+            'elements': elementsValue(),
+            'power': powerValue(),
+            'tp': tpValue(),
+            'part': partValue()
+        });
+    }
+</script>

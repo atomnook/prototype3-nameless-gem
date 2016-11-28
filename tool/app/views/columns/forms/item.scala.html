@@ -3,3 +3,13 @@
 <td>@if(hasIdField) { @forms.text(id = "id", v = "idValue", placeholder = "item id") }</td>
 <td>@forms.text(id = "name", v = "nameValue", placeholder = "item name", default = value.name)</td>
 <td>@forms.number(id = "price", v = "priceValue", default = value.price)</td>
+
+<script>
+    itemValues = function(id = null) {
+        return {
+            @if(hasIdField) { 'id': idValue() } else { 'id': id },
+            'name': nameValue(),
+            'price': priceValue()
+        };
+    }
+</script>
