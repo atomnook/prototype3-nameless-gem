@@ -13,6 +13,7 @@ case class CreateChainAttack(id: Identifier,
                              power: AsAttackLevel,
                              tp: AsAttackLevel,
                              part: BodyPart,
+                             debuff: Option[AsDebuffLevel],
                              follow: Set[Element],
                              chain: AsAttackLevel,
                              range: model.Range) extends AsModel[ChainAttackSkill] with AsAttackSkill {

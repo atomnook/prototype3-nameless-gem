@@ -13,6 +13,7 @@ case class CreateMultipleAttack(id: Identifier,
                                 power: AsAttackLevel,
                                 tp: AsAttackLevel,
                                 part: BodyPart,
+                                debuff: Option[AsDebuffLevel],
                                 hit: AsAttackLevel,
                                 range: model.Range,
                                 target: model.Target) extends AsModel[MultipleAttackSkill] with AsAttackSkill {

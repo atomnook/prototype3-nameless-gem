@@ -1,11 +1,18 @@
 @(companion: com.trueaccord.scalapb.GeneratedEnumCompanion[_ <: com.trueaccord.scalapb.GeneratedEnum], v: String, id: String, default: Option[Int] = None)
 
 <select id="@id" class="form-control">
+    <option value="" @if(default.isEmpty) { selected } >None</option>
     @for(elm <- companion.values) {
-    <option value="@elm.value" @if(elm.value == default) { selected } >@elm.name</option>
+        <option value="@elm.value" @if(default.contains(elm.value)) { selected } >@elm.name</option>
     }
 </select>
 
 <script>
-    @v = function() { return number('#@id'); }
+    @v = function() {
+        var id = '#@id';
+        if ($(id).val() == '') {
+            return null;
+        }
+        return number(id);
+    }
 </script>

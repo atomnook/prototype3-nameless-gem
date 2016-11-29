@@ -3,7 +3,7 @@ package models
 import com.trueaccord.scalapb.{GeneratedEnum, GeneratedEnumCompanion}
 import model.item.{ArmorType, WeaponType}
 import model.skill.SkillType
-import model.{Attribute, BodyPart, Element, Range, Target}
+import model.{Attribute, BodyPart, Debuff, Element, Range, Target}
 import play.api.libs.json.{Format, JsNumber, JsResult, JsValue}
 
 package object core {
@@ -29,5 +29,7 @@ package object core {
 
   implicit val attributeFormat: Format[Attribute] = protoFormat(Attribute)
 
-  implicit val bodyPartForm: Format[BodyPart] = protoFormat(BodyPart)
+  implicit val bodyPartFormat: Format[BodyPart] = protoFormat(BodyPart)
+
+  implicit val debuffFormat: Format[Debuff] = protoFormat(Debuff)
 }

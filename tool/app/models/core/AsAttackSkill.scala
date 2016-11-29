@@ -9,6 +9,7 @@ trait AsAttackSkill extends AsSkill {
   val power: AsAttackLevel
   val tp: AsAttackLevel
   val part: BodyPart
+  val debuff: Option[AsDebuffLevel]
 
   def asAttackSkill: AttackSkill = {
     AttackSkill().update(
@@ -17,6 +18,7 @@ trait AsAttackSkill extends AsSkill {
       _.elements := elements.toList.sortBy(_.value),
       _.power := power.asAttackLevel,
       _.tpCost := tp.asAttackLevel,
-      _.usedPart := part)
+      _.usedPart := part,
+      _.optionalDebuff := debuff.map(_.asDebuffLevel))
   }
 }
