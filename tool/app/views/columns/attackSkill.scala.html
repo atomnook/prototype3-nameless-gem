@@ -13,7 +13,15 @@
 <td>
     @for(debuff <- value.debuff) {
         <span class="label label-primary">@debuff.debuff.name</span>
+    }
+</td>
+<td>
+    @for(debuff <- value.debuff) {
         @texts.attackLevel(debuff.getLevel)
-        @texts.attackLevel(debuff.getDuration)</td>
+    }
+</td>
+<td>
+    @for(debuff <- value.debuff) {
+        @texts.attackLevel(debuff.getDuration)
     }
 </td>
