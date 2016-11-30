@@ -7,8 +7,17 @@
 <td>@forms.attackLevel(id = "tp", v = "tpValue", default = value.getTpCost)</td>
 <td>@forms.enum(id = "part", v = "partValue", companion = model.BodyPart, default = value.usedPart.value)</td>
 <td>@forms.optionalEnum(id = "debuff", v = "debuffValue", companion = model.Debuff, default = value.debuff.map(_.debuff.value))</td>
-<td>@forms.attackLevel(id = "debuff-level", v = "debuffLevelValue", default = value.getDebuff.getLevel)</td>
-<td>@forms.attackLevel(id = "debuff-duration", v = "debuffDurationValue", default = value.getDebuff.getDuration)</td>
+<td>
+    @forms.collapse(id = "collapsed-debuff-level", name = "collapse") {
+        @forms.attackLevel(id = "debuff-level", v = "debuffLevelValue", default = value.getDebuff.getLevel)
+    }
+</td>
+
+<td>
+    @forms.collapse(id = "collapsed-debuff-duration", name = "collapse") {
+        @forms.attackLevel(id = "debuff-duration", v = "debuffDurationValue", default = value.getDebuff.getDuration)
+    }
+</td>
 
 <script>
     attackSkillValues = function(id = null) {

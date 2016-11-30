@@ -1,0 +1,8 @@
+@(id: String, name: String)(html: Html)
+
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#@id" aria-expanded="false" aria-controls="@id">
+    @name
+</button>
+<div class="collapse" id="@id">
+    @html
+</div>
