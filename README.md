@@ -1,6 +1,6 @@
-# nameless-gem
+# prototype3-nameless-gem
 
-[![Build Status](https://travis-ci.org/atomnook/nameless-gem.svg?branch=master)](https://travis-ci.org/atomnook/nameless-gem)
+[![Build Status](https://travis-ci.org/atomnook/prototype3-nameless-gem.svg?branch=master)](https://travis-ci.org/atomnook/prototype3-nameless-gem)
 
 
 ## Testing
